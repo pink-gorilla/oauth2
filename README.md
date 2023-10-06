@@ -14,7 +14,8 @@
 - modular (config, persistence)
 
 ## credentials setting
-- The description how to get the credentials is in `demo-webly/creds-sample.edn`
-- create `demo-webly/creds.edn`
+- oauth2 and local-identity need a configuration before they work
+- `creds-empty.edn` has empty values you can set and a description how to get the credentials
+
 
 # develop apps
