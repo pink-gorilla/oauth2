@@ -1,0 +1,32 @@
+{:paths ["src"
+         "resources"
+         "target/webly"]
+
+ :deps {org.clojure/clojure    {:mvn/version "1.11.1"}
+        org.pinkgorilla/goldly {:mvn/version "0.4.620"}
+        org.pinkgorilla/oauth2 {:local/root "../" :deps/manifest :deps}
+        org.pinkgorilla/ui-tailwind {:mvn/version "0.0.5"}
+        org.pinkgorilla/ui-repl {:mvn/version "0.0.72"}}
+
+
+ :aliases {:demo
+           {:exec-fn modular.system/start!
+            :exec-args {:profile "jetty"
+                        :config ["webly/config.edn"
+                                 "goldly/config.edn"
+                                 "oauth2/config.edn"
+                                 "demo-config.edn" ; oauth2 endpoints
+                                 "/home/florian/repo/myLinux/myvault/trateg/creds.edn" ; oauth2 secrets
+                                 ]
+                        :services "goldly/services.edn"}}
+
+           :npm-install
+           {:exec-fn goldly.app.build/goldly-build
+            :exec-args {:profile "npm-install"}}
+
+           :compile
+           {:exec-fn goldly.app.build/goldly-build
+            :exec-args {:profile "compile2"}}}
+
+;
+ }

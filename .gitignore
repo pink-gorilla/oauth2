@@ -4,10 +4,6 @@
 /classes/
 /target/
 /checkouts/
-.lein-deps-sum
-.lein-repl-history
-.lein-plugins/
-.lein-failures
 .nrepl-port
 .cpcache/
 /test/creds.edn
@@ -30,3 +26,10 @@ creds-localhost.edn
 \#*\#
 .\#*
 .~*
+.shadow-cljs
+node_modules
+karma.conf.js
+package.json
+package-lock.json
+shadow-cljs.edn
+goldly_bindings_generated.cljs

@@ -1,0 +1,9 @@
+{:name "demo"
+ :cljs-routes  {"" demo.page.oauth2/page-oauth2
+                }
+ :sci-cljs-ns [demo.page.oauth2
+               demo.helper.ui
+               demo.helper.oauth2]
+
+ 
+}

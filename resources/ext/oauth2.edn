@@ -6,9 +6,13 @@
                   modular.oauth2 ; side effects (webly.app.cljs)
                   ]
  :cljs-ns-bindings {'modular.oauth2 {'provider-status-grid modular.oauth2.token.ui/provider-status-grid
-                                     'user-login modular.oauth2.user.view/user-login}}
+                                     'user-login modular.oauth2.user.view/user-login}
+                    
+                    ; make sure the namespaces in sci and cljs are identical
+                    'modular.oauth2.user.view {'user-login modular.oauth2.user.view/user-login}
+                    'modular.oauth2.token.ui {'provider-status-grid modular.oauth2.token.ui/provider-status-grid}
+                    }
  ; run 
- ;:autoload-cljs-dir ["reval/goldly/page"]
  :autoload-clj-ns [; websocket handler dont have (yet) a extension loader 
                    modular.oauth2.local.handler
                    modular.oauth2 ; side-effects

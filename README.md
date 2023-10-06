@@ -18,4 +18,14 @@
 - `creds-empty.edn` has empty values you can set and a description how to get the credentials
 
 
-# develop apps
+# demo
+
+The demo uses the extension manager from goldly to add oauth2 to goldly.
+
+```
+cd demo
+clj -X:demo:npm-install
+clj -X:demo:compile
+clj -X:demo
+```
+
