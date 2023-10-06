@@ -1,0 +1,27 @@
+{:name "oauth2"
+ ; build
+ :lazy false
+ :cljs-namespace [modular.oauth2.token.ui
+                  modular.oauth2.user.view
+                  modular.oauth2 ; side effects (webly.app.cljs)
+                  ]
+ :cljs-ns-bindings {'modular.oauth2 {'provider-status-grid modular.oauth2.token.ui/provider-status-grid
+                                     'user-login modular.oauth2.user.view/user-login}}
+ ; run 
+ ;:autoload-cljs-dir ["reval/goldly/page"]
+ :autoload-clj-ns [; websocket handler dont have (yet) a extension loader 
+                   modular.oauth2.local.handler
+                   modular.oauth2 ; side-effects
+                   ]
+ :api-routes {"oauth2/" {["start/" :provider] {:get modular.oauth2.handler/handler-oauth2-start-wrapped}
+                         "token"  {:get modular.oauth2.handler/token-handler-wrapped}
+                             ;  ["redirect/" :provider] {:get :oauth2/redirect}
+                         "save-token" {:post modular.oauth2.handler/handler-oauth2-save-wrapped}
+                         ; redirect -- oauth2 config needs to be updated (previously thsi was under /oauth2/redirect, but now /api/oauth2/redirect)
+                         ["redirect/" :provider] modular.oauth2.handler/handler-oauth2-redirect-wrapped  ;  either client OR server side
+              
+              }}
+ 
+  
+ 
+ }
