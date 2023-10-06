@@ -26,7 +26,15 @@
 
            :compile
            {:exec-fn goldly.app.build/goldly-build
-            :exec-args {:profile "compile2"}}}
+            :exec-args {:profile "compile2"}}
+           
+           ; clj
+           
+           :password 
+           {:exec-fn demo.password/password
+            :exec-args {:password "1234"}}
+           
+           }
 
 ;
  }
