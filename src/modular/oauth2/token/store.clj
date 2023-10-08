@@ -3,15 +3,15 @@
    [taoensso.timbre :refer [info error]]
    [clojure.java.io :as io]
    [buddy.sign.jwt :as jwt]
-   [modular.config :as config]
    [modular.persist.protocol :refer [save loadr]]
    [modular.persist.edn] ; side-effects
+   [modular.oauth2.config :as config]
    ))
 
 ;; token storage 
 
 (defn filename-token  [name]
-  (when-let [token-path (config/get-in-config [:oauth2 :token-path])]
+  (when-let [token-path (config/token-path)]
     (str token-path name ".edn")))
 
 (defn- ensure-directory [path]
@@ -22,7 +22,7 @@
   [name data]
   (let [filename (filename-token name)]
     (if filename
-      (do (ensure-directory (config/get-in-config [:oauth2 :token-path]))
+      (do (ensure-directory (config/token-path))
           (save :edn filename data))
       (error "cannot save token - please set [:oauth2 :token-path] in modular config"))))
 
@@ -45,7 +45,12 @@
   (let [token (load-token name)]
     (jwt/unsign token "key")))
 
-
+(comment 
+   (load-token :xero)
+  
+  
+ ; 
+  )
 
 
 

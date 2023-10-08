@@ -3,22 +3,24 @@
          "target/webly"]
 
  :deps {org.clojure/clojure    {:mvn/version "1.11.1"}
-        org.pinkgorilla/goldly {:mvn/version "0.4.620"}
+        org.pinkgorilla/goldly {:mvn/version "0.4.621"}
         org.pinkgorilla/oauth2 {:local/root "../" :deps/manifest :deps}
         org.pinkgorilla/ui-tailwind {:mvn/version "0.0.5"}
         org.pinkgorilla/ui-repl {:mvn/version "0.0.72"}}
 
 
  :aliases {:demo
-           {:exec-fn modular.system/start!
+           {:extra-deps {nrepl/nrepl {:mvn/version "0.9.0"}
+                         cider/cider-nrepl {:mvn/version "0.28.3"}}
+            :exec-fn modular.system/start!
             :exec-args {:profile "jetty"
                         :config ["webly/config.edn"
                                  "goldly/config.edn"
-                                 "oauth2/config.edn"
-                                 "demo-config.edn" ; oauth2 endpoints
-                                 "/home/florian/repo/myLinux/myvault/trateg/creds.edn" ; oauth2 secrets
+                                 "oauth2/config.edn" ; oauth2 endpoints
+                                 "demo-config.edn" 
+                                 "/home/florian/repo/myLinux/myvault/oauth2/localhost.edn" ; oauth2 secrets
                                  ]
-                        :services "goldly/services.edn"}}
+                        :services "demo-services.edn" #_"goldly/services.edn"}}
 
            :npm-install
            {:exec-fn goldly.app.build/goldly-build
@@ -27,14 +29,40 @@
            :compile
            {:exec-fn goldly.app.build/goldly-build
             :exec-args {:profile "compile2"}}
-           
+
+           :run 
+           {:exec-fn modular.system/start!
+            :exec-args {:config ["webly/config.edn"
+                                 "goldly/config.edn"
+                                 "oauth2/config.edn"
+                                 "demo-config.edn" ; oauth2 endpoints
+                                 "/home/florian/repo/myLinux/myvault/oauth2/localhost.edn" ; oauth2 secrets
+                                 ]
+                        :services "demo-run.edn"}}
+
+           ;; token info
+           :token-info-xero {:exec-args {:run demo.token/token-info
+                                         :provider :xero}}
+
+           :token-info-google {:exec-args {:run demo.token/token-info
+                                           :provider :google}}
+
+           :token-info-github {:exec-args {:run demo.token/token-info
+                                           :provider :github}}
+
+           :tokens-summary {:exec-fn demo.token/tokens-summary
+                            :exec-args {:providers [:xero :github :google
+                                                     ; :wonderland ; to test non existent tokens
+                                                    ]}}
+
+           ; token refresh
+           :token-refresh-xero {:exec-fn demo.token-refresh/refresh-token-xero}
+
            ; clj
-           
-           :password 
+
+           :password
            {:exec-fn demo.password/password
-            :exec-args {:password "1234"}}
-           
-           }
+            :exec-args {:password "1234"}}}
 
 ;
  }

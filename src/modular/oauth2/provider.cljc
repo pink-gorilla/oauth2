@@ -4,12 +4,14 @@
    [clojure.set :refer [rename-keys]]
    [taoensso.timbre :as timbre :refer [debug info infof error]]
    [cemerick.url :refer [url url-encode]]
-   [modular.oauth2.provider.google :as google]
-   [modular.oauth2.provider.github :as github]
-   [modular.oauth2.provider.xero :as xero]
-   [modular.oauth2.provider.woo :as woo]
-   [modular.oauth2.provider.wordpress :as wordpress]
-   [modular.oauth2.protocol :refer [provider-config known-providers]]))
+   [modular.oauth2.provider.google :as google] ; side-effects
+   [modular.oauth2.provider.github :as github] ; side-effects
+   [modular.oauth2.provider.xero :as xero] ; side-effects
+   [modular.oauth2.provider.woo :as woo] ; side-effects
+   [modular.oauth2.provider.wordpress :as wordpress] ; side-effects
+   [modular.oauth2.protocol :refer [provider-config known-providers]]
+   [modular.oauth2.config :as config]
+   ))
 
 ;; our page strucutre for different providers
 
@@ -30,7 +32,7 @@
 
 (defn full-provider-config [config provider]
   (let [code (or (get-provider-config provider) {})
-        app (or (get-in config [:oauth2 provider]) {})]
+        app (or (config/provider-config config provider) {})]
     (merge code app)))
 
 (defn ring-oauth2-config [config]

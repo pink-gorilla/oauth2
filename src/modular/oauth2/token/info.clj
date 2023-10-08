@@ -45,3 +45,20 @@
 (defn tokens-summary-map [providers]
   (into {}
         (map token-summary-vec providers)))
+
+
+(comment 
+  (get-token :xero :id-token)
+  (get-token :google :id-token)
+  (get-token :github :id-token) ; no id-token
+
+  (get-token :xero :access-token)
+  (get-token :google :access-token) ; throws!
+  (get-token :github :access-token) ; throws!
+  
+  
+  (get-token :google :refresh-token) ; throws
+  
+  
+ ; 
+  )

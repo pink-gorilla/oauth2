@@ -1,24 +1,21 @@
-
-
 (ns modular.oauth2.token.refresh
   (:require
    [taoensso.timbre :as timbre :refer [debug info error]]
- ;   [clojure.data.codec.base64 :as b64]
+   ; [clojure.data.codec.base64 :as b64] ; perhaps alternative to modular.base-64
    [modular.base64 :refer [base64-encode]]
    [ajax.core :as ajax]
-   [modular.config :refer [get-in-config config-atom]]
+   [modular.config :refer [config-atom]]
    [modular.oauth2.provider :refer [full-provider-config]]
    [modular.oauth2.token.store :refer [load-token save-token]]
    [modular.oauth2.token.sanitize :refer [sanitize-token]]))
 
-(defn auth-header-basic [token]
+#_(defn auth-header-basic [token]
   {"Authorization" (str "Basic " token)})
 
 (defn auth-header-oauth-token [client-id client-secret]
-  ; Authorization: "Basic " + base64encode(client_id + ":" + client_secret)
   {"Authorization" (str "Basic " (base64-encode (str client-id ":" client-secret)))})
 
-(defn refresh-auth-token [provider]
+(defn refresh-access-token [provider]
   (info "refreshing access token for: " provider)
   (let [token (load-token provider)
         refresh-token (:refresh-token token)
@@ -63,8 +60,12 @@
                        ))
     @p))
 
+
 (comment
-  (handler-github-redirect {})
+   (full-provider-config @config-atom :xero)
+   (refresh-access-token :xero)
+   (refresh-access-token :google)
+  
 
   ;
   )

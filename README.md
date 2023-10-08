@@ -29,3 +29,8 @@ clj -X:demo:compile
 clj -X:demo
 ```
 
+# demo - inspect received tokens
+```
+clj -X:run:token-info-google
+
+```
