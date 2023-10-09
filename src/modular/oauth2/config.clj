@@ -21,6 +21,12 @@
 (defn user-list []
   (get-in-config [:users]))
 
+;; use oauth2 tokens:
+
+(defn token-prefix [provider]
+  (get-in-config [:oauth2 provider :token-prefix]))
+
+
 ;; full config
 ;; TODO: needs to be refactored
 ;; used in: 
