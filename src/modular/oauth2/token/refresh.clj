@@ -77,6 +77,12 @@
           (t/> now-p1 expires-date))
       false)))
 
+(defn refresh-access-token-if-needed [kw-name]
+  (let [refresh-needed? (access-token-needs-refresh? kw-name)
+        ]
+    (when refresh-needed?
+      (info "refreshing access-token: " kw-name " blocking!")
+      @(refresh-access-token kw-name))))
 
 
 
