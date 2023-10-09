@@ -16,9 +16,9 @@
 
 (defn provider-uri [provider]
   (let [provider-name (name provider)]
-    {:start-uri       (str "/api/oauth2/start/" provider-name)
-     :redirect-uri     (str "/oauth2/redirect/" provider-name)
-     :landing-uri      (str "/oauth2/landing/" provider-name)}))
+    {:start-uri    (str "/api/oauth2/start/" provider-name)
+     :redirect-uri (str "/api/oauth2/redirect/" provider-name)
+     :landing-uri  (str "/api/oauth2/landing/" provider-name)}))
 
 ;; PROVIDER LIST
 
