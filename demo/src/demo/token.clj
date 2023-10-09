@@ -1,16 +1,14 @@
 (ns demo.token
   (:require
-    [clojure.pprint :refer [print-table]]
-    [taoensso.timbre :as timbre :refer [info error]]
+   [clojure.pprint :refer [print-table]]
+   [taoensso.timbre :as timbre :refer [info error]]
     ; token info
-    [modular.oauth2.token.info :as t]
-    [demo.token-info :refer [show]]))
-
+   [modular.oauth2.token.info :as t]
+   [demo.token-info :refer [show]]))
 
 (defn token-info [{:keys [provider]}]
   ; cli entry point
   (show provider))
-
 
 (defn tokens-summary [{:keys [providers]}]
   ; cli entry point

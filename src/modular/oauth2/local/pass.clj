@@ -6,8 +6,9 @@
    [buddy.core.hash :as hash]
    [buddy.sign.jwt :as jwt]
    ;[no.nsd.clj-jwt :as clj-jwt]
-   [modular.config :refer [get-in-config]]
-   [modular.permission.user :refer [get-user]]))
+   [modular.permission.user :refer [get-user]]
+   [modular.oauth2.config :refer [local-token-secret user-list]]
+   ))
 
 (defn pwd-hash [pwd]
   (-> (hash/blake2b-128 pwd)
@@ -20,7 +21,7 @@
 ;
   )
 (defn create-claim [user-name]
-  (let [secret (get-in-config [:oauth2 :local :client-secret])
+  (let [secret (local-token-secret)
         claim  {:user (name user-name)}
         token (jwt/sign claim secret)]
     (debug "sign claim with secret: " secret)
@@ -28,7 +29,7 @@
      :token token}))
 
 (defn get-token [user-name user-password]
-  (if-let [users (get-in-config [:users])]
+  (if-let [users (user-list)]
     (let [user-kw (keyword user-name)
           user (get-user user-kw)
           password-hashed (pwd-hash user-password)]
@@ -43,7 +44,7 @@
      :error-message "Please set :users modular.config"}))
 
 (defn verify-token [token]
-  (let [secret (get-in-config [:oauth2 :local :client-secret])]
+  (let [secret (local-token-secret)]
     (debug "verifying claim with secret: " secret)
     (try
       (-> (jwt/unsign token secret)

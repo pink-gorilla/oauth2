@@ -2,7 +2,6 @@
   (:require
    [re-frame.core :as rf]))
 
-
 (rf/reg-event-db
  :oauth2/logged-in
  (fn [db [_ provider]]

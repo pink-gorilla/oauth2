@@ -3,10 +3,9 @@
    [taoensso.timbre :as timbre :refer [debug info error]]
    [ring.util.response :as res]
    [ring.util.codec :as codec]
- ;   [clojure.data.codec.base64 :as b64]
-   [modular.base64 :refer [base64-encode]]
    [ajax.core :as ajax]
-   [modular.config :refer [get-in-config config-atom]]
+   [modular.oauth2.config :refer [entire-config]]
+   [modular.oauth2.base64 :refer [base64-encode]]
    [modular.oauth2.provider :refer [full-provider-config]]))
 
 ; (codec/form-encode 
@@ -31,7 +30,7 @@
                      keyword)
         url-redirect (get-in req [:query-params "url-redirect"])
         p (promise)
-        provider-config (full-provider-config @config-atom provider)
+        provider-config (full-provider-config (entire-config) provider)
         {:keys [token-uri client-id client-secret]} provider-config]
     (info "getting token for provider " provider " code :" code "client-id:" client-id " redirect-url: " url-redirect)
     (ajax/POST token-uri ; "https://github.com/login/oauth/access_token"

@@ -3,6 +3,7 @@
    [clojure.set :refer [rename-keys]]
    [taoensso.timbre :refer-macros [info error]]
    [re-frame.core :as rf]
+   [modular.oauth2.config :refer [app-name]]
    [modular.oauth2.authorize.redirect :refer [register-callback]]
    [modular.oauth2.token.save-handler] ; side effects
    [modular.oauth2.provider :refer [url-start url-authorize]]
@@ -18,7 +19,7 @@
     (info "opening oauth2 window: " url-auth)
     (.open js/window
            url-auth
-           (str "Webly OAuth2 " (name provider))
+           (str (app-name) " " (name provider))
            "width=500,height=600")))
 
 (rf/reg-event-db

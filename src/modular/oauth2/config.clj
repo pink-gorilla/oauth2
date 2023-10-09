@@ -2,7 +2,8 @@
   (:require 
    [modular.config :refer [get-in-config config-atom]]))
 
-
+;; this config is here, so that we do not use modular.config in many different places.
+;; this allows us to change config format easier
 
 (defn token-path []
   (get-in-config [:oauth2 :token-path]))
@@ -10,6 +11,28 @@
 
 (defn provider-config [config provider]
   (get-in config [:oauth2 provider]))
+
+
+;; local auth (username/password)
+
+(defn local-token-secret []
+  (get-in-config [:oauth2 :local :client-secret]))
+
+(defn user-list []
+  (get-in-config [:users]))
+
+;; full config
+;; TODO: needs to be refactored
+;; used in: 
+;; modular.oauth2.authorize.token-handler
+;; modular.oauth2.token.refresh
+;; modular.oauth2.authorize.start-handler
+;; modular.oauth2.middleware
+
+(defn entire-config []
+  @config-atom)
+
+
 
 
 (comment 

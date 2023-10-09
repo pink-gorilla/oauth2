@@ -1,14 +1,14 @@
 (ns modular.oauth2.middleware
   (:require
-   [taoensso.timbre :as timbre :refer [debug info error]]
    [ring.middleware.defaults :refer [wrap-defaults site-defaults api-defaults]]
    ;[ring-ttl-session.core :refer [ttl-memory-store]]
   ; [ring.middleware.session :refer [wrap-session]]
   ; [ring.middleware.cookies :refer [wrap-cookies]]
    [ring.middleware.oauth2 :refer [wrap-oauth2]]
-   [modular.config :refer [get-in-config config-atom]]
    [modular.writer :refer [write-status]]
-   [modular.oauth2.provider :refer [ring-oauth2-config]]))
+   [modular.oauth2.provider :refer [ring-oauth2-config]]
+   [modular.oauth2.config :refer [entire-config]]
+   ))
 
 ; https://github.com/weavejester/ring-oauth2 
 
@@ -18,13 +18,13 @@
 ; to se that routes are configured correctly.
 
 (defn print-oauth2-config []
-  (let [config @config-atom
+  (let [config (entire-config)
         c (ring-oauth2-config config)]
      ;(debug "oauth config: " c)
     (write-status "oauth2" c)))
 
 (defn wrap-oauth [handler]
-  (let [config @config-atom
+  (let [config (entire-config)
         c (ring-oauth2-config config)]
   ;(wrap-oauth2 handler my-oauth-profiles)
     (-> handler

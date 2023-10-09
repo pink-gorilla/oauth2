@@ -1,4 +1,4 @@
-(ns modular.base64)
+(ns modular.oauth2.base64)
 
 ;; ## Conversion Functions
 

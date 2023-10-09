@@ -10,8 +10,7 @@
    [modular.oauth2.provider.woo :as woo] ; side-effects
    [modular.oauth2.provider.wordpress :as wordpress] ; side-effects
    [modular.oauth2.protocol :refer [provider-config known-providers]]
-   [modular.oauth2.config :as config]
-   ))
+   [modular.oauth2.config :as config]))
 
 ;; our page strucutre for different providers
 

@@ -4,8 +4,8 @@
    [clojure.string :as str]
    [ajax.core :as ajax]
    [re-frame.core :as rf]
-   [modular.oauth2.provider :refer [get-provider-auth-header]]
-   [frontend.notifications.core :refer [add-notification]]))
+   [frontend.notifications.core :refer [add-notification]]
+   [modular.oauth2.provider :refer [get-provider-auth-header]]))
 
 ;'authorization: Bearer YOUR_ACCESS_TOKEN' 
 ;$ curl -H "Authorization: token OAUTH-TOKEN" https://api.github.com

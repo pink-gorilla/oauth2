@@ -4,7 +4,6 @@
    [modular.oauth2.token.store :refer [load-token]]
    [modular.oauth2.token.info :refer [get-header get-claims get-signature get-encoded-data]]))
 
-
 (defn show-header [p t]
   (info "header: " p t (get-header p t)))
 
@@ -30,9 +29,7 @@
         (show-claims p :id-token))
       (warn "\n\nNO ID TOKEN FOR " p "\n\n"))
 
-
-
-  ;; access-token
+;; access-token
     (info "\n\nACCESS TOKEN FOR " p "\n\n")
 
  ; (show-header p :access-token)
@@ -57,7 +54,6 @@
 
   ;(show-signature p :access-token)
   ;(show-encoded-data p :access-token) 
-
 
 ;(show-claims :google :refresh_token)
 

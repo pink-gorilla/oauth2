@@ -1,7 +1,9 @@
-(ns modular.ajax
+(ns modular.oauth2.ajax
   (:require
    [taoensso.timbre :refer [info error]]
    [ajax.core :as ajax]))
+
+;; can this be deleted???
 
 (defn log-success [res]
   (info "ajax post success: " res))

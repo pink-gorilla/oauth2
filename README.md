@@ -34,3 +34,18 @@ clj -X:demo
 clj -X:run:token-info-google
 
 ```
+
+# how to use tokens (for example in rest api):
+
+Have a look at [Link rest.project](https://github.com/pink-gorilla/rest) for rest-apis that use oauth2 tokens generated via this library.
+
+```
+(require '[modular.oauth2.token.refresh :as tr])
+(require '[modular.oauth2.token.info :refer [print-token-table]])
+
+(tr/access-token-needs-refresh? :google)
+(tr/refresh-access-token :google)
+
+(print-token-table [:xero :shiphero :google :github])
+```
+

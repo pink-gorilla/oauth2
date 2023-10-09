@@ -3,12 +3,11 @@
    [cheshire.core :as json]
    [taoensso.timbre :refer [debug debugf info infof error]]
    [clj-jwt.core :refer [str->jwt]]
-   [modular.config :refer [get-in-config]]
-   [modular.ws.core :refer [send-all! send-response connected-uids]]
+   [modular.ws.core :refer [send-response]]
    [modular.ws.msg-handler :refer [-event-msg-handler]]
-   [modular.oauth2.local.pass :refer [get-token]]
    [modular.permission.user :refer [find-user-id-via-email]]
    [modular.permission.websocket :refer [set-user!]]
+   [modular.oauth2.local.pass :refer [get-token]]
    [modular.oauth2.token.info :refer [tokens-summary-map]]))
 
 (defn login-handler

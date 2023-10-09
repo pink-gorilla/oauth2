@@ -3,13 +3,13 @@
    [clojure.set :refer [rename-keys]]
    [modular.oauth2.date :refer [now-instant add-seconds]]))
 
-(defn add-expire-date [token]
+(defn- add-expire-date [token]
   (if-let [expires-in (:expires-in token)]
     (assoc token :expires-date
            (-> (now-instant) (add-seconds expires-in)))
     token))
 
-(defn rename [token]
+(defn- rename [token]
   (rename-keys token
                {:access_token :access-token
                 :refresh_token :refresh-token
