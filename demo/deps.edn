@@ -4,9 +4,10 @@
 
  :deps {org.clojure/clojure    {:mvn/version "1.11.1"}
         org.pinkgorilla/goldly {:mvn/version "0.4.621"}
-        org.pinkgorilla/oauth2 {:local/root "../" :deps/manifest :deps}
         org.pinkgorilla/ui-tailwind {:mvn/version "0.0.5"}
-        org.pinkgorilla/ui-repl {:mvn/version "0.0.72"}}
+        org.pinkgorilla/ui-repl {:mvn/version "0.0.72"}
+        org.pinkgorilla/oauth2 {:local/root "../" :deps/manifest :deps}
+        }
 
 
  :aliases {:demo
