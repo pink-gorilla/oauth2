@@ -19,7 +19,7 @@
                                  "goldly/config.edn"
                                  "oauth2/config.edn" ; oauth2 endpoints
                                  "demo-config.edn" 
-                                 "/home/florian/repo/myLinux/myvault/oauth2/localhost.edn" ; oauth2 secrets
+                                 "/home/florian/repo/myLinux/myvault/goldly/oauth2-localhost.edn" ; oauth2 secrets
                                  ]
                         :services "demo-services.edn" #_"goldly/services.edn"}}
 
@@ -37,7 +37,7 @@
                                  "goldly/config.edn"
                                  "oauth2/config.edn"
                                  "demo-config.edn" ; oauth2 endpoints
-                                 "/home/florian/repo/myLinux/myvault/oauth2/localhost.edn" ; oauth2 secrets
+                                 "/home/florian/repo/myLinux/myvault/goldly/oauth2-localhost.edn" ; oauth2 secrets
                                  ]
                         :services "demo-run.edn"}}
 
