@@ -29,6 +29,9 @@ clj -X:demo:compile
 clj -X:demo
 ```
 
+Test local user/password login: user: "demo" password: "1234"
+
+
 # demo - inspect received tokens
 ```
 clj -X:run:token-info-google
@@ -37,7 +40,7 @@ clj -X:run:token-info-google
 
 # how to use tokens (for example in rest api):
 
-Have a look at [Link rest.project](https://github.com/pink-gorilla/rest) for rest-apis that use oauth2 tokens generated via this library.
+Have a look at [pink-gorilla/rest](https://github.com/pink-gorilla/rest) for rest-apis that use oauth2 tokens generated via this library.
 
 ```
 (require '[modular.oauth2.token.refresh :as tr])
