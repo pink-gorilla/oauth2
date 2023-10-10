@@ -13,11 +13,6 @@
 - websocket (oauth via websocket and ring-handler)
 - modular (config, persistence)
 
-## credentials setting
-- oauth2 and local-identity need a configuration before they work
-- `creds-empty.edn` has empty values you can set and a description how to get the credentials
-
-
 # demo
 
 The demo uses the extension manager from goldly to add oauth2 to goldly.
@@ -29,7 +24,12 @@ clj -X:demo:compile
 clj -X:demo
 ```
 
+*local user/password login*
 Test local user/password login: user: "demo" password: "1234"
+
+*oauth2 login*
+- oauth2 need a configuration before they work
+- [creds-empty.edn](https://github.com/pink-gorilla/oauth2/blob/main/creds-empty.edn) has empty values you can set and a description how to get the credentials
 
 
 # demo - inspect received tokens

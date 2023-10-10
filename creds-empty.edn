@@ -1,4 +1,4 @@
-;; Copy to creds-localhost.edn and set your private values.
+
 {:oauth2 {:local {:client-secret ""}
           :google {:client-id ""
                    :client-secret ""}
@@ -8,11 +8,14 @@
                    :client-secret    ""}
           }}
 
+; local
+; set "client-secret" to a random string which is used to encrypt tokens
+
 ; google
 ; https://console.developers.google.com/apis
 ; create app of type WEB APP
 ; app url is: http://localhost:8080
-; callback url is: http://localhost:8080/oauth2/redirect/google
+; callback url is: http://localhost:8080/api/oauth2/redirect/google
 ; https://console.cloud.google.com/apis/credentials/oauthclient
 
 ; github
@@ -27,7 +30,7 @@
 ; https://developer.xero.com/app/manage
 ; pick oauth2 - webapp
 ; homepage url: https://localhost:8080/
-; redirect url is: http://localhost:8080/oauth2/redirect/xero
+; redirect url is: http://localhost:8080/api/oauth2/redirect/xero
 ; https://xeroapi.github.io/xero-node/accounting/index.html
 ; https://github.com/XeroAPI/xero-node/blob/master/src/gen/api/accountingApi.ts
 
