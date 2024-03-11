@@ -1,7 +1,7 @@
 (ns modular.oauth2.handler
   (:require
    [modular.webserver.middleware.api :refer [wrap-api-handler]]
-   [modular.ws.middleware :refer [wrap-ws]]
+   [modular.ws.service.middleware :refer [wrap-ws]]
    [modular.oauth2.authorize.start-handler :refer [handler-oauth2-start]]
    [modular.oauth2.authorize.redirect-handler :refer [handler-oauth2-redirect]]
    [modular.oauth2.authorize.token-handler :refer [token-handler]]
