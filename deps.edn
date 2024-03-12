@@ -30,11 +30,11 @@
   clj-oauth/clj-oauth {:mvn/version "1.5.2"}; copied over from REST
 
   ; pink-gorilla dependencies
-  org.pinkgorilla/modular {:mvn/version "0.0.39"}
+  org.pinkgorilla/modular {:mvn/version "0.0.40"}
   org.pinkgorilla/permission {:mvn/version "0.0.15"}
   ; TODO: move frontend->somewhere else.
   ;modular/frontend {:local/root "../frontend" :deps/manifest :deps}
-  org.pinkgorilla/websocket {:mvn/version "0.0.8"}}
+  org.pinkgorilla/websocket {:mvn/version "0.0.9"}}
 
 
  :aliases

@@ -35,6 +35,17 @@
 ;; modular.oauth2.authorize.start-handler
 ;; modular.oauth2.middleware
 
+(defn get-config-server [server-profile-kw]
+  (get-in-config [:oauth2 :server server-profile-kw]))
+
+
+ (defn get-config-user
+  ([]
+   (get-config-user :default))
+  ([user-id-kw]
+   (get-in-config [:oauth2 :user user-id-kw])))
+
+
 (defn entire-config []
   @config-atom)
 

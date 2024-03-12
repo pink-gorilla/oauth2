@@ -15,6 +15,7 @@
                    modular.oauth2.local.handler
                    modular.oauth2 ; side-effects
                    ]
+  
  :api-routes {"oauth2/" {["start/" :provider] {:get modular.oauth2.handler/handler-oauth2-start-wrapped}
                          "token"  {:get modular.oauth2.handler/token-handler-wrapped}
                              ;  ["redirect/" :provider] {:get :oauth2/redirect}

@@ -3,8 +3,8 @@
    #?(:clj  [taoensso.timbre :refer [debug info warn error]])
    #?(:cljs [taoensso.timbre :refer-macros [debug info warn error]])
    #?(:clj  [nano-id.core :refer [nano-id]])
-   #?(:clj  [modular.config :as config])
    #?(:clj  [modular.persist.protocol :refer [save loadr]])
+   #?(:clj  [modular.oauth2.config :as config])
    #?(:clj  [modular.oauth2.local.handler])
    #?(:cljs [modular.oauth2.request])
    #?(:cljs [modular.oauth2.user.subscriptions])
@@ -16,14 +16,14 @@
 
 #?(:clj
    (defn get-config-server [server-profile-kw]
-     (config/get-in-config [:oauth2 :server server-profile-kw])))
+     (config/get-config-server server-profile-kw)))
 
 #?(:clj
    (defn get-config-user
      ([]
       (get-config-user :default))
      ([user-id-kw]
-      (config/get-in-config [:oauth2 :user user-id-kw])))
+      (config/get-config-user user-id-kw)))
 
 ;
    )
