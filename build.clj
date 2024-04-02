@@ -13,13 +13,10 @@
 
 (defn jar "build the JAR" [opts]
   (println "Building the JAR")
-  #_(spit (doto (fs/file "resources/META-INF/pink-gorilla/webly3/meta.edn")
-          (-> fs/parent fs/create-dirs)) {:module-name "rest"
-                                          :version version})
   (-> opts
       (assoc :lib lib
              :version version
-             :src-pom "template/pom.xml"
+             :src-pom "pom-template.xml"
              :transitive true)
       ;(bb/run-tests)
       ;(bb/clean)

@@ -3,8 +3,7 @@
  :lazy false
  :cljs-namespace [modular.oauth2.token.ui
                   modular.oauth2.user.view
-                  modular.oauth2 ; side effects (webly.app.cljs)
-                  ]
+                  modular.oauth2]
  :cljs-ns-bindings {'modular.oauth2 {'provider-status-grid modular.oauth2.token.ui/provider-status-grid
                                      'user-login modular.oauth2.user.view/user-login}
                     ; make sure the namespaces in sci and cljs are identical

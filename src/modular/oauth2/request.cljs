@@ -4,7 +4,7 @@
    [clojure.string :as str]
    [ajax.core :as ajax]
    [re-frame.core :as rf]
-   [frontend.notifications.core :refer [add-notification]]
+   [frontend.notification :refer [show-notification]]
    [modular.oauth2.provider :refer [get-provider-auth-header]]))
 
 ;'authorization: Bearer YOUR_ACCESS_TOKEN' 
