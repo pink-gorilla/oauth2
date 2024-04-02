@@ -3,7 +3,7 @@
    [taoensso.timbre :refer-macros [info error]]
    [reagent.core :as r]
    [re-frame.core :as rf]
-   [frontend.notifications.core :refer [add-notification]]))
+   [frontend.notification :refer [show-notification]]))
 
 (defn login-ui []
   (let [username (r/atom "")
@@ -70,9 +70,9 @@
    (info "login result: " result)
    (rf/dispatch [:modal/close])
    (when error
-     (add-notification :error error-message))
+     (show-notification :error error-message))
    (when user
-     (add-notification :info (str "Logged in as: " user)))
+     (show-notification :info (str "Logged in as: " user)))
    (if user
      (assoc db :user result)
      db)))
