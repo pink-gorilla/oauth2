@@ -3,43 +3,30 @@
          "target/webly"]
 
  :deps {org.clojure/clojure    {:mvn/version "1.11.1"}
-        org.pinkgorilla/goldly {:mvn/version "0.4.621"}
+        org.pinkgorilla/webly {:mvn/version "0.5.655"}
         org.pinkgorilla/ui-tailwind {:mvn/version "0.0.5"}
-        org.pinkgorilla/ui-repl {:mvn/version "0.0.72"}
         org.pinkgorilla/oauth2 {:local/root "../" :deps/manifest :deps}
         }
 
 
- :aliases {:demo
-           {:extra-deps {nrepl/nrepl {:mvn/version "0.9.0"}
-                         cider/cider-nrepl {:mvn/version "0.28.3"}}
-            :exec-fn modular.system/start!
-            :exec-args {:profile "jetty"
-                        :config ["webly/config.edn"
-                                 "goldly/config.edn"
-                                 "oauth2/config.edn" ; oauth2 endpoints
-                                 "demo-config.edn" 
-                                 "/home/florian/repo/myLinux/myvault/goldly/oauth2-localhost.edn" ; oauth2 secrets
-                                 ]
-                        :services "demo-services.edn" #_"goldly/services.edn"}}
-
-           :npm-install
-           {:exec-fn goldly.app.build/goldly-build
-            :exec-args {:profile "npm-install"}}
-
-           :compile
-           {:exec-fn goldly.app.build/goldly-build
-            :exec-args {:profile "compile2"}}
-
-           :run 
-           {:exec-fn modular.system/start!
-            :exec-args {:config ["webly/config.edn"
-                                 "goldly/config.edn"
-                                 "oauth2/config.edn"
-                                 "demo-config.edn" ; oauth2 endpoints
-                                 "/home/florian/repo/myLinux/myvault/goldly/oauth2-localhost.edn" ; oauth2 secrets
-                                 ]
-                        :services "demo-run.edn"}}
+ :aliases {:webly {:exec-fn webly.app.app/webly-build
+                   :exec-args {:config [{}]
+                               :profile "npm-install"}}
+           
+           :npm-install {:exec-args {:profile "npm-install"}}
+           :compile {:exec-args {:profile "compile2"}}
+           :release {:exec-args {:profile "release"}}
+           :release-adv {:exec-args {:profile "release-adv"}}
+           :static {:exec-args {:profile "static"}}
+           :ci {:exec-args {:profile "ci"}}
+                      
+           :run {:exec-fn modular.system/start!
+                 :exec-args {:profile "jetty"
+                              :config ["oauth2/config.edn" ; oauth2 endpoints
+                                       "demo-config.edn"
+                                       "/home/florian/repo/myLinux/myvault/goldly/oauth2-localhost.edn" ; oauth2 secrets
+                                      ]
+                             :services "demo-services.edn"}}
 
            ;; token info
            :token-info-xero {:exec-args {:run demo.token/token-info

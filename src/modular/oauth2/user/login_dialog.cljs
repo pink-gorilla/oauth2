@@ -11,7 +11,7 @@
         on-change (fn [a]
                     (fn [e]
                       (let [v (-> e .-target .-value)]
-                        (info "changed: " v)
+                        ;(info "changed: " v)
                         (reset! a v))))
         login-local (fn []
                       (info "logging in locally..")

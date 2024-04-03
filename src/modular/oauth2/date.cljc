@@ -10,7 +10,7 @@
 ; now
 
 (defn now-instant []
- (t/now))
+  (t/now))
 
 (defn add-seconds [dt n]
   (t/>> dt (t/new-duration n :seconds)))
@@ -21,9 +21,9 @@
 (comment
   (now-instant)
   (-> (now-instant) (add-seconds 1800))
-  
+
   (t/> (-> (now-instant) (add-minutes -1))
        (now-instant))
 
  ; 
-) 
+  )

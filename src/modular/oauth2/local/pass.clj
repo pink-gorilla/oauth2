@@ -7,8 +7,7 @@
    [buddy.sign.jwt :as jwt]
    ;[no.nsd.clj-jwt :as clj-jwt]
    [modular.permission.user :refer [get-user]]
-   [modular.oauth2.config :refer [local-token-secret user-list]]
-   ))
+   [modular.oauth2.config :refer [local-token-secret user-list]]))
 
 (defn pwd-hash [pwd]
   (-> (hash/blake2b-128 pwd)

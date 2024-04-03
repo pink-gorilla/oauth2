@@ -29,8 +29,7 @@
     {:provider p
      :available (if token true false)
      :id (user-id token)
-     :expires-date (:expires-date token)
-     }))
+     :expires-date (:expires-date token)}))
 
 (defn tokens-summary [providers]
   (into []
@@ -43,7 +42,6 @@
   (into {}
         (map token-summary-vec providers)))
 
-
 (defn token-info-table [kw-name-seq]
   (let [token-infos (map token-summary kw-name-seq)]
     token-infos))
@@ -52,8 +50,6 @@
   (->> kw-name-seq
        (token-info-table)
        (print-table [:provider :available :id :expires-date])))
-
-
 
 (comment
   (get-token :xero :id-token)
@@ -66,9 +62,7 @@
 
   (get-token :google :refresh-token) ; throws
 
-
   (print-token-table [:xero :shiphero :google :github])
 
-
- ; 
+; 
   )

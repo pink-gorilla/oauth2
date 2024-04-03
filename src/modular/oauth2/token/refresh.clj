@@ -10,11 +10,10 @@
    [modular.oauth2.provider :refer [full-provider-config]]
    [modular.oauth2.token.store :refer [load-token save-token]]
    [modular.oauth2.token.sanitize :refer [sanitize-token]]
-   [modular.oauth2.date :refer [now-instant add-minutes]]
-   ))
-   
+   [modular.oauth2.date :refer [now-instant add-minutes]]))
+
 #_(defn auth-header-basic [token]
-  {"Authorization" (str "Basic " token)})
+    {"Authorization" (str "Basic " token)})
 
 (defn auth-header-oauth-token [client-id client-secret]
   {"Authorization" (str "Basic " (base64-encode (str client-id ":" client-secret)))})
@@ -64,7 +63,6 @@
                        ))
     r))
 
-
 ;; todo: now needs to be UTC - for xero this is important, 
 ;; because xero only has 30 minutes valid auth tokens.
 
@@ -78,29 +76,23 @@
       false)))
 
 (defn refresh-access-token-if-needed [kw-name]
-  (let [refresh-needed? (access-token-needs-refresh? kw-name)
-        ]
+  (let [refresh-needed? (access-token-needs-refresh? kw-name)]
     (when refresh-needed?
       (info "refreshing access-token: " kw-name " blocking!")
       @(refresh-access-token kw-name))))
 
-
-
 (comment
-   (full-provider-config (entire-config) :xero)
-  
-    
-   (def r (refresh-access-token :google))
-   (p/resolved? r)
-   @r
-  
-   (def r (refresh-access-token :xero))
-   (p/resolved? r)
-   @r
-  
-  (-> (load-token :xero) :expires-date type)
-  
+  (full-provider-config (entire-config) :xero)
 
+  (def r (refresh-access-token :google))
+  (p/resolved? r)
+  @r
+
+  (def r (refresh-access-token :xero))
+  (p/resolved? r)
+  @r
+
+  (-> (load-token :xero) :expires-date type)
 
   (access-token-needs-refresh? :xero)
   (access-token-needs-refresh? :google)

@@ -5,8 +5,7 @@
    [buddy.sign.jwt :as jwt]
    [modular.persist.protocol :refer [save loadr]]
    [modular.persist.edn] ; side-effects
-   [modular.oauth2.config :as config]
-   ))
+   [modular.oauth2.config :as config]))
 
 ;; token storage 
 
@@ -45,11 +44,10 @@
   (let [token (load-token name)]
     (jwt/unsign token "key")))
 
-(comment 
-   (load-token :xero)
-  
-  
- ; 
+(comment
+  (load-token :xero)
+
+; 
   )
 
 

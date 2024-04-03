@@ -7,8 +7,7 @@
    [ring.middleware.oauth2 :refer [wrap-oauth2]]
    [modular.writer :refer [write-status]]
    [modular.oauth2.provider :refer [ring-oauth2-config]]
-   [modular.oauth2.config :refer [entire-config]]
-   ))
+   [modular.oauth2.config :refer [entire-config]]))
 
 ; https://github.com/weavejester/ring-oauth2 
 

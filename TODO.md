@@ -4,7 +4,6 @@
 
 - https://docs.github.com/en/rest/reference/users
 
-https://rapidapi.com/category/Finance
 
 # links
 

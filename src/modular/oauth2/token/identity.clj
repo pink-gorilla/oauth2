@@ -11,7 +11,6 @@
                  :email))]
     id))
 
-
 (comment
   (require '[modular.oauth2.token.store :refer [load-token]])
     ; providers that have oidc

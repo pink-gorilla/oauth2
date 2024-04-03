@@ -3,15 +3,13 @@
    [clojure.set :refer [rename-keys]]
    #?(:clj  [modular.oauth2.date :refer [now-instant add-seconds]])))
 
- #?(:clj 
+#?(:clj
 
-(defn- add-expire-date [token]
-  (if-let [expires-in (:expires-in token)]
-    (assoc token :expires-date
-           (-> (now-instant) (add-seconds expires-in)))
-    token))
-
- )
+   (defn- add-expire-date [token]
+     (if-let [expires-in (:expires-in token)]
+       (assoc token :expires-date
+              (-> (now-instant) (add-seconds expires-in)))
+       token)))
 
 (defn- rename [token]
   (rename-keys token
@@ -25,9 +23,8 @@
   (if (map? token)
     (-> token
         rename
-         #?(:clj add-expire-date)
-        
-        )
+        #?(:clj add-expire-date))
+
     token))
 
 

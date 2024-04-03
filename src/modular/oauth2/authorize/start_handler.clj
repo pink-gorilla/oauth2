@@ -5,13 +5,13 @@
    [modular.oauth2.config :refer [entire-config]]
    [modular.oauth2.provider :refer [url-authorize]]))
 
-(defn handler-oauth2-start 
+(defn handler-oauth2-start
   "this handler is opened in a browser-popup window.
    It redirects to the oauth2 start url of the provider"
   [req]
   #_(info "oauth2/authorize-start: "
-        "params:" (:params req)
-        "query-params:" (:query-params req))
+          "params:" (:params req)
+          "query-params:" (:query-params req))
   ;(info "oauth2/authorize-start: req:" req)
   (let [{:keys [scheme server-name server-port uri]} req
         current-url (get-in req [:query-params "current-url"])

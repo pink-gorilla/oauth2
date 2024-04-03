@@ -5,7 +5,10 @@
    [modular.oauth2.authorize.start-handler :refer [handler-oauth2-start]]
    [modular.oauth2.authorize.redirect-handler :refer [handler-oauth2-redirect]]
    [modular.oauth2.authorize.token-handler :refer [token-handler]]
-   [modular.oauth2.token.save-handler :refer [handler-oauth2-save]]))
+   [modular.oauth2.token.save-handler :refer [handler-oauth2-save]]
+   [modular.oauth2.local.handler] ; side effects
+   [modular.oauth2] ; side effects
+   ))
 
 ; wrapping not needed and fucks up the redirection
 

@@ -1,15 +1,4 @@
- {:goldly {; build
-           :lazy true
-            ; run
-           :autoload-cljs-dir [] 
-           ; it should not be necessary to define routes, as
-           ; we use the extension system here.  
-           ; todo: fix this bug in goldly.
-           :routes {:app {;"" demo.page.main/main-page
-                          }
-                    :api {}}}
-  
-  :users {:demo {:roles #{:logistic}
+ {:users {:demo {:roles #{:logistic}
                 :password "a231498f6c1f441aa98482ea0b224ffa" ; "1234"
                 :email ["john@doe.com"]}
          :boss {:roles #{:logistic :supervisor :accounting}

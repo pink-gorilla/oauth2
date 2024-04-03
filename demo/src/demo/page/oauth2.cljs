@@ -10,6 +10,9 @@
 ;; OAUTH
 (defn demo-oauth []
   [block2 "oauth2"
+   [:h1 "users"]
+   [:p "user: florian pwd: 1234"]
+   [:p "user: boss pwd: 1234"]
    [user-login]
    [:div.border.border-blue-500.border-2.border-round ; .overflow-scroll
     [provider-status-grid [:google :github :xero :woo :wordpress
@@ -20,3 +23,5 @@
   [:div.w-full.h-full
    [link-fn #(rf/dispatch [:login/dialog]) "login"]
    [demo-oauth]])
+
+

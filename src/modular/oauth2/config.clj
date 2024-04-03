@@ -1,5 +1,5 @@
 (ns modular.oauth2.config
-  (:require 
+  (:require
    [modular.config :refer [get-in-config config-atom]]))
 
 ;; this config is here, so that we do not use modular.config in many different places.
@@ -8,10 +8,8 @@
 (defn token-path []
   (get-in-config [:oauth2 :token-path]))
 
-
 (defn provider-config [config provider]
   (get-in config [:oauth2 provider]))
-
 
 ;; local auth (username/password)
 
@@ -26,7 +24,6 @@
 (defn token-prefix [provider]
   (get-in-config [:oauth2 provider :token-prefix]))
 
-
 ;; full config
 ;; TODO: needs to be refactored
 ;; used in: 
@@ -38,24 +35,18 @@
 (defn get-config-server [server-profile-kw]
   (get-in-config [:oauth2 :server server-profile-kw]))
 
-
- (defn get-config-user
+(defn get-config-user
   ([]
    (get-config-user :default))
   ([user-id-kw]
    (get-in-config [:oauth2 :user user-id-kw])))
 
-
 (defn entire-config []
   @config-atom)
 
-
-
-
-(comment 
+(comment
   (token-path)
-  
-  
- ; 
+
+; 
   )
 

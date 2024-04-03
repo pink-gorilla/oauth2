@@ -1,9 +1,7 @@
 {:name "demo"
- :cljs-routes  {"" demo.page.oauth2/page-oauth2
-                }
- :sci-cljs-ns [demo.page.oauth2
-               demo.helper.ui
-               demo.helper.oauth2]
-
- 
-}
+ ; build
+ :lazy true
+ :cljs-namespace [demo.page.oauth2]
+ :cljs-ns-bindings {'demo.page.oauth2 {'page-oauth2 demo.page.oauth2/page-oauth2}}
+ ; run
+ :cljs-routes  {"" demo.page.oauth2/page-oauth2}}
