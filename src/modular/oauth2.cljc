@@ -2,8 +2,6 @@
   (:require
    #?(:clj  [taoensso.timbre :refer [debug info warn error]])
    #?(:cljs [taoensso.timbre :refer-macros [debug info warn error]])
-   #?(:clj  [nano-id.core :refer [nano-id]])
-   #?(:clj  [modular.persist.protocol :refer [save loadr]])
    #?(:clj  [modular.oauth2.config :as config])
    #?(:clj  [modular.oauth2.local.handler])
    #?(:cljs [modular.oauth2.request])

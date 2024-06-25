@@ -31,7 +31,7 @@
   ; pink-gorilla dependencies
   org.pinkgorilla/modular {:mvn/version "0.0.40"}
   org.pinkgorilla/permission {:mvn/version "0.0.15"}
-  org.pinkgorilla/websocket {:mvn/version "0.0.9"}}
+  org.pinkgorilla/websocket {:mvn/version "0.0.12"}}
 
  :aliases
  {:test {:extra-paths ["test"]
