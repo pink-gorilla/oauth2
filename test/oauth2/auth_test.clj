@@ -10,7 +10,7 @@
    [webly.spa.handler.handler :refer [make-handler]]
    [modular.permission.service :refer [add-permissioned-services]]
    [modular.permission.role :as role]
-   [modular.permission.websocket :refer [set-user! service-authorized?]]
+   [modular.permission.session :refer [set-user! service-authorized?]]
    [modular.permission.user :refer [print-users]]))
 
 (deftest pwd-hash-test []

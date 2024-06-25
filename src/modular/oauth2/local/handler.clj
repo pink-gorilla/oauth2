@@ -4,7 +4,7 @@
    [taoensso.timbre :refer [debug debugf info infof error]]
    [clj-jwt.core :refer [str->jwt]]
    [modular.permission.user :refer [find-user-id-via-email]]
-   [modular.permission.websocket :refer [set-user!]]
+   [modular.permission.session :refer [set-user!]]
    [modular.ws.msg-handler :refer [-event-msg-handler send-response]]
    [modular.oauth2.local.pass :refer [get-token]]
    [modular.oauth2.token.info :refer [tokens-summary-map]]))
