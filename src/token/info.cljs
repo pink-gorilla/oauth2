@@ -1,4 +1,4 @@
-(ns modular.oauth2.token.info)
+(ns token.info)
 
 (defn token-expired? [token]
   (if-let [exp (:exp token)]

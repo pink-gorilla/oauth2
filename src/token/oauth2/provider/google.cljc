@@ -1,9 +1,13 @@
 (ns token.oauth2.provider.google
   (:require
-   [token.oauth2.provider :refer [oauth2-authorize oauth2-auth-header oauth2-auth-response-parse]]))
+   [token.oauth2.provider :refer [oauth2-authorize oauth2-auth-header oauth2-auth-response-parse oauth2-code-to-token-uri]]))
 
-(defn- nonce []
-  (str (rand-int Integer/MAX_VALUE)))
+#?(:cljs 
+   (defn nonce []
+      (.toString (.random js/Math)))
+   :clj
+   (defn- nonce []
+      (str (rand-int Integer/MAX_VALUE))))
 
 
 (defmethod oauth2-authorize :google [_]
@@ -27,24 +31,26 @@
     {:scope scope
      :code code}))
 
+(defmethod oauth2-code-to-token-uri :google [_]
+  "https://www.googleapis.com/oauth2/v4/token")
+
 ;; notes:
 ;; if browser already has authorized, google oauth2 dialog will not show any prompt,
 ;; but just get the access token. In this case there is no refresh-token being sent.
 ;; It could be that this is because of incremental-permissions. To be sure to get
 ;; a refresh token in this case, refresh the browser cache.
 
-#_(defn parse-authorize-token-response [{:keys [anchor]}]
+;(defn parse-authorize-token-response [{:keys [anchor]}]
     ; #access_token=ya29.a0ARrdaM9mY4gaGPSU_5pMhS7x3wsgrPhDWhGy0fQVIwlsz7soPBlLVnAAEYQWl9SudGnfmapQ_2dq1oa6jS-SlJlR59cniSm1TAFkrK2KEqmBnvJHNI-mux6GDFtuVh-st5eysR97Z3xHSfjkxhsf9QknOZLv
     ;  &token_type=Bearer
     ;  &expires_in=3599
     ;  &scope=email%20https://www.googleapis.com/auth/calendar%20https://www.googleapis.com/auth/drive.metadata%20https://www.googleapis.com/auth/docs%20https://www.googleapis.com/auth/drive%20https://www.googleapis.com/auth/drive.appdata%20openid%20https://www.googleapis.com/auth/drive.file%20https://www.googleapis.com/auth/cloud-platform%20https://www.googleapis.com/auth/drive.metadata.readonly%20https://www.googleapis.com/auth/spreadsheets.readonly%20https://www.googleapis.com/auth/userinfo.email%20https://www.googleapis.com/auth/drive.readonly%20https://www.googleapis.com/auth/spreadsheets%20https://www.googleapis.com/auth/gmail.readonly%20https://www.googleapis.com/auth/drive.photos.readonly&authuser=0&prompt=none
-    (let [{:keys [access_token scope expires_in token_type]} anchor]
-      {:access-token access_token
-       :scope scope
-       :expires #?(:cljs (js/parseInt expires_in)
-                   :clj (:expires_in anchor))
-       :type token_type}))
-
+;    (let [{:keys [access_token scope expires_in token_type]} anchor]
+ ;     {:access-token access_token
+ ;      :scope scope
+ ;      :expires #?(:cljs (js/parseInt expires_in)
+ ;                  :clj (:expires_in anchor))
+ ;      :type token_type}))
 
 
 (defn user-parse [data]
@@ -62,15 +68,11 @@
 
 
 (def config
-  {; access token
-   :token-uri "https://www.googleapis.com/oauth2/v4/token"
-   ;"https://accounts.google.com/o/oauth2/v2/access_token"
+  {;"https://accounts.google.com/o/oauth2/v2/access_token"
    :accessTokenResponseKey "id_token"
-
    ; api requests
    :endpoints {:userinfo "https://www.googleapis.com/oauth2/v2/userinfo"}
-; userinfo
+   ; userinfo
    :user "https://www.googleapis.com/oauth2/v2/userinfo"
    :user-parse user-parse
-
    :icon "fab fa-google-plus"})

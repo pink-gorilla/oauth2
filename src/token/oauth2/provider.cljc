@@ -1,5 +1,4 @@
-(ns token.oauth2.provider
-  (:require))
+(ns token.oauth2.provider)
 
 (defmulti oauth2-authorize 
   "returns a map with provider-specific settings that are
@@ -13,5 +12,10 @@
   :provider)
 
 (defmulti oauth2-auth-response-parse
+  ""
+  :provider)
+
+
+(defmulti oauth2-code-to-token-uri
   ""
   :provider)

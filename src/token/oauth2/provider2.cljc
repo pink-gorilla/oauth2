@@ -9,19 +9,6 @@
    [modular.oauth2.config :as config]))
 
 
-;; PROVIDER LIST
-
-(defn get-provider-config [p]
-  (let [c (provider-config p)]
-    (debug "provider " p "config: " c)
-    c))
-
-;; RING CONFIG
-
-(defn full-provider-config [config provider]
-  (let [code (or (get-provider-config provider) {})
-        app (or (config/provider-config config provider) {})]
-    (merge code app)))
 
 (defn ring-oauth2-config [config]
   (let [provider-list (known-providers)
@@ -39,9 +26,7 @@
 
 
 
-#?(:cljs (defn nonce []
-           (.toString (.random js/Math)))
-   :clj  )
+
 
 
 ;(defn url-without-qp [url-str]
@@ -52,10 +37,6 @@
 ;        url-str-no-qp (str proto ":" host port-str path)]
 ;    (info "url without qp: " url-str-no-qp)
 ;    url-str-no-qp))
-
-
-
-
 
 
 ;; REQUESTS (use the api)

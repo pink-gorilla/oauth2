@@ -30,6 +30,16 @@
                         {:permission (clip/ref :permission)
                          :clj (clip/ref :clj-service)
                          :secret "AbHzj834ri9"})}
+  
+  :oauth2 {:start (token.oauth2.core/start-oauth2-providers
+                      {;:permission (clip/ref :permission)
+                       :clj (clip/ref :clj-service)
+                       ;:providers (:oauth2 (:token (deref (clip/ref :config))))
+                       :providers {:google {; works for wien and localhost
+                                            :client-id "8777197473-d8qju1k2e2o1hklfouht1v0m36imgbrv.apps.googleusercontent.com"
+                                            :client-secret "3ryYB5JN7DrxbE3lMg2qfIIc"}}
+
+                       })}
 
   :webly {:start (webly.app.app/start-webly
                   (clip/ref :exts)

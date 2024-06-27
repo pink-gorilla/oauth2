@@ -1,4 +1,4 @@
-(ns modular.oauth2.token.ui
+(ns token.store.ui
   (:require
    [taoensso.timbre :refer-macros [info error]]
    [re-frame.core :as rf]

@@ -5,6 +5,7 @@
    [goldly.service.core :refer [clj]]
    [token.login.dialog :refer [show-login-dialog]]
    [token.user :refer [user-a]]
+   [token.user.ui :refer [user-icon-with-login]]
    ;[modular.oauth2.token.ui :refer [provider-status-grid]]
    [demo.helper.ui :refer [link-fn block2]]))
 
@@ -17,6 +18,7 @@
    ; login button
    [:h1 "login"]
    [link-fn #(show-login-dialog) "show login dialog2"]
+   [user-icon-with-login]
    ;[:div.border.border-blue-500.border-2.border-round ; .overflow-scroll
    ; [provider-status-grid [:google :github :xero :woo :wordpress
    ;                        :wunderbar]]] ; not available. does not have token.
@@ -54,9 +56,8 @@
     [:p "user: boss pwd:1234  does have the supervisor role!"]
     [link-fn #(exec 'demo.time/time-supervisor) " request time (permission: :supervisor (login as boss))"]
     [link-fn #(exec 'demo.time/xxx) "request time (no function defined = error)"]
-    
     [:p "result:"
-      [:p (pr-str @result-a)]]]])
+       (pr-str @result-a)]]])
 
 (defn page-oauth2 [_]
   [:div.w-full.h-full
