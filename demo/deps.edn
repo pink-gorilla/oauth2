@@ -22,8 +22,7 @@
                       
            :run {:exec-fn modular.system/start!
                  :exec-args {:profile "jetty"
-                              :config ["oauth2/config.edn" ; oauth2 endpoints
-                                       "demo-config.edn"
+                              :config ["demo-config.edn"
                                        "/home/florian/repo/myLinux/myvault/goldly/oauth2-localhost.edn" ; oauth2 secrets
                                       ]
                              :services "demo-services.edn"}}

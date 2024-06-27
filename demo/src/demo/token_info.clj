@@ -2,7 +2,7 @@
   (:require
    [token.store :refer [load-token]]
    [token.info :refer [decode-jwt user-id]]
-   [token.base64 :refer [base64-decode]]))
+   [token.util.base64 :refer [base64-decode]]))
 
 #_{:alg "RS256"
    :kid "1CAF8E66772D6DC028D6726FD0261581570EFC19"

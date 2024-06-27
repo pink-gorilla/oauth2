@@ -1,12 +1,9 @@
 (ns token.oauth2.provider.xero
   (:require
-   [token.oauth2.provider :refer [oauth2-authorize oauth2-auth-header oauth2-auth-response-parse]]))
-
-;; api requests
-
-(defn user-parse [data]
-  {:user (get-in data [:Organisations :Name])
-   :email "no email"})
+   [token.oauth2.provider :refer [oauth2-authorize 
+                                  oauth2-auth-header 
+                                  oauth2-auth-response-parse
+                                  user-info-map]]))
 
 (defmethod oauth2-authorize :xero [_]
   {; authorize
@@ -29,17 +26,18 @@
 (defmethod oauth2-auth-header :xero [{:keys [token]}]
   {"Authorization" (str "Bearer " token)})
 
+(defmethod user-info-map :xero [{:keys [token]}]
+  {:uri  "https://api.xero.com/api.xro/2.0/Organisation"
+   :parse-user-info-fn (fn [data]
+                        {:user (get-in data [:Organisations :Name])
+                         :email "no email"})})
+
 
 (def config
   {; refresh token  
    :token-uri "https://identity.xero.com/connect/token"
    :accessTokenResponseKey "id_token"
-   ; api requests
-
-   :endpoints {:userinfo "https://api.xero.com/api.xro/2.0/Organisation"}
-   ; userinfo
-   :user "https://api.xero.com/api.xro/2.0/Organisation"
-   :user-parse user-parse})
+})
 
 ;; Xero example for authorize request
 

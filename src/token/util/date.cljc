@@ -1,4 +1,4 @@
-(ns token.date
+(ns token.util.date
   (:require
    [tick.core :as t]))
 

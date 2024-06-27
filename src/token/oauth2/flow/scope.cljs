@@ -1,4 +1,4 @@
-(ns token.scope)
+(ns token.oauth2.flow.scope)
 
 
 (def scopes {:github [;https://docs.github.com/en/developers/apps/scopes-for-oauth-apps

@@ -7,7 +7,7 @@
    [frontend.dialog :refer [dialog-show dialog-close]]
    [token.user :as user]
    [token.local :as local]
-   [token.oauth2.flow :as oauth2]))
+   [token.oauth2.core :as oauth2]))
 
 (defn- login-local [username password]
   (info "logging in locally..")

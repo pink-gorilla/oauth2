@@ -1,4 +1,4 @@
-(ns token.sanitize
+(ns token.oauth2.sanitize
   (:require
    [clojure.set :refer [rename-keys]]
    #?(:clj  [modular.oauth2.date :refer [now-instant add-seconds]])))
@@ -24,7 +24,6 @@
     (-> token
         rename
         #?(:clj add-expire-date))
-
     token))
 
 

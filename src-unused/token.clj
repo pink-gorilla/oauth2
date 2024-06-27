@@ -5,7 +5,7 @@
    [ring.util.codec :as codec]
    [ajax.core :as ajax]
    [modular.oauth2.config :refer [entire-config]]
-   [token.base64 :refer [base64-encode]]
+   [token.util.base64 :refer [base64-encode]]
    [modular.oauth2.provider :refer [full-provider-config]]))
 
 ; (codec/form-encode 

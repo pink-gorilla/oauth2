@@ -1,6 +1,15 @@
 (ns token.oauth2.provider.google
   (:require
-   [token.oauth2.provider :refer [oauth2-authorize oauth2-auth-header oauth2-auth-response-parse oauth2-code-to-token-uri]]))
+   [token.oauth2.provider :refer [oauth2-authorize 
+                                  oauth2-auth-response-parse 
+                                  oauth2-code-to-token-uri
+                                  oauth2-auth-header
+                                  user-info-map]]))
+
+; https://oauth2.example.com/code?state=security_token%3D138r5719ru3e1%26url%3Dhttps%3A%2F%2Foa2cb.example.com%2FmyHome&code=4/
+; https://developers.google.com/identity/protocols/oauth2/openid-connect#createxsrftoken
+; https://developers.google.com/identity/protocols/oauth2#5.-refresh-the-access-token,-if-necessary.
+; https://developers.google.com/accounts/docs/OAuth2WebServer
 
 #?(:cljs 
    (defn nonce []
@@ -52,27 +61,16 @@
  ;                  :clj (:expires_in anchor))
  ;      :type token_type}))
 
-
-(defn user-parse [data]
-  {:user (:id data)
-   :email (:email data)})
-
-
-
-; https://oauth2.example.com/code?state=security_token%3D138r5719ru3e1%26url%3Dhttps%3A%2F%2Foa2cb.example.com%2FmyHome&code=4/
-; https://developers.google.com/identity/protocols/oauth2/openid-connect#createxsrftoken
-; https://developers.google.com/identity/protocols/oauth2#5.-refresh-the-access-token,-if-necessary.
-; https://developers.google.com/accounts/docs/OAuth2WebServer
-
+(defmethod user-info-map :google [{:keys [token]}]
+  {:uri "https://www.googleapis.com/oauth2/v2/userinfo"
+   :parse-user-info-fn (fn [data]
+                         {:user (:id data)
+                          :email (:email data)})
+  })
 
 
 
 (def config
   {;"https://accounts.google.com/o/oauth2/v2/access_token"
    :accessTokenResponseKey "id_token"
-   ; api requests
-   :endpoints {:userinfo "https://www.googleapis.com/oauth2/v2/userinfo"}
-   ; userinfo
-   :user "https://www.googleapis.com/oauth2/v2/userinfo"
-   :user-parse user-parse
    :icon "fab fa-google-plus"})

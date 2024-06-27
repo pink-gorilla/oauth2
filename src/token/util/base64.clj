@@ -1,4 +1,4 @@
-(ns token.base64)
+(ns token.util.base64)
 
 ;; ## Conversion Functions
 

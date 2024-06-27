@@ -1,4 +1,4 @@
-(ns token.request
+(ns token.util.request
   (:require
    [taoensso.timbre :refer-macros [info errorf]]
    [clojure.string :as str]

@@ -1,4 +1,4 @@
-(ns token.ajax
+(ns token.util.ajax
   (:require
    [taoensso.timbre :refer [info error]]
    [ajax.core :as ajax]))

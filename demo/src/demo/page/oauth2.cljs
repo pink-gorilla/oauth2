@@ -18,6 +18,7 @@
    ; login button
    [:h1 "login"]
    [link-fn #(show-login-dialog) "show login dialog2"]
+   [:h1 "user button"]
    [user-icon-with-login]
    ;[:div.border.border-blue-500.border-2.border-round ; .overflow-scroll
    ; [provider-status-grid [:google :github :xero :woo :wordpress
@@ -26,8 +27,9 @@
 
 (defn user-details []
   (fn []
-    (let [{:keys [user token provider]} @user-a]
+    (let [{:keys [user token provider] :as edn} @user-a]
       [block2 "user details:"
+       [:p "edn: " (pr-str edn)]
        [:p "user: " user]
        [:p "provider: " provider]
        [:p "token: " token]])))

@@ -1,12 +1,13 @@
 
-{:oauth2 {:local {:client-secret ""}
-          :google {:client-id ""
-                   :client-secret ""}
-          :github {:client-id        ""
-                   :client-secret    ""}
-          :xero   {:client-id        ""
-                   :client-secret    ""}
-          }}
+{:token {:local {:client-secret ""}
+         :oauth2 {:google {:client-id ""
+                           :client-secret ""}
+                  :github {:client-id        ""
+                           :client-secret    ""}
+                  :xero   {:client-id        ""
+                           :client-secret    ""}}
+         
+}}
 
 ; local
 ; set "client-secret" to a random string which is used to encrypt tokens

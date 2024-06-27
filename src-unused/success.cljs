@@ -2,7 +2,7 @@
   (:require
    [taoensso.timbre :refer-macros [info error]]
    ;[modular.oauth2.token.save-handler] ; side effects
-   [token.sanitize :refer [sanitize-token]]))
+   [token.oauth2.sanitize :refer [sanitize-token]]))
 
  (defn authorize-success [provider token]
    (let [token (sanitize-token token)

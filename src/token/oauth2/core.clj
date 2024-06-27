@@ -6,7 +6,7 @@
    [cemerick.url :refer [url url-encode]]
    [ajax.core :as ajax]
    [clj-service.core :refer [expose-functions]]
-   [token.base64 :refer [base64-encode]]
+   [token.util.base64 :refer [base64-encode]]
    [token.oauth2.provider :refer [oauth2-authorize oauth2-code-to-token-uri]]
    [token.oauth2.provider.default] ; side effects (add default oauth2 providers)
    ))

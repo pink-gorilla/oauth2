@@ -4,13 +4,14 @@
    [taoensso.timbre :as timbre :refer [debug info error]]
    [ajax.core :as ajax]
    [promesa.core :as p]
-   [modular.oauth2.config :refer [entire-config]]
    ; [clojure.data.codec.base64 :as b64] ; perhaps alternative to modular.base-64
-   [token.base64 :refer [base64-encode]]
+   [token.util.base64 :refer [base64-encode]]
+   [token.util.date :refer [now-instant add-minutes]] 
+   [token.oauth2.sanitize :refer [sanitize-token]]
    [modular.oauth2.provider :refer [full-provider-config]]
    [modular.oauth2.token.store :refer [load-token save-token]]
-   [token.sanitize :refer [sanitize-token]]
-   [token.date :refer [now-instant add-minutes]]))
+   [modular.oauth2.config :refer [entire-config]]
+   ))
 
 #_(defn auth-header-basic [token]
     {"Authorization" (str "Basic " token)})

@@ -9,7 +9,7 @@
    {:mode :html}
    [:body
     [:div
-     [:script {:src "/r/webly/redirect.js"
+     [:script {:src "/r/oauth2/redirect.js"
                :type "text/javascript"
                :onload (str "sendcallback ('" provider "');")}]
      "Logging you in..."

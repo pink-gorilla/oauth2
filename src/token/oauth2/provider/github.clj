@@ -1,6 +1,10 @@
 (ns token.oauth2.provider.github
   (:require
-   [token.oauth2.provider :refer [oauth2-authorize oauth2-auth-header oauth2-auth-response-parse]]))
+   [token.oauth2.provider :refer [oauth2-authorize 
+                                  oauth2-auth-header 
+                                  oauth2-auth-response-parse
+                                  user-info-map
+                                  ]]))
 
 (defmethod oauth2-authorize :github [_]
   {; authorize
@@ -17,17 +21,20 @@
 (defmethod oauth2-auth-header :github [{:keys [token]}]
   {"Authorization" (str "token " token)})
 
-  ; :github {:email "name@domain.com"
-;          :login "masterbuilder99"
-;          :id 6767676
-;          :public_gists 4
-;          :public_repos 1
-;          :created_at "2015-05-27T14:46:29Z"
-;          :avatar_url "https://avatars.githubusercontent.com/u/82429483?v=4"}
+ 
 
-(defn user-parse [data]
-  {:user (:login data)
-   :email (:email data)})
+(defmethod user-info-map :github [{:keys [token]}]
+   ; {:email "name@domain.com"
+   ;  :login "masterbuilder99"
+   ;  :id 6767676
+   ;  :public_gists 4
+   ;  :public_repos 1
+   ;  :created_at "2015-05-27T14:46:29Z"
+   ;  :avatar_url "https://avatars.githubusercontent.com/u/82429483?v=4"}
+  {:uri  "https://api.github.com/user"
+   :parse-user-info-fn (fn [data]
+                         {:user (:login data)
+                          :email (:email data)})})
 
 
 (def config
@@ -35,12 +42,6 @@
    :token-uri "https://github.com/login/oauth/access_token"
    :parse-dispatch [:github/code->token]
    :accessTokenResponseKey "id_token"
-
-   ; api requests
-   :endpoints {:userinfo    "https://api.github.com/user"}
-   ; userinfo
-   :user "https://api.github.com/user"
-   :user-parse user-parse
    :icon  "fab fa-github-square"})
 
 

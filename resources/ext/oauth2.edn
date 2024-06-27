@@ -3,10 +3,7 @@
  :lazy false
  :cljs-namespace [token.login.dialog
                   token.user
-                  token.user.ui
-                  ;modular.oauth2.token.ui
-                  ;modular.oauth2
-                  ]
+                  token.user.ui]
  :cljs-ns-bindings {;'modular.oauth2 {'provider-status-grid modular.oauth2.token.ui/provider-status-grid
                     ;                 'user-login modular.oauth2.user.view/user-login}
                     ; make sure the namespaces in sci and cljs are identical
@@ -19,20 +16,16 @@
                     token.user.ui {'user-icon-with-login token.user.ui/user-icon-with-login}
                     }
  ; run 
- :api-routes {"oauth2/" {;["start/" :provider] {:get modular.oauth2.handler/handler-oauth2-start-wrapped}
+ :api-routes {; oauth redirect is stateless,
+              ; all other endpoints are implemented via clj-service which can be started at runtime 
+              ; if the service gets started.
+              "oauth2/" {;["start/" :provider] {:get modular.oauth2.handler/handler-oauth2-start-wrapped}
                          ;"token"  {:get modular.oauth2.handler/token-handler-wrapped}
                              ;  ["redirect/" :provider] {:get :oauth2/redirect}
                          ;"save-token" {:post modular.oauth2.handler/handler-oauth2-save-wrapped}
                          ["redirect/" :provider] token.oauth2.handler/handler-oauth2-redirect-wrapped  ;  either client OR server side
                          }}
 
- ;:clj-services {:name "oauth2"
- ;               :permission  nil
- ;               :symbols [ta.studio.template/available-templates
- ;                         ta.studio.template/get-options
- ;                         ta.studio.subscription/subscribe-live
- ;                         ta.studio.subscription/unsubscribe]}
- ;
 :cljs-service {;:config-fn webly.spa.service/cljs-config-simple
                :start-fn token.user/init-user!
                :default-config {}}
