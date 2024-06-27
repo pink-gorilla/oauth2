@@ -1,0 +1,5 @@
+{:clj-services {:name "time-public"
+                :permission  nil
+                :symbols [demo.time/time-public
+                          demo.time/time-debug]}}
+

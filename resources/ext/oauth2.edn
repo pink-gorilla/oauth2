@@ -1,24 +1,30 @@
 {:name "oauth2"
  ; build
  :lazy false
- :cljs-namespace [modular.oauth2.token.ui
-                  modular.oauth2.user.view
-                  modular.oauth2
-                  modular.oauth2.user.login-dialog ; side effects
+ :cljs-namespace [token.login.dialog
+                  token.user
+                  ;modular.oauth2.token.ui
+                  ;modular.oauth2.user.view
+                  ;modular.oauth2
+                  ;modular.oauth2.user.login-dialog ; side effects
                   ]
- :cljs-ns-bindings {'modular.oauth2 {'provider-status-grid modular.oauth2.token.ui/provider-status-grid
-                                     'user-login modular.oauth2.user.view/user-login}
+ :cljs-ns-bindings {;'modular.oauth2 {'provider-status-grid modular.oauth2.token.ui/provider-status-grid
+                    ;                 'user-login modular.oauth2.user.view/user-login}
                     ; make sure the namespaces in sci and cljs are identical
-                    'modular.oauth2.user.view {'user-login modular.oauth2.user.view/user-login}
-                    'modular.oauth2.token.ui {'provider-status-grid modular.oauth2.token.ui/provider-status-grid}}
+                    ;'modular.oauth2.user.view {'user-login modular.oauth2.user.view/user-login}
+                    ;'modular.oauth2.token.ui {'provider-status-grid modular.oauth2.token.ui/provider-status-grid}
+                    token.login.dialog {'show-login-dialog  token.login.dialog/show-login-dialog}
+                    token.user {'get-user token.user/get-user
+                                'set-user! token.user/set-user!
+                                'init-user! token.user/init-user!}}
  ; run 
- :api-routes {"oauth2/" {["start/" :provider] {:get modular.oauth2.handler/handler-oauth2-start-wrapped}
+ #_:api-routes #_{"oauth2/" {["start/" :provider] {:get modular.oauth2.handler/handler-oauth2-start-wrapped}
                          "token"  {:get modular.oauth2.handler/token-handler-wrapped}
                              ;  ["redirect/" :provider] {:get :oauth2/redirect}
                          "save-token" {:post modular.oauth2.handler/handler-oauth2-save-wrapped}
                          ["redirect/" :provider] modular.oauth2.handler/handler-oauth2-redirect-wrapped  ;  either client OR server side
                          }}
- 
+
  ;:clj-services {:name "oauth2"
  ;               :permission  nil
  ;               :symbols [ta.studio.template/available-templates
@@ -26,5 +32,10 @@
  ;                         ta.studio.subscription/subscribe-live
  ;                         ta.studio.subscription/unsubscribe]}
  ;
+:cljs-service {;:config-fn webly.spa.service/cljs-config-simple
+               :start-fn token.user/init-user!
+               :default-config {}}
+
+
  }
 

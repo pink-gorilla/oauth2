@@ -1,5 +1,13 @@
 
 
+todo 
+
+- local login working + localstorage.
+- oauth2 login working.
+- save oauth2 tokens for app.
+- make web handlers accessible from a service, similar to expose-function 
+
+
 ## github
 
 - https://docs.github.com/en/rest/reference/users

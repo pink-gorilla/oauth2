@@ -3,8 +3,8 @@
          "target/webly"]
 
  :deps {org.clojure/clojure    {:mvn/version "1.11.1"}
-        org.pinkgorilla/webly {:mvn/version "0.5.655"}
-        org.pinkgorilla/ui-tailwind {:mvn/version "0.0.5"}
+        org.pinkgorilla/webly {:mvn/version "0.6.692"}
+        org.pinkgorilla/ui-tailwind {:mvn/version "0.1.8"}
         org.pinkgorilla/oauth2 {:local/root "../" :deps/manifest :deps}
         }
 
@@ -47,10 +47,14 @@
            :token-refresh-xero {:exec-fn demo.token-refresh/refresh-token-xero}
 
            ; clj
-
-           :password
-           {:exec-fn demo.password/password
-            :exec-args {:password "1234"}}}
+            :playground {:exec-fn modular.system/start!
+                 :exec-args {:profile "jetty"
+                             :config ["oauth2/config.edn" ; oauth2 endpoints
+                                      "demo-config.edn"
+                                      "/home/florian/repo/myLinux/myvault/goldly/oauth2-localhost.edn" ; oauth2 secrets
+                                      ]
+                             :services "test-services.edn"}}
+           }
 
 ;
  }

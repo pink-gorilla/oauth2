@@ -1,16 +1,4 @@
- {:users {:demo {:roles #{:logistic}
-                :password "a231498f6c1f441aa98482ea0b224ffa" ; "1234"
-                :email ["john@doe.com"]}
-         :boss {:roles #{:logistic :supervisor :accounting}
-                :password "a231498f6c1f441aa98482ea0b224ffa" ; "1234"
-                :email ["boss@doe.com"]}
-
-         :florian {:roles #{:logistic}
-                   :password "a231498f6c1f441aa98482ea0b224ffa" ; 1234
-                   :email ["hoertlehner@gmail.com"]}
-         :john {:roles #{:logistic}
-                :password "a231498f6c1f441aa98482ea0b224ffa" ; "1234"
-                :email ["john@doe.com"]}}
+ {
   ;
  }
 

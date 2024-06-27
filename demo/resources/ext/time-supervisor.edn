@@ -1,0 +1,4 @@
+{:clj-services {:name "time-supervisor"
+                :permission  #{:supervisor}
+                :symbols [demo.time/time-supervisor]}}
+
