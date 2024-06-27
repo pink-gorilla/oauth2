@@ -6,7 +6,7 @@
    [token.login.dialog :refer [show-login-dialog]]
    [token.user :refer [user-a]]
    [token.user.ui :refer [user-icon-with-login]]
-   ;[modular.oauth2.token.ui :refer [provider-status-grid]]
+   [token.store.ui :refer [provider-status-grid]]
    [demo.helper.ui :refer [link-fn block2]]))
 
 (defn demo-oauth []
@@ -20,9 +20,8 @@
    [link-fn #(show-login-dialog) "show login dialog2"]
    [:h1 "user button"]
    [user-icon-with-login]
-   ;[:div.border.border-blue-500.border-2.border-round ; .overflow-scroll
-   ; [provider-status-grid [:google :github :xero :woo :wordpress
-   ;                        :wunderbar]]] ; not available. does not have token.
+  
+
    ])
 
 (defn user-details []
@@ -33,6 +32,15 @@
        [:p "user: " user]
        [:p "provider: " provider]
        [:p "token: " token]])))
+
+(defn store-connections []
+ [block2 "store connections:"
+   [:div.border.border-blue-500.border-2.border-round ; .overflow-scroll
+     [provider-status-grid [:google :github :xero :woo :wordpress
+                            :wunderbar]]]]) ; not available. does not have token.
+      
+
+
 
 (defonce result-a (r/atom "--- no request made yet ---"))
 
@@ -65,6 +73,7 @@
   [:div.w-full.h-full
    [demo-oauth]
    [user-details]
+   [store-connections]
    [demo-clj]])
 
 

@@ -14,6 +14,7 @@
                                 'set-user! token.user/set-user!
                                 'init-user! token.user/init-user!}
                     token.user.ui {'user-icon-with-login token.user.ui/user-icon-with-login}
+                    token.store.ui {'provider-status-grid token.store.ui/provider-status-grid} 
                     }
  ; run 
  :api-routes {; oauth redirect is stateless,

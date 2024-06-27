@@ -31,6 +31,11 @@
                          :clj (clip/ref :clj-service)
                          :secret "AbHzj834ri9"})}
   
+  :token-store {:start (token.store/create-store {:path ".webly/tokenstore"
+                                                  :clj (clip/ref :clj-service)
+                                                  :role nil ; #{}
+                                                  })}
+
   :oauth2 {:start (token.oauth2.core/start-oauth2-providers
                       {;:permission (clip/ref :permission)
                        :clj (clip/ref :clj-service)

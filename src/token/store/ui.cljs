@@ -1,49 +1,67 @@
 (ns token.store.ui
   (:require
    [taoensso.timbre :refer-macros [info error]]
-   [re-frame.core :as rf]
-   [ajax.core :as ajax]))
+   [reagent.core :as r]
+   [promesa.core :as p]
+   [goldly.service.core :refer [clj]]
+   [token.oauth2.core :as oauth2]))
 
-(rf/reg-sub
- :tokens/summary
- (fn [db [_]]
-   (get-in db [:tokens/summary])))
+(defn get-token-summary [providers]
+  (clj 'token.store/token-summary providers))
 
-(rf/reg-event-db
- :tokens/summary
- (fn [db [_ ts]]
-   (info "tokens/summary" ts)
-   (assoc-in db [:tokens/summary] ts)))
+(defn save-token [provider token]
+  (clj 'token.store/save-token provider token))
 
 (defn connect [provider]
-  (rf/dispatch [:oauth2/authorize-start provider :oauth2/save-server]))
+  (let [r-p (p/deferred)
+        a-p (oauth2/get-auth-token {:provider provider
+                                     ;:width
+                                     ;:height
+                                    })]
+    (-> a-p
+        (p/then (fn [token]
+                  (info "received token for: " provider)
+                  (let [s-p (save-token provider token)]
+                    (-> s-p
+                        (p/then (fn [result]
+                                  (info "token saved!!")
+                                  (p/resolve! r-p token)))
+                        (p/catch (fn [err]
+                                   (info "token save error: " err)
+                                   (p/reject! r-p err)))))))
+        (p/catch (fn [err]
+                   (error "could not get token for: " provider " error: " err)
+                   (p/reject! r-p err))))
+    r-p))
 
-(defn provider-status [provider status]
+(defn provider-status [{:keys [provider available user expires-date]}]
   ;(info "provider: " provider " status: " status)
   [:<>
    [:div (name provider)]
-   [:div (str (:available status))]
+   [:div (str available)]
    [:div {:on-click #(connect provider)
           :class "hover:text-blue-700"}
     "connect"]])
 
-(defn provider-status-grid [providers]
-  (let [c (rf/subscribe [:ws/connected?])
-        tokens-status (rf/subscribe [:tokens/summary providers])
-        provider-status (fn [provider]
-                          (provider-status provider (provider @tokens-status)))
-        todo? (atom true)]
-    (fn [providers]
-      (info "connected: " @c)
-      (when @c
-        (when @todo?
-          (do (reset! todo? false)
-              (rf/dispatch [:ws/send [:tokens/summary {:providers providers}]]))))
+(defn providers-ui [provider-table]
+  (into
+   [:div.grid.grid-cols-3
+    [:div "provider"]
+    [:div "available?"]
+    [:div "c/d"]]
+   (map provider-status provider-table)))
 
-      (into
-       [:div.grid.grid-cols-3
-        [:div "provider"]
-        [:div "status"]
-        [:div "c/d"]]
-       (map provider-status providers)))))
+
+(defn provider-status-grid [providers]
+  (let [provider-table (r/atom [])
+        table-p (get-token-summary providers)]
+    (-> table-p
+        (p/then  (fn [t]
+                   (info "received provider-table: " t)
+                   (reset! provider-table t)))
+        (p/catch  (fn [e]
+                    (error "could not get provider-table! error: " e)
+                    (reset! table-p []))))
+    (fn [_providers]
+      [providers-ui @provider-table])))
 

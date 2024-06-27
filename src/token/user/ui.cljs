@@ -17,5 +17,5 @@
  (if @user-a
    [:span.text-green-800 (str "user: " @user-a)]
    [:span.text-red-500
-     [header-icon "fas fa-user"]]))
+     [header-icon "fas fa-user" "l"]]))
 
