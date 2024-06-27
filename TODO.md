@@ -8,6 +8,10 @@ todo
 - make web handlers accessible from a service, similar to expose-function 
 
 
+github: no data.
+xero: authorize url cannot be received.
+
+
 ## github
 
 - https://docs.github.com/en/rest/reference/users

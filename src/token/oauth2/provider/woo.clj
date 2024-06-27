@@ -39,25 +39,16 @@
 
 
 (def config
-  {; authorize
-   :authorize-uri 
-  ; :authorize-query-params {
-  ;   }
-   ; access token
+  {; access token
    :token-uri "https://www.googleapis.com/oauth2/v4/token"
    ;"https://accounts.google.com/o/oauth2/v2/access_token"
    :accessTokenResponseKey "id_token"
 
    ; api requests
    :auth-header api-request-auth-header
-   :endpoints {}
    ; userinfo
    :user nil
    :user-parse user-parse
-
    :icon "fab fa-google-plus"})
-
-(defmethod provider-config :woo [_]
-  config)
 
 ; https://woocommerce.github.io/woocommerce-rest-api-docs/
