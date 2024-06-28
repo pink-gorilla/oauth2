@@ -1,4 +1,4 @@
-(ns token.store
+(ns token.oauth2.store
   (:require
     [taoensso.timbre :refer-macros [info error]]
     [promesa.core :as p]
@@ -12,7 +12,7 @@
   [{:keys [provider token]}]
   (info "save-token provider: " provider " token: " token)
   (let [r-p (p/deferred)
-        data-p (clj 'token.store/save-token provider token)]
+        data-p (clj 'token.oauth2.store/save-token provider token)]
     (-> data-p
         (p/then (fn [token]
                   (info "save-token success: " provider " token: " token)

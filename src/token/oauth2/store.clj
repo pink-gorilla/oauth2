@@ -1,11 +1,13 @@
-(ns token.store
+(ns token.oauth2.store
   (:require
    [taoensso.timbre :as timbre :refer [debug info infof error]]
    [clojure.java.io :as io]
-   [buddy.sign.jwt :as jwt]
+   ;[buddy.sign.jwt :as jwt]
    [modular.persist.protocol :refer [save loadr]]
    [modular.persist.edn] ; side effects to be able to save edn files
-   [clj-service.core :refer [expose-functions]]))
+   [clj-service.core :refer [expose-functions]]
+   [token.oauth2.provider :refer [oauth2-auth-header]]
+   ))
 
 (defn- ensure-directory [path]
   (when-not (.exists (io/file path))
@@ -18,8 +20,8 @@
     (info "exposing oauth2-store service permission: " role " .. ")
     (expose-functions clj
                       {:name "token-oauth2"
-                       :symbols ['token.store/save-token
-                                 'token.store/token-summary
+                       :symbols ['token.oauth2.store/save-token
+                                 'token.oauth2.store/token-summary
                                  ;'token.oauth2.core/load-token
                                  ]
                        :permission role
@@ -54,3 +56,25 @@
   (->> providers
       (map (partial token-summary-provider this))
       (into [])))
+
+
+;; auth-header
+
+(defn get-auth-header [this id]
+  (when-let [token (load-token this id)]
+     (when-let [access-token (:access-token token)]
+        (oauth2-auth-header {:provider id
+                             :token access-token}))))
+
+
+;  [buddy.sign.jwt :as jwt]
+;(defn unsign [token]
+;  (with-redefs [buddy.core.codecs (fn [url] {:body "Goodbye world"})]
+;    (jwt/unsign token "key")
+;    
+;  )
+
+;(defn validate-token [name]
+;   ; (jwt/decrypt incoming-data secret)
+;  (let [token (load-token name)]
+;    (jwt/unsign token "key")))

@@ -1,4 +1,4 @@
-(ns token.store.ui
+(ns token.oauth2.store.ui
   (:require
    [taoensso.timbre :refer-macros [info error]]
    [reagent.core :as r]
@@ -7,10 +7,10 @@
    [token.oauth2.core :as oauth2]))
 
 (defn get-token-summary [providers]
-  (clj 'token.store/token-summary providers))
+  (clj 'token.oauth2.store/token-summary providers))
 
 (defn save-token [provider token]
-  (clj 'token.store/save-token provider token))
+  (clj 'token.oauth2.store/save-token provider token))
 
 (defn connect [provider]
   (let [r-p (p/deferred)

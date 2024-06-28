@@ -3,7 +3,8 @@
  :lazy false
  :cljs-namespace [token.login.dialog
                   token.user
-                  token.user.ui]
+                  token.user.ui
+                  token.oauth2.store.ui]
  :cljs-ns-bindings {;'modular.oauth2 {'provider-status-grid modular.oauth2.token.ui/provider-status-grid
                     ;                 'user-login modular.oauth2.user.view/user-login}
                     ; make sure the namespaces in sci and cljs are identical
@@ -14,7 +15,7 @@
                                 'set-user! token.user/set-user!
                                 'init-user! token.user/init-user!}
                     token.user.ui {'user-icon-with-login token.user.ui/user-icon-with-login}
-                    token.store.ui {'provider-status-grid token.store.ui/provider-status-grid} 
+                    token.oauth2.store.ui {'provider-status-grid token.oauth2.store.ui/provider-status-grid} 
                     }
  ; run 
  :api-routes {; oauth redirect is stateless,

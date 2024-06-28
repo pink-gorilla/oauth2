@@ -6,7 +6,7 @@
    [token.login.dialog :refer [show-login-dialog]]
    [token.user :refer [user-a]]
    [token.user.ui :refer [user-icon-with-login]]
-   [token.store.ui :refer [provider-status-grid]]
+   [token.oauth2.store.ui :refer [provider-status-grid]]
    [demo.helper.ui :refer [link-fn block2]]))
 
 (defn demo-oauth []

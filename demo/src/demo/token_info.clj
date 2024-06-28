@@ -1,6 +1,6 @@
 (ns demo.token-info
   (:require
-   [token.store :refer [load-token]]
+   [token.oauth2.store :refer [load-token]]
    [token.info :refer [decode-jwt user-id]]
    [token.util.base64 :refer [base64-decode]]))
 

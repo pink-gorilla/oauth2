@@ -9,7 +9,7 @@
    [token.util.date :refer [now-instant add-minutes]] 
    [token.oauth2.sanitize :refer [sanitize-token]]
    [modular.oauth2.provider :refer [full-provider-config]]
-   [modular.oauth2.token.store :refer [load-token save-token]]
+   [token.oauth2.store :refer [load-token save-token]]
    [modular.oauth2.config :refer [entire-config]]
    ))
 

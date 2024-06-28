@@ -6,6 +6,12 @@
                                   oauth2-auth-header
                                   user-info-map]]))
 
+;; notes:
+;; if browser already has authorized, google oauth2 dialog will not show any prompt,
+;; but just get the access token. In this case there is no refresh-token being sent.
+;; It could be that this is because of incremental-permissions. To be sure to get
+;; a refresh token in this case, refresh the browser cache.
+
 ; https://oauth2.example.com/code?state=security_token%3D138r5719ru3e1%26url%3Dhttps%3A%2F%2Foa2cb.example.com%2FmyHome&code=4/
 ; https://developers.google.com/identity/protocols/oauth2/openid-connect#createxsrftoken
 ; https://developers.google.com/identity/protocols/oauth2#5.-refresh-the-access-token,-if-necessary.
@@ -43,11 +49,7 @@
 (defmethod oauth2-code-to-token-uri :google [_]
   "https://www.googleapis.com/oauth2/v4/token")
 
-;; notes:
-;; if browser already has authorized, google oauth2 dialog will not show any prompt,
-;; but just get the access token. In this case there is no refresh-token being sent.
-;; It could be that this is because of incremental-permissions. To be sure to get
-;; a refresh token in this case, refresh the browser cache.
+
 
 ;(defn parse-authorize-token-response [{:keys [anchor]}]
     ; #access_token=ya29.a0ARrdaM9mY4gaGPSU_5pMhS7x3wsgrPhDWhGy0fQVIwlsz7soPBlLVnAAEYQWl9SudGnfmapQ_2dq1oa6jS-SlJlR59cniSm1TAFkrK2KEqmBnvJHNI-mux6GDFtuVh-st5eysR97Z3xHSfjkxhsf9QknOZLv

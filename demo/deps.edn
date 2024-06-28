@@ -6,6 +6,12 @@
         org.pinkgorilla/webly {:mvn/version "0.6.692"}
         org.pinkgorilla/ui-tailwind {:mvn/version "0.1.8"}
         org.pinkgorilla/oauth2 {:local/root "../" :deps/manifest :deps}
+        
+        nrepl/nrepl {:mvn/version "1.2.0"}
+        ;nrepl/nrepl {:mvn/version "0.8.3"}
+        ;cider/cider-nrepl {:mvn/version,"0.27.2"}
+        ;cider/piggieback {:mvn/version "0.4.2"}
+        
         }
 
 

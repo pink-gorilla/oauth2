@@ -2,14 +2,17 @@
 
 todo 
 
-- local login working + localstorage.
-- oauth2 login working.
-- save oauth2 tokens for app.
-- make web handlers accessible from a service, similar to expose-function 
+- test oauth token for requests.
+this feature should be used in modular.rest
+
+- oauth2 token REFRESH.
+  - promesa using.
 
 
-github: no data.
-xero: authorize url cannot be received.
+- oauth2 identity check + login working.
+
+
+- save identity in localstorage.
 
 
 ## github

@@ -22,7 +22,7 @@
                         :john {:roles #{:logistic}
                                :password "a231498f6c1f441aa98482ea0b224ffa" ; "1234"
                                :email ["john@doe.com"]}})}
-  :token {:start (token.store/create-store {:path ".webly/tokenstore"})}
+  :token {:start (token.oauth2.store/create-store {:path ".webly/tokenstore"})}
   
 
   :demo {:start (demo.token-info/run (clip/ref :token))}

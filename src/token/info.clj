@@ -1,6 +1,6 @@
 (ns token.info
   (:require
-   [modular.oauth2.token.store :refer [load-token]]
+   [token.oauth2.store :refer [load-token]]
    [buddy.sign.jwt :as jwt]
    [clj-jwt.core :refer [str->jwt]]
    ;[no.nsd.clj-jwt :as clj-jwt]
