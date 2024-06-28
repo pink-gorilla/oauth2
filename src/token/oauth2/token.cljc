@@ -1,7 +1,8 @@
-(ns token.oauth2.sanitize
+(ns token.oauth2.token
   (:require
    [clojure.set :refer [rename-keys]]
-   #?(:clj  [modular.oauth2.date :refer [now-instant add-seconds]])))
+   #?(:clj  [token.util.date :refer [now-instant add-seconds add-minutes]])
+   #?(:clj [tick.core :as t])))
 
 #?(:clj
 
@@ -26,4 +27,14 @@
         #?(:clj add-expire-date))
     token))
 
-
+#?(:clj
+(defn access-token-needs-refresh? [token]
+  ;; todo: now needs to be UTC - for xero this is important, 
+  ;; because xero only has 30 minutes valid auth tokens.
+    (let [{:keys [expires-date]} token]
+      (when expires-date
+        (let [now (now-instant)
+              now-p1 (add-minutes now 10)]
+          (t/> now-p1 expires-date)))))
+ ;  
+)

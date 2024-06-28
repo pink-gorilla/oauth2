@@ -1,9 +1,8 @@
 (ns token.oauth2.provider.google
   (:require
-   [token.oauth2.provider :refer [oauth2-authorize 
-                                  oauth2-auth-response-parse 
-                                  oauth2-code-to-token-uri
-                                  oauth2-auth-header
+   [token.oauth2.provider :refer [oauth2-flow-opts oauth2-flow-response-parse
+                                  oauth2-token-uri
+                                  oauth2-auth-header-prefix
                                   user-info-map]]))
 
 ;; notes:
@@ -25,18 +24,17 @@
       (str (rand-int Integer/MAX_VALUE))))
 
 
-(defmethod oauth2-authorize :google [_]
+(defmethod oauth2-flow-opts :google [_]
   {; authorize
    :uri "https://accounts.google.com/o/oauth2/v2/auth"
    :query-params {:response_type "code" ; "token" ; 
                   :access_type "offline"; the client does not receive a refresh token unless a value of offline is specified. (online or offline
                   :nonce (nonce)}})
 
-(defmethod oauth2-auth-header :google [{:keys [token]}]
-  {"Authorization" (str "Bearer " token)})
+(defmethod oauth2-auth-header-prefix :google [_]
+    "Bearer")
 
-
-(defmethod oauth2-auth-response-parse :google [{:keys [query]}]
+(defmethod oauth2-flow-response-parse :google [{:keys [query]}]
   ;# :query {:scope "email+https://www.googleapis.com/auth/drive.metadata.readonly+https://www.googleapis.com/auth/drive.appdata+openid+https://www.googleapis.com/auth/drive.file+https://www.googleapis.com/auth/drive.metadata+https://www.googleapis.com/auth/drive+https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/drive.readonly+https://www.googleapis.com/auth/gmail.readonly+https://www.googleapis.com/auth/drive.photos.readonly+https://www.googleapis.com/auth/spreadsheets+https://www.googleapis.com/auth/cloud_search+https://www.googleapis.com/auth/spreadsheets.readonly+https://www.googleapis.com/auth/calendar+https://www.googleapis.com/auth/cloud-platform+https://www.googleapis.com/auth/docs", 
   ;          :prompt "none", 
   ;          :authuser "0", 
@@ -46,7 +44,7 @@
     {:scope scope
      :code code}))
 
-(defmethod oauth2-code-to-token-uri :google [_]
+(defmethod oauth2-token-uri :google [_]
   "https://www.googleapis.com/oauth2/v4/token")
 
 

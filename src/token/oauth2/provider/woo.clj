@@ -1,6 +1,8 @@
 (ns  token.oauth2.provider.woo
   (:require
-    [token.oauth2.provider :refer [oauth2-authorize oauth2-auth-header oauth2-auth-response-parse]]))
+    [token.oauth2.provider :refer [oauth2-flow-opts 
+                                   oauth2-flow-response-parse
+                                   oauth2-auth-header-prefix ]]))
 
 ; https://woocommerce.github.io/woocommerce-rest-api-docs/#rest-api-keys
 
@@ -20,7 +22,7 @@
   {:user (:id data)
    :email (:email data)})
 
-(defmethod oauth2-authorize :woo [_]
+(defmethod oauth2-flow-opts :woo [_]
   {; authorize
    :uri "https://www.crbclean.com/wc-auth/v1/authorize"
    :query-params {:response_type "code" ; "token" ; 
@@ -28,11 +30,11 @@
                   :authorize-redirect-uri-name :return_url ; URL the user will be redirected to after authentication
                   }})
 
-(defmethod oauth2-auth-header :woo [{:keys [token]}]
-    {"Authorization" (str "Bearer " token)})
+(defmethod oauth2-auth-header-prefix :woo [_]
+    "Bearer")
 
 
-(defmethod oauth2-auth-response-parse :woo [{:keys [query]}]
+(defmethod oauth2-flow-response-parse :woo [{:keys [query]}]
    (let [{:keys [scope code prompt authuser]} query]
     {:scope scope
      :code code}))

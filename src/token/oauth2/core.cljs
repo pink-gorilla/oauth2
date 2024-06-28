@@ -6,9 +6,9 @@
    ; helpers
    [token.oauth2.flow.window :refer [open-window close-window]]
    [token.oauth2.flow.broadcast :refer [oauth2-broadcast-result]]
-   [token.oauth2.sanitize :refer [sanitize-token]]
+   [token.oauth2.token :refer [sanitize-token]]
    ; provider specifics
-   [token.oauth2.provider :refer [oauth2-auth-response-parse]]
+   [token.oauth2.provider :refer [oauth2-flow-response-parse]]
    [token.oauth2.flow.scope :refer [get-default-scope]]
    ; flow
    [token.oauth2.flow.url :refer [url-authorize]]
@@ -25,7 +25,7 @@
              :authuser "0",
              :code "4/0ATx3LY4lnqT4ouMOPf7JIkIjFcXjnxu6Y6aL47n1J6ZcIF950eCI4WXmnI_rFXafYNuzAw"}}
   (info "process authorize-response: " auth-result)
-  (let [{:keys [scope code]} (oauth2-auth-response-parse auth-result)]
+  (let [{:keys [scope code]} (oauth2-flow-response-parse auth-result)]
      ;(rf/dispatch [:oauth2/code->token p auth-result])
      ;(rf/dispatch [:oauth2/authorize-success p auth-result])
     (if code

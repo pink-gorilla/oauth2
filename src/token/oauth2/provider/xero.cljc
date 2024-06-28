@@ -1,9 +1,9 @@
 (ns token.oauth2.provider.xero
   (:require
-   [token.oauth2.provider :refer [oauth2-authorize 
-                                  oauth2-auth-response-parse
-                                  oauth2-code-to-token-uri
-                                  oauth2-auth-header 
+   [token.oauth2.provider :refer [oauth2-flow-opts 
+                                  oauth2-flow-response-parse
+                                  oauth2-token-uri
+                                  oauth2-auth-header-prefix 
                                   user-info-map]]))
 
 ; https://github.com/XeroAPI/Xero-OpenAPI
@@ -15,7 +15,7 @@
 ;; postman url:
 ;; https://app.getpostman.com/run-collection/d069793e904f7602770d#?env%5BOAuth%202.0%5D=W3sia2V5IjoiY2xpZW50X2lkIiwidmFsdWUiOiIiLCJlbmFibGVkIjp0cnVlfSx7ImtleSI6ImNsaWVudF9zZWNyZXQiLCJ2YWx1ZSI6IiIsImVuYWJsZWQiOnRydWV9LHsia2V5IjoicmVmcmVzaF90b2tlbiIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZX0seyJrZXkiOiJhY2Nlc3NfdG9rZW4iLCJ2YWx1ZSI6IiIsImVuYWJsZWQiOnRydWV9LHsia2V5IjoieGVyby10ZW5hbnQtaWQiLCJ2YWx1ZSI6IiIsImVuYWJsZWQiOnRydWV9LHsia2V5IjoicmVfZGlyZWN0VVJJIiwidmFsdWUiOiIiLCJlbmFibGVkIjp0cnVlfSx7ImtleSI6InNjb3BlcyIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZX0seyJrZXkiOiJzdGF0ZSIsInZhbHVlIjoiIiwiZW5hYmxlZCI6dHJ1ZX1d
 
-(defmethod oauth2-authorize :xero [_]
+(defmethod oauth2-flow-opts :xero [_]
   ;; Xero example for authorize request
   ; https://login.xero.com/identity/connect/authorize
   ; ?response_type=code
@@ -29,7 +29,7 @@
                   :returnUrl "https://login.xero.com/identity/identity/connect/authorize" ; not sure why this is needed.    
                   }})
 
-(defmethod oauth2-auth-response-parse :xero [{:keys [query]}]
+(defmethod oauth2-flow-response-parse :xero [{:keys [query]}]
   ;# :query {:scope "email+https://www.googleapis.com/auth/drive.metadata.readonly+https://www.googleapis.com/auth/drive.appdata+openid+https://www.googleapis.com/auth/drive.file+https://www.googleapis.com/auth/drive.metadata+https://www.googleapis.com/auth/drive+https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/drive.readonly+https://www.googleapis.com/auth/gmail.readonly+https://www.googleapis.com/auth/drive.photos.readonly+https://www.googleapis.com/auth/spreadsheets+https://www.googleapis.com/auth/cloud_search+https://www.googleapis.com/auth/spreadsheets.readonly+https://www.googleapis.com/auth/calendar+https://www.googleapis.com/auth/cloud-platform+https://www.googleapis.com/auth/docs", 
   ;          :prompt "none", 
   ;          :authuser "0", 
@@ -39,12 +39,12 @@
     {:scope (:scope query)
      :code (:code query)}))
 
-(defmethod oauth2-code-to-token-uri :xero [_]
+(defmethod oauth2-token-uri :xero [_]
  "https://identity.xero.com/connect/token")
 
 
-(defmethod oauth2-auth-header :xero [{:keys [token]}]
-  {"Authorization" (str "Bearer " token)})
+(defmethod oauth2-auth-header-prefix :xero [_]
+   "Bearer")
 
 (defmethod user-info-map :xero [{:keys [token]}]
   {:uri  "https://api.xero.com/api.xro/2.0/Organisation"

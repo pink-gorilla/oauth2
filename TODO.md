@@ -2,17 +2,21 @@
 
 todo 
 
-- test oauth token for requests.
-this feature should be used in modular.rest
+1. oauth2 identity check + login working.
+   - see repl.oidc to get user-id from identity token
+   - verify token signature
+   - create oauth2-login endpoint (similar to local login)
 
-- oauth2 token REFRESH.
-  - promesa using.
+2. oauth2 token REFRESH.
+  - using promesa.
+  - different authorization identity ???
 
+3. make a good api to get current oauth token for requests.
+  - will be used in modular.rest
 
-- oauth2 identity check + login working.
+4. save identity in localstorage.
+   load identity on app start.
 
-
-- save identity in localstorage.
 
 
 ## github
@@ -90,8 +94,6 @@ Ring-jwt rocks!
 
 
 https://github.com/cjohansen/auth0-ring/tree/master/src/auth0_ring
-
-
 
 
 

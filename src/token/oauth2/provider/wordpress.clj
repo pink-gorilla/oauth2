@@ -1,6 +1,6 @@
 (ns token.oauth2.provider.wordpress
   (:require
-    [token.oauth2.provider :refer [oauth2-authorize oauth2-auth-header oauth2-auth-response-parse]]))
+    [token.oauth2.provider :refer [oauth2-flow-opts oauth2-auth-header-prefix oauth2-flow-response-parse]]))
 
 ; https://wp-oauth.com/docs/general/grant-types/?utm_source=plugin-admin&utm_medium=settings-page
 
@@ -25,14 +25,14 @@
 (defn- nonce []
   (str (rand-int Integer/MAX_VALUE)))
 
-(defmethod oauth2-authorize :wordpress [_]
+(defmethod oauth2-flow-opts :wordpress [_]
   {; authorize
    :uri "https://login.xero.com/identity/connect/authorize"
    :query-params {:response_type "code"
                   :returnUrl "https://login.xero.com/identity/identity/connect/authorize" ; not sure why this is needed.    
                   :nonce (nonce)}})
 
-(defmethod oauth2-auth-response-parse :wordpress [{:keys [query]}]
+(defmethod oauth2-flow-response-parse :wordpress [{:keys [query]}]
  ;# :query {:scope "email+https://www.googleapis.com/auth/drive.metadata.readonly+https://www.googleapis.com/auth/drive.appdata+openid+https://www.googleapis.com/auth/drive.file+https://www.googleapis.com/auth/drive.metadata+https://www.googleapis.com/auth/drive+https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/drive.readonly+https://www.googleapis.com/auth/gmail.readonly+https://www.googleapis.com/auth/drive.photos.readonly+https://www.googleapis.com/auth/spreadsheets+https://www.googleapis.com/auth/cloud_search+https://www.googleapis.com/auth/spreadsheets.readonly+https://www.googleapis.com/auth/calendar+https://www.googleapis.com/auth/cloud-platform+https://www.googleapis.com/auth/docs", 
 ;            :prompt "none", 
 ;            :authuser "0", 
@@ -42,8 +42,8 @@
     {:scope scope
      :code code}))
 
-(defmethod oauth2-auth-header :wordpress [{:keys [token]}]
-   {"Authorization" (str "Bearer " token)})
+(defmethod oauth2-auth-header-prefix :wordpress [_]
+   "Bearer")
 
 
 (def config

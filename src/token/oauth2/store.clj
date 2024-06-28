@@ -5,9 +5,7 @@
    ;[buddy.sign.jwt :as jwt]
    [modular.persist.protocol :refer [save loadr]]
    [modular.persist.edn] ; side effects to be able to save edn files
-   [clj-service.core :refer [expose-functions]]
-   [token.oauth2.provider :refer [oauth2-auth-header]]
-   ))
+   [clj-service.core :refer [expose-functions]]))
 
 (defn- ensure-directory [path]
   (when-not (.exists (io/file path))
@@ -54,17 +52,8 @@
 
 (defn token-summary [this providers]
   (->> providers
-      (map (partial token-summary-provider this))
-      (into [])))
-
-
-;; auth-header
-
-(defn get-auth-header [this id]
-  (when-let [token (load-token this id)]
-     (when-let [access-token (:access-token token)]
-        (oauth2-auth-header {:provider id
-                             :token access-token}))))
+       (map (partial token-summary-provider this))
+       (into [])))
 
 
 ;  [buddy.sign.jwt :as jwt]
