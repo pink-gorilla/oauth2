@@ -4,7 +4,6 @@
    [promesa.core :as p]
    [ajax.core :as ajax]))
 
-
 (defn GET [uri {:keys [format timeout response-format params headers]
                 :or {format ;(ajax/url-request-format) ; xero
                      (ajax/json-request-format) ; {:keywords? true}
@@ -26,7 +25,6 @@
                                             "url: " uri 
                                             " params: " params 
                                             " headers: " headers)
-                                    
                                     (p/reject! r (ex-info "http-get error!" res) ))})
 
     r))

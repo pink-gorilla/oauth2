@@ -1,32 +1,25 @@
-(ns demo.repl.google
+(ns demo.repl.rest.google
   (:require
-   [promesa.core :as p]
    [modular.system]
    [token.oauth2.request :refer [GET]]
-   [token.oauth2.store :refer [get-auth-header]]))
+   [token.oauth2.core :refer [get-auth-header]]))
 
-(def ts (modular.system/system :token-store))
+(def t (modular.system/system :oauth2))
 
-ts
+t
 ;; => Error printing return value (StackOverflowError) at clojure.lang.RT/assoc (RT.java:827).
 ;;    null
 
-(get-auth-header ts :google)
+(keys t)
+(dissoc t :clj :store)
 
-
-(def r 
-  (GET  "https://www.googleapis.com/oauth2/v2/userinfo" 
-    {:headers (get-auth-header ts :google)})  
-  )
-
-
-@r
-r
-
-
-(def r
-  (GET  "https://www.googleapis.com/drive/v3/files"
-    {:headers (get-auth-header ts :google)}))
+@(get-auth-header t :google)
+ 
+@(GET  "https://www.googleapis.com/oauth2/v2/userinfo" 
+   {:headers @(get-auth-header t :google)})  
+  
+@(GET  "https://www.googleapis.com/drive/v3/files"
+    {:headers @(get-auth-header t :google)})
 
 
 

@@ -1,23 +1,17 @@
-(ns demo.repl.github
+(ns demo.repl.rest.github
   (:require
    [modular.system]
    [token.oauth2.request :refer [GET]]
-   [token.oauth2.store :refer [get-auth-header]]))
+   [token.oauth2.core :refer [get-auth-header]]))
 
-(def ts (modular.system/system :token-store))
+(def t (modular.system/system :oauth2))
 
-ts
-;; => Error printing return value (StackOverflowError) at clojure.lang.RT/assoc (RT.java:827).
-;;    null
+@(get-auth-header t :github)
 
-(get-auth-header ts :github)
+@(GET "https://api.github.com/user" 
+   {:headers @(get-auth-header t :github)})  
 
 
-(def r 
-  (GET "https://api.github.com/user" {:headers (get-auth-header ts :github)})  
-  )
-
-@r
 ;; => {:html_url "https://github.com/awb99",
 ;;     :disk_usage 22527,
 ;;     :gravatar_id "",

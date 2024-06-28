@@ -7,16 +7,20 @@ todo
    - verify token signature
    - create oauth2-login endpoint (similar to local login)
 
-2. oauth2 token REFRESH.
-  - using promesa.
-  - different authorization identity ???
-
-3. make a good api to get current oauth token for requests.
-  - will be used in modular.rest
-
 4. save identity in localstorage.
    load identity on app start.
 
+
+DONE:
+
+2. oauth2 token REFRESH.
+  - using promesa.
+  - different authorization identity ???
+  done.
+
+3. make a good api to get current oauth token for requests.
+  - will be used in modular.rest
+  done.
 
 
 ## github
