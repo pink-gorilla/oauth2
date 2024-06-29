@@ -1,35 +1,10 @@
-
-
-todo 
-
-1. oauth2 identity check + login working.
-   - see repl.oidc to get user-id from identity token
-   - verify token signature
-   - create oauth2-login endpoint (similar to local login)
-
-4. save identity in localstorage.
-   load identity on app start.
-
+# todo 
 
 https://github.com/jarden-digital/jwt-verify-jwks
-
-
-DONE:
-
-2. oauth2 token REFRESH.
-  - using promesa.
-  - different authorization identity ???
-  done.
-
-3. make a good api to get current oauth token for requests.
-  - will be used in modular.rest
-  done.
-
 
 ## github
 
 - https://docs.github.com/en/rest/reference/users
-
 
 # links
 

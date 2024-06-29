@@ -8,6 +8,20 @@
    [clojure.string :as str]
    [clj-jwt.core :refer [str->jwt]]))
 
+; To verify the signature you should:
+; Retrieve the public key by using the x5t or kid parameter.
+; Break off the signature from the message leaving the header.payload encoded
+; Convert the header+payload segment to an ASCII array
+; Base64Url decode the signature
+; Use the decoded signature to validate the header+payload ASCII byte array
+
+; Use this Discovery endpoint to configure your application or API to automatically
+; locate the JSON Web Key Set (JWKS) endpoint (jwks_uri), which contains the JWKS used
+; to sign all Auth0-issued JSON Web Tokens (JWTs) signed with the RS256 signing algorithm. 
+;The endpoint exists at:
+; https://{yourDomain}/.well-known/openid-configuration.
+
+
 (defn token->id-jwt [token]
   (:id-token token))
 
