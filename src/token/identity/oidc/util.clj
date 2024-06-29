@@ -1,5 +1,6 @@
 (ns token.identity.oidc.util
   (:require
+   [taoensso.timbre :refer [debug info warn error]]
    [buddy.core.keys :as keys]
    [buddy.sign.jwt :as jwt]
    [token.info :as token-info]
@@ -51,12 +52,14 @@
     (let [decoded-jwt (decode-jwt jwt)
           pem (build-pem jwks decoded-jwt)
           public-key (keys/jwk->public-key pem)]
-      (println "decoded jwt: " decoded-jwt)
-      (println "pem: " pem)
-      (println "public-key: " public-key)
+      (info "decoded jwt: " decoded-jwt)
+      (info "pem: " pem)
+      (info "public-key: " public-key)
       (when (keys/public-key? public-key)
-        (jwt/unsign jwt public-key {:alg (keyword alg)})))
-    (catch Exception e {:error (str "Error with public key: " (.getMessage e))})))
+        (jwt/unsign jwt public-key alg)))
+    (catch Exception e 
+       (error {:error (str "Error with public key: " (.getMessage e))})
+       )))
 
 
 #_(defn token->pem [token jwks-url]
