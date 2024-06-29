@@ -14,9 +14,12 @@
 ;; a refresh token in this case, refresh the browser cache.
 
 ; https://oauth2.example.com/code?state=security_token%3D138r5719ru3e1%26url%3Dhttps%3A%2F%2Foa2cb.example.com%2FmyHome&code=4/
+; https://developers.google.com/identity/protocols/oauth2/openid-connect)
 ; https://developers.google.com/identity/protocols/oauth2/openid-connect#createxsrftoken
 ; https://developers.google.com/identity/protocols/oauth2#5.-refresh-the-access-token,-if-necessary.
 ; https://developers.google.com/accounts/docs/OAuth2WebServer
+
+
 
 #?(:cljs 
    (defn nonce []

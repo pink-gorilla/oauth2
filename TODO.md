@@ -47,11 +47,8 @@ https://github.com/ovotech/ring-jwt
 https://github.com/liquidz/clj-jwt/blob/master/src/clj_jwt/core.clj
 
 
-
 [kitchen-async.promise :as p]
 
-
-https://github.com/liquidz/clj-jwt
 https://github.com/liquidz/clj-jwt
 
 Certs from Google.
