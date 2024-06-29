@@ -7,6 +7,8 @@
    [ajax.core :as ajax]
    [promesa.core :as p]
    [clj-service.core :refer [expose-functions]]
+   [clj-service.executor :refer [*user* *session*]]
+   [modular.permission.session :refer [set-user!]]
    [token.util.base64 :refer [base64-encode]]
     ; [clojure.data.codec.base64 :as b64] ; perhaps alternative to modular.base-64
    [token.oauth2.provider :refer [oauth2-flow-opts oauth2-token-uri oauth2-auth-header-prefix]]
@@ -205,8 +207,8 @@
 ;; use access token
 
 (defn- reject-access-token! [p provider message]
-   (error "cannot get access-token for provider: " provider "reason: " message)
-   (reject! p provider message))
+  (error "cannot get access-token for provider: " provider "reason: " message)
+  (reject! p provider message))
 
 (defn get-access-token
   "returns an access token for a provider.
@@ -246,16 +248,17 @@
   [this provider]
   (let [r (p/deferred)
         access-token-p (get-access-token this provider)]
-    (-> access-token-p 
-      (p/then (fn [access-token]
-                (let [prefix (oauth2-auth-header-prefix {:provider provider})
-                      headers {"Authorization" (str prefix " " access-token)}]
-                  (info "auth header for provider: " provider " is: " headers)
-                  (p/resolve! r headers))))
-      (p/catch (fn [_err]
-                 (reject-header! r provider "missing access token, cannot create auth-header"
-                 ))))
+    (-> access-token-p
+        (p/then (fn [access-token]
+                  (let [prefix (oauth2-auth-header-prefix {:provider provider})
+                        headers {"Authorization" (str prefix " " access-token)}]
+                    (info "auth header for provider: " provider " is: " headers)
+                    (p/resolve! r headers))))
+        (p/catch (fn [_err]
+                   (reject-header! r provider "missing access token, cannot create auth-header"))))
     r))
+
+
 
 
 

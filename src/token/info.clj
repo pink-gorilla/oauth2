@@ -31,7 +31,7 @@
 ; :signature
 ; :encoded-data
 
-(defn user-id 
+(defn user-email
   "jwt oidc providers (such as :xero and :google)
    provide user identiy in the :id-token key.
    not all providers support oidc (example: github)

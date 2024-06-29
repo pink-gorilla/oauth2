@@ -1,4 +1,4 @@
-(ns token.local
+(ns token.identity.local
   (:require 
     [promesa.core :as p]
     [goldly.service.core :refer [clj]]))
@@ -8,7 +8,7 @@
   [user password]
   (println "local get-token user: " user "password: " password)
   (let [r-p (p/deferred)
-        data-p (clj 'token.local/get-token user password)]
+        data-p (clj 'token.identity.local/get-token user password)]
     (-> data-p
         (p/then (fn [{:keys [error error-message] :as token}]
                   (p/resolve! r-p token)))
@@ -23,7 +23,7 @@
   [user]
   (println "login (local) user: " user)
   (let [r-p (p/deferred)
-        data-p (clj 'token.local/login user)]
+        data-p (clj 'token.identity.local/login user)]
     (-> data-p
         (p/then (fn [{:keys [error error-message] :as result}]
                   (println "local login success: " result)

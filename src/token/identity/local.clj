@@ -1,4 +1,4 @@
-(ns token.local
+(ns token.identity.local
   (:require
    [taoensso.timbre :refer [debug info warn error]]
    [buddy.core.codecs :as codecs]
@@ -15,12 +15,14 @@
   (info "starting local-token login service..")
   (assert (and secret (string? secret)) "local token service needs :secret (a string)")
   (assert permission ":permission (permission service reference) missing")
-  (expose-functions clj
-                    {:name "token-local"
-                     :symbols ['token.local/get-token
-                               'token.local/login]
-                     :permission nil
-                     :fixed-args [this]})
+  (when clj
+    (info "exposing local-identity services via clj-service..")
+    (expose-functions clj
+                      {:name "token-local"
+                       :symbols ['token.identity.local/get-token
+                                 'token.identity.local/login]
+                       :permission nil
+                       :fixed-args [this]}))
   (info "local-token login service running..")
   this)
 
@@ -64,7 +66,7 @@
 
 (defn login
   [{:keys [permission secret] :as this} token]
-   (println "login/local: token: " token " session: " *session*)
+  (println "login/local: token: " token " session: " *session*)
   (let [{:keys [user error] :as r} (verify-token this token)]
     (println "login/local: result: " r)
     (when user

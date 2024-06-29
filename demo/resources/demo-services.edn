@@ -26,10 +26,14 @@
                         (clip/ref :permission)
                         (clip/ref :exts))}
 
-  :local-login {:start (token.local/start-local-token
+  :local-login {:start (token.identity.local/start-local-token
                         {:permission (clip/ref :permission)
                          :clj (clip/ref :clj-service)
                          :secret "AbHzj834ri9"})}
+  
+  :oidc-login {:start (token.identity.oidc/start-oidc-token
+                      {:permission (clip/ref :permission)
+                       :clj (clip/ref :clj-service)})}
 
   :token-store {:start (token.oauth2.store/create-store {:path ".webly/tokenstore"
                                                          :clj (clip/ref :clj-service)

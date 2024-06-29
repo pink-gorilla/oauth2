@@ -47,7 +47,7 @@
   (let [token (load-token this id)]
     {:provider id
      :available (if token true false)
-     :user id ; (user-id token)
+     :user id ; (user-email token)
      :expires-date (:expires-date token)}))
 
 (defn token-summary [this providers]

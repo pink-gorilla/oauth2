@@ -21,6 +21,19 @@
    Input needs to be {:provider :provider-id}"
   :provider)
 
+(defmulti oauth2-openid-uri
+  "the provider-specific endpoint uri that is used to 
+   get openid config."
+  :provider)
+
+
+(defmulti oauth2-jwks-uri
+  "the provider-specific endpoint uri that is used to 
+   get certificates for oidc jwks for identity verification."
+  :provider)
+
+
+
 
 (defmulti user-info-map
   ""

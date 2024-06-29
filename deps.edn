@@ -2,10 +2,10 @@
          "resources"]
  :deps
  {org.clojure/clojure    {:mvn/version "1.11.1"}
-  nano-id/nano-id {:mvn/version "1.0.0"} ; nano id
   funcool/promesa {:mvn/version "11.0.674"} ; needs to match version in ui-repl
   tick/tick {:mvn/version "0.6.2"}
 
+  ;nano-id/nano-id {:mvn/version "1.0.0"} ; nano id
   ;; web-ui deps
   reagent/reagent {:mvn/version "1.1.1"} ; https://github.com/reagent-project/reagent
   com.cemerick/url {:mvn/version "0.1.1"}  ; url query-strings
@@ -22,10 +22,10 @@
   ;                ;:mvn/version "0.4.5"
   ;                } ; https://gitlab.nsd.no/clojure/clj-jwt - verify signed oidc token with public keys
   clj-jwt/clj-jwt {:mvn/version "0.1.1"}; https://github.com/liquidz/clj-jwt
-  ring-oauth2/ring-oauth2 {:mvn/version "0.1.5"}
+  ;ring-oauth2/ring-oauth2 {:mvn/version "0.1.5"}
   clj-oauth/clj-oauth {:mvn/version "1.5.2"}; copied over from REST
   ; pink-gorilla dependencies
-  org.pinkgorilla/modular {:mvn/version "0.2.56"}
+  org.pinkgorilla/modular {:mvn/version "0.2.56"} ; for edn saving (with time formats encoding added)
   org.pinkgorilla/clj-service {:mvn/version "0.3.18"} ; brings permission + websocket
   }
 

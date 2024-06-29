@@ -4,6 +4,7 @@
                                   oauth2-flow-response-parse
                                   oauth2-token-uri
                                   oauth2-auth-header-prefix 
+                                  oauth2-openid-uri
                                   user-info-map]]))
 
 ; https://github.com/XeroAPI/Xero-OpenAPI
@@ -45,6 +46,10 @@
 
 (defmethod oauth2-auth-header-prefix :xero [_]
    "Bearer")
+
+(defmethod oauth2-openid-uri :xero [_]
+  "https://identity.xero.com/.well-known/openid-configuration")
+
 
 (defmethod user-info-map :xero [{:keys [token]}]
   {:uri  "https://api.xero.com/api.xro/2.0/Organisation"

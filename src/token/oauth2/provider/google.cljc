@@ -3,6 +3,8 @@
    [token.oauth2.provider :refer [oauth2-flow-opts oauth2-flow-response-parse
                                   oauth2-token-uri
                                   oauth2-auth-header-prefix
+                                  oauth2-openid-uri
+                                  oauth2-jwks-uri
                                   user-info-map]]))
 
 ;; notes:
@@ -46,6 +48,13 @@
 
 (defmethod oauth2-token-uri :google [_]
   "https://www.googleapis.com/oauth2/v4/token")
+
+(defmethod oauth2-openid-uri :google [_]
+  "https://accounts.google.com/.well-known/openid-configuration")
+
+(defmethod oauth2-jwks-uri :google [_]
+  "https://www.googleapis.com/oauth2/v3/certs")
+
 
 
 

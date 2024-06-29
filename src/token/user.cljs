@@ -2,7 +2,7 @@
   (:require
    [taoensso.timbre :refer-macros [info error]]
    [reagent.core :as r]
-   [token.local :as local]))
+   [token.identity.local :as local]))
 
 (defonce user-a (r/atom nil))
 

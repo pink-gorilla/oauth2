@@ -6,7 +6,8 @@
    [frontend.notification :refer [show-notification]]
    [frontend.dialog :refer [dialog-show dialog-close]]
    [token.user :as user]
-   [token.local :as local]
+   [token.identity.local :as local]
+   [token.identity.oidc :as oidc]
    [token.oauth2.core :as oauth2]))
 
 (defn- login-local [username password]
@@ -30,10 +31,17 @@
                           ;:height 
                                     })]
     (-> r-p
-        (p/then (fn [{:keys [user token] :as data}]
-                  (println "login oauth2 token success! data: " data)
+        (p/then (fn [token]
+                  (println "login oauth2 token success! token: " token)
                   (show-notification :info [:span.bg-blue-300.inline "logged in successfully"] 1000)
+                  (let [user-p (oidc/login provider token)]
+                    (-> user-p 
+                       (p/then (fn [login-result]
+                                 (println "oauth2 login success: " login-result)))    
+                       (p/catch (fn [login-err]
+                                  (println "oauth2 login error: " login-err))))
                        ;(user/set-user! usermap)
+                    )
                   (dialog-close)))
         (p/catch (fn [err]
                    (println "login local error: " err)

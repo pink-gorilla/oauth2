@@ -6,14 +6,7 @@
         org.pinkgorilla/webly {:mvn/version "0.6.692"}
         org.pinkgorilla/ui-tailwind {:mvn/version "0.1.8"}
         org.pinkgorilla/oauth2 {:local/root "../" :deps/manifest :deps}
-        
-        nrepl/nrepl {:mvn/version "1.2.0"}
-        ;nrepl/nrepl {:mvn/version "0.8.3"}
-        ;cider/cider-nrepl {:mvn/version,"0.27.2"}
-        ;cider/piggieback {:mvn/version "0.4.2"}
-        
-        }
-
+        nrepl/nrepl {:mvn/version "1.2.0"}}
 
  :aliases {:webly {:exec-fn webly.app.app/webly-build
                    :exec-args {:config [{}]
@@ -32,33 +25,7 @@
                                        "/home/florian/repo/myLinux/myvault/goldly/oauth2-localhost.edn" ; oauth2 secrets
                                       ]
                              :services "demo-services.edn"}}
-
-           ;; token info
-           :token-info-xero {:exec-args {:run demo.token/token-info
-                                         :provider :xero}}
-
-           :token-info-google {:exec-args {:run demo.token/token-info
-                                           :provider :google}}
-
-           :token-info-github {:exec-args {:run demo.token/token-info
-                                           :provider :github}}
-
-           :tokens-summary {:exec-fn demo.token/tokens-summary
-                            :exec-args {:providers [:xero :github :google
-                                                     ; :wonderland ; to test non existent tokens
-                                                    ]}}
-
-           ; token refresh
-           :token-refresh-xero {:exec-fn demo.token-refresh/refresh-token-xero}
-
-           ; clj
-            :playground {:exec-fn modular.system/start!
-                 :exec-args {:profile "jetty"
-                             :config ["oauth2/config.edn" ; oauth2 endpoints
-                                      "demo-config.edn"
-                                      "/home/florian/repo/myLinux/myvault/goldly/oauth2-localhost.edn" ; oauth2 secrets
-                                      ]
-                             :services "test-services.edn"}}
+  
            }
 
 ;

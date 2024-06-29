@@ -1,0 +1,71 @@
+
+
+
+
+
+
+(-> (token.oauth2.store/load-token demo.repl.identity.oidc/this :google)
+    (token.identity.oidc/determine-algo))
+;; => "RS256"
+
+(-> (token.oauth2.store/load-token demo.repl.identity.oidc/this :google)
+    (token.info/decode-jwt :id-token))
+
+
+
+(def x (-> (token.oauth2.store/load-token demo.repl.identity.oidc/this :google)
+           (token.identity.oidc/token->pem demo.repl.identity.oidc/jwks-url)))
+
+x
+
+
+
+
+
+
+(-> (load-token this :google)
+    (oidc/validate-token jwks-url))
+
+
+
+
+
+
+
+(oidc/build-pem jwks-url)
+
+
+
+
+
+
+
+(println "github authenticated: "
+         (auth/authenticated? {:identity "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"}))
+
+"xero authenticated: "
+(auth/authenticated?
+ {:identity "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFDQUY4RTY2NzcyRDZEQzAyOEQ2NzI2RkQwMjYxNTgxNTcwRUZDMTkiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJISy1PWm5jdGJjQW8xbkp2MENZVmdWY09fQmsifQ.eyJuYmYiOjE2MzcyOTAwMDAsImV4cCI6MTYzNzI5MTgwMCwiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS54ZXJvLmNvbSIsImF1ZCI6Imh0dHBzOi8vaWRlbnRpdHkueGVyby5jb20vcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiNkU0RDk1M0JBQUU5NDlEMUExQjM5OTMwN0FENThCOTQiLCJzdWIiOiJkODZhNTIyMThiODk1MDFiODE0ZmIyMDY1YjU5NzNlMSIsImF1dGhfdGltZSI6MTYzNzI4OTMwOCwieGVyb191c2VyaWQiOiIzYzczNjBjMC02MTk1LTQ2MmQtYjkxMy03NmNlOWM2NmNiYjgiLCJnbG9iYWxfc2Vzc2lvbl9pZCI6IjllMmRmMzA3YTc2ZDQ3MTc4MGY5YTBkNGYwMGE2YTVmIiwianRpIjoiMGMzNGJkNTQxZGZiM2U1ZTdmMzBkNTU0ZGIyZTUyMTIiLCJhdXRoZW50aWNhdGlvbl9ldmVudF9pZCI6IjliODVkM2NiLTIyMzMtNDg3OC05OTFkLWNhYTkzODcxY2NhMiIsInNjb3BlIjpbImVtYWlsIiwicHJvZmlsZSIsIm9wZW5pZCIsImFjY291bnRpbmcucmVwb3J0cy5yZWFkIiwiYWNjb3VudGluZy5zZXR0aW5ncyIsImFjY291bnRpbmcuYXR0YWNobWVudHMiLCJhY2NvdW50aW5nLnRyYW5zYWN0aW9ucyIsImFjY291bnRpbmcuam91cm5hbHMucmVhZCIsImFjY291bnRpbmcudHJhbnNhY3Rpb25zLnJlYWQiLCJhY2NvdW50aW5nLmNvbnRhY3RzIiwib2ZmbGluZV9hY2Nlc3MiXX0.RVISkllEz39OnpsdScQtUSZ29XeeMA8REJW3kWapQvE3BSFSgRqK-CI5bUYHbXb6QdFrjpbAUvPRi2F6dkQNUz9IuoFvT2mgh66Kqm16nUnDGYcmka7lfklvVbwYDkMi2XFrwfSyBgkVsFfksPgt7_g0KjlNlJYTNLJRQuYMQCK0WxU4v2sQ4fDF3Lgciryi7ARGehdFO7TJu29z7MGuPFIBs_aWbjU8ZAthQq8pip4GDl_dfQogI7VO6mkC8sm1yxTjkFZQ3bS9tCv5hW9LEbHEIHmK5C9SEOjIP4j7JTnzFGwf7qat8vSla0YtAOypW91ZGRulMpXmXiAXE2DWHw"})
+
+"github token: "
+(base64-decode "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")
+
+"xero authenticated: "
+(base64-decode "eyJhbGciOiJSUzI1NiIsImtpZCI6IjFDQUY4RTY2NzcyRDZEQzAyOEQ2NzI2RkQwMjYxNTgxNTcwRUZDMTkiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJISy1PWm5jdGJjQW8xbkp2MENZVmdWY09fQmsifQ.eyJuYmYiOjE2MzcyOTAwMDAsImV4cCI6MTYzNzI5MTgwMCwiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS54ZXJvLmNvbSIsImF1ZCI6Imh0dHBzOi8vaWRlbnRpdHkueGVyby5jb20vcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiNkU0RDk1M0JBQUU5NDlEMUExQjM5OTMwN0FENThCOTQiLCJzdWIiOiJkODZhNTIyMThiODk1MDFiODE0ZmIyMDY1YjU5NzNlMSIsImF1dGhfdGltZSI6MTYzNzI4OTMwOCwieGVyb191c2VyaWQiOiIzYzczNjBjMC02MTk1LTQ2MmQtYjkxMy03NmNlOWM2NmNiYjgiLCJnbG9iYWxfc2Vzc2lvbl9pZCI6IjllMmRmMzA3YTc2ZDQ3MTc4MGY5YTBkNGYwMGE2YTVmIiwianRpIjoiMGMzNGJkNTQxZGZiM2U1ZTdmMzBkNTU0ZGIyZTUyMTIiLCJhdXRoZW50aWNhdGlvbl9ldmVudF9pZCI6IjliODVkM2NiLTIyMzMtNDg3OC05OTFkLWNhYTkzODcxY2NhMiIsInNjb3BlIjpbImVtYWlsIiwicHJvZmlsZSIsIm9wZW5pZCIsImFjY291bnRpbmcucmVwb3J0cy5yZWFkIiwiYWNjb3VudGluZy5zZXR0aW5ncyIsImFjY291bnRpbmcuYXR0YWNobWVudHMiLCJhY2NvdW50aW5nLnRyYW5zYWN0aW9ucyIsImFjY291bnRpbmcuam91cm5hbHMucmVhZCIsImFjY291bnRpbmcudHJhbnNhY3Rpb25zLnJlYWQiLCJhY2NvdW50aW5nLmNvbnRhY3RzIiwib2ZmbGluZV9hY2Nlc3MiXX0.RVISkllEz39OnpsdScQtUSZ29XeeMA8REJW3kWapQvE3BSFSgRqK-CI5bUYHbXb6QdFrjpbAUvPRi2F6dkQNUz9IuoFvT2mgh66Kqm16nUnDGYcmka7lfklvVbwYDkMi2XFrwfSyBgkVsFfksPgt7_g0KjlNlJYTNLJRQuYMQCK0WxU4v2sQ4fDF3Lgciryi7ARGehdFO7TJu29z7MGuPFIBs_aWbjU8ZAthQq8pip4GDl_dfQogI7VO6mkC8sm1yxTjkFZQ3bS9tCv5hW9LEbHEIHmK5C9SEOjIP4j7JTnzFGwf7qat8vSla0YtAOypW91ZGRulMpXmXiAXE2DWHw")
+
+
+(def jwks
+  {:keys
+   [{:n "rhgQZT3t9MgNBv9_4qE58CLCbDfEaRd9HgPd_Zmjg1TIYjHh1UgMPVeVekyU2JiuUZPbnlEbv8WUsxyNNQJfATvfMbXaUcrePSdW32zIaMOeTbn0VXZ3tqx5IyiP0IfJt-kT9MilGAkeJn8me7x5_uNGOpiPCWQaxFxTikVUtGO5AbGh2PTULzKjVjZWwQrPB1fqEe6Ar6Im-3RcZ-zOd3N2ThgQEzLLRe4RE6bSvBQUuxX9o_AkY0SCVZZB2VhjQYBN3EUFmKsD46rrneBn64Vduy3jWtBYXA1avDRCl0Y8yQEBOrtgikEz_hog4O4EKP5mAVSf8Iyfl_RMdxrOAQ",
+     :kid "3d580f0af7ace698a0cee7f230bca594dc6dbb55",
+     :e "AQAB",
+     :use "sig",
+     :alg "RS256",
+     :kty "RSA"}
+    {:n "4bAT6C6EeX8Dspje3FrAXw-nnhNk04e1RmNa4kjc0CHf6Pk7ryARlwA-6YilyPABqQfYHx60s8oSnxvUVprFfQ2-Q8aAZO7bPKSxnoGlcKERL2oLNA4Msvc89N9Y5ycThZUplf_QC19e6jyYXN6Nz-UnJSCLrtQY8tVhhVRs61j4A2N_p-enAi-r704Qi1-v-DKV4eVRkClKViploo8NyjUaT9L4vbBssPCjyimJzsWnEe1fED5c4LnHeArYzA_FEn3JJotqDIz9t2VnvZNTMhizHEX4VnORlEWMEfR8n4CEHQx7PcQUOmfqyw08gWeXQl1-uTjtIGaE-sRIv9u_vQ"
+     :use "sig",
+     :alg "RS256",
+     :kid "2af90e87be140c20038898a6efa11283dab6031d",
+     :e "AQAB",
+     :kty "RSA"}]})
+

@@ -11,6 +11,9 @@ todo
    load identity on app start.
 
 
+https://github.com/jarden-digital/jwt-verify-jwks
+
+
 DONE:
 
 2. oauth2 token REFRESH.
@@ -240,3 +243,13 @@ const getAccessToken = async refreshToken => {
     console.log(err);
   }
 };
+
+
+
+https://github.com/jarden-digital/jwt-verify-jwks
+
+https://funcool.github.io/buddy-sign/latest/01-jwt.html
+
+https://stackoverflow.com/questions/60497057/how-to-obtain-jwks-and-use-them-in-jwt-signing
+
+https://github.com/liquidz/clj-jwt
