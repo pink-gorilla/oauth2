@@ -7,8 +7,6 @@
    [ajax.core :as ajax]
    [promesa.core :as p]
    [clj-service.core :refer [expose-functions]]
-   [clj-service.executor :refer [*user* *session*]]
-   [modular.permission.session :refer [set-user!]]
    [token.util.base64 :refer [base64-encode]]
     ; [clojure.data.codec.base64 :as b64] ; perhaps alternative to modular.base-64
    [token.oauth2.provider :refer [oauth2-flow-opts oauth2-token-uri oauth2-auth-header-prefix]]

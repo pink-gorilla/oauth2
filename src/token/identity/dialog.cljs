@@ -1,14 +1,15 @@
-(ns token.login.dialog
+(ns token.identity.dialog
   (:require
    [taoensso.timbre :refer-macros [info error]]
    [promesa.core :as p]
    [reagent.core :as r]
    [frontend.notification :refer [show-notification]]
    [frontend.dialog :refer [dialog-show dialog-close]]
-   [token.user :as user]
+   [token.identity.user :as user]
    [token.identity.local :as local]
    [token.identity.oidc :as oidc]
-   [token.oauth2.core :as oauth2]))
+   [token.oauth2.core :as oauth2]
+   [token.identity.oidc.scope :refer [get-identity-scope]]))
 
 (defn- login-local [username password]
   (info "logging in locally..")
@@ -26,9 +27,11 @@
 
 (defn- login-oauth2 [provider]
   (info "logging in oauth2 provider: " provider " ..")
-  (let [r-p (oauth2/get-auth-token {:provider provider
-                          ;:width
-                          ;:height 
+  (let [scope (get-identity-scope provider)
+        r-p (oauth2/get-auth-token {:provider provider
+                                    :scope scope
+                                     ;:width
+                                     ;:height 
                                     })]
     (-> r-p
         (p/then (fn [token]

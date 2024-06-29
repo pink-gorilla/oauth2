@@ -1,11 +1,11 @@
-(ns token.user.ui
+(ns token.identity.ui
   (:require
    [frontend.tooltip :refer [with-tooltip]]
-   [token.user :refer [user-a]]
-   [token.login.dialog :refer [show-login-dialog]]))
+   [token.identity.user :refer [user-a]]
+   [token.identity.dialog :as dialog]))
 
 (defn header-ico [fa-icon]
-  [:a {:on-click #(show-login-dialog)
+  [:a {:on-click #(dialog/show-login-dialog)
        :class "hover:text-blue-700"}
    [:i {:class (str "fa-lg pl-1 " fa-icon)}]])
 
@@ -19,3 +19,5 @@
    [:span.text-red-500
      [header-icon "fas fa-user" "l"]]))
 
+(defn show-login-dialog []
+  (dialog/show-login-dialog))

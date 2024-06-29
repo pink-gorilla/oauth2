@@ -11,7 +11,9 @@
         data-p (clj 'token.identity.local/get-token user password)]
     (-> data-p
         (p/then (fn [{:keys [error error-message] :as token}]
-                  (p/resolve! r-p token)))
+                  (if error 
+                    (p/reject! r-p error-message)
+                    (p/resolve! r-p token))))
         (p/catch (fn [err]
                    (println "get-token error: " err)
                    (p/reject! r-p err)

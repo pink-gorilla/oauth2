@@ -4,6 +4,8 @@
                                   oauth2-flow-response-parse
                                   oauth2-token-uri
                                   oauth2-auth-header-prefix
+                                  oauth2-openid-uri
+                                  oauth2-jwks-uri
                                   user-info-map]]))
 
 (defmethod oauth2-flow-opts :github [_]
@@ -19,6 +21,14 @@
 
 (defmethod oauth2-token-uri :github [_]
   "https://github.com/login/oauth/access_token")
+
+
+(defmethod oauth2-openid-uri :github [_]
+  "https://token.actions.githubusercontent.com/.well-known/openid-configuration")
+
+(defmethod oauth2-jwks-uri :github [_]
+  "https://token.actions.githubusercontent.com/.well-known/jwks")
+
 
 (defmethod oauth2-auth-header-prefix :github [_]
     "token")

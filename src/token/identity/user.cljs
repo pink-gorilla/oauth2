@@ -1,4 +1,4 @@
-(ns token.user
+(ns token.identity.user
   (:require
    [taoensso.timbre :refer-macros [info error]]
    [reagent.core :as r]

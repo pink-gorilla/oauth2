@@ -8,9 +8,12 @@
   - get access-tokens for use with rest/graphql apis 
   - transparently renews access-tokens
   - token store (rudimentary but necessary)
+  - its primary use is to let your application use oauth2 protected services.
 - identity engine (to allow users to "login")
+  - the idea is that you can expose clj services that are only accessible to certain users.
   - local-identity tokens via user/password
   - oidc tokens (using oauth2 flow)
+
 
 
 # configuration

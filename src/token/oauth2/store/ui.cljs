@@ -3,43 +3,25 @@
    [taoensso.timbre :refer-macros [info error]]
    [reagent.core :as r]
    [promesa.core :as p]
-   [goldly.service.core :refer [clj]]
-   [token.oauth2.core :as oauth2]))
+   [frontend.notification :refer [show-notification]]
+   [token.oauth2.store.connect :refer [connect get-token-summary]]))
 
-(defn get-token-summary [providers]
-  (clj 'token.oauth2.store/token-summary providers))
+(defn connect-notify [provider scope]
+  (let [r (connect provider scope)]
+    (-> r
+        (p/then (fn [r]
+                  (show-notification :info [:span.bg-blue-300.inline (str "token aquired successfully for: " provider)] 3000)
+                  ))
+        (p/catch (fn [r]
+                  (show-notification :error [:span.bg-red-300.inline (str "token could not be aquired for: " provider)] 30000)))
+        )))
 
-(defn save-token [provider token]
-  (clj 'token.oauth2.store/save-token provider token))
-
-(defn connect [provider]
-  (let [r-p (p/deferred)
-        a-p (oauth2/get-auth-token {:provider provider
-                                     ;:width
-                                     ;:height
-                                    })]
-    (-> a-p
-        (p/then (fn [token]
-                  (info "received token for: " provider)
-                  (let [s-p (save-token provider token)]
-                    (-> s-p
-                        (p/then (fn [result]
-                                  (info "token saved!!")
-                                  (p/resolve! r-p token)))
-                        (p/catch (fn [err]
-                                   (info "token save error: " err)
-                                   (p/reject! r-p err)))))))
-        (p/catch (fn [err]
-                   (error "could not get token for: " provider " error: " err)
-                   (p/reject! r-p err))))
-    r-p))
-
-(defn provider-status [{:keys [provider available user expires-date]}]
+(defn provider-status [{:keys [provider scope available user expires-date]}]
   ;(info "provider: " provider " status: " status)
   [:<>
    [:div (name provider)]
    [:div (str available)]
-   [:div {:on-click #(connect provider)
+   [:div {:on-click #(connect-notify provider scope)
           :class "hover:text-blue-700"}
     "connect"]])
 
@@ -51,17 +33,34 @@
     [:div "c/d"]]
    (map provider-status provider-table)))
 
+(defn summary->map [summary]
+  (->> (map (juxt :provider identity) summary)
+       (into {})))
 
-(defn provider-status-grid [providers]
-  (let [provider-table (r/atom [])
-        table-p (get-token-summary providers)]
-    (-> table-p
-        (p/then  (fn [t]
-                   (info "received provider-table: " t)
-                   (reset! provider-table t)))
+(defn add-summary [table summary]
+  (info "summary: " summary)
+  (let [m (summary->map summary)]
+    (info "provider-map:" m)
+    (map (fn [{:keys [provider] :as table-row}]
+           (merge table-row (or (provider m) {}))
+           ) table)))
+
+(defn provider-status-grid [provider-scopes]
+  (let [provider-table (r/atom (map (fn [[provider scope]]
+                                      {:provider provider
+                                       :scope scope
+                                       :available false
+                                       :user "-"
+                                       :expires "-"
+                                       }) provider-scopes))
+        providers (keys provider-scopes)
+        summary-p (get-token-summary providers)]
+    (-> summary-p
+        (p/then  (fn [summary]
+                   (info "received provider-summary: " summary)
+                   (swap! provider-table add-summary summary)))
         (p/catch  (fn [e]
-                    (error "could not get provider-table! error: " e)
-                    (reset! table-p []))))
+                    (error "could not get provider-table! error: " e))))
     (fn [_providers]
       [providers-ui @provider-table])))
 

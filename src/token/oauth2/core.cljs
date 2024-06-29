@@ -9,7 +9,6 @@
    [token.oauth2.token :refer [sanitize-token]]
    ; provider specifics
    [token.oauth2.provider :refer [oauth2-flow-response-parse]]
-   [token.oauth2.flow.scope :refer [get-default-scope]]
    ; flow
    [token.oauth2.flow.url :refer [url-authorize]]
    [token.oauth2.flow.code :refer [exchange-code-to-token]]
@@ -64,7 +63,7 @@
    returns a promise"
   [{:keys [provider scope
            title width height]
-    :or {scope (get-default-scope provider)
+    :or {
          width 500
          height 600} :as opts}]
   (let [r-p (p/deferred)

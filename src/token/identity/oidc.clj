@@ -6,11 +6,10 @@
    [clj-service.executor :refer [*user* *session*]]
    [clj-service.core :refer [expose-functions]]
    [token.oauth2.provider :as provider]
-   [token.identity.oidc.util :as util]
-   [token.info :refer [user-email]]))
+   [token.identity.oidc.util :as util]))
 
 
-(defn start-oidc-token [{:keys [permission clj] :as this}]
+(defn start-oidc-identity [{:keys [permission clj] :as this}]
   (info "starting oidc-token login service..")
   (assert permission ":permission (permission service reference) missing")
   (when clj

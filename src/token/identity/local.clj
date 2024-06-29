@@ -11,10 +11,10 @@
    [clj-service.core :refer [expose-functions]]))
 
 
-(defn start-local-token [{:keys [permission clj secret] :as this}]
-  (info "starting local-token login service..")
-  (assert (and secret (string? secret)) "local token service needs :secret (a string)")
-  (assert permission ":permission (permission service reference) missing")
+(defn start-local-identity [{:keys [permission clj secret] :as this}]
+  (info "starting local-identity service..")
+  (assert (and secret (string? secret)) "local-identity  service needs :secret (a string)")
+  (assert permission "local-identity  service needs :permission (permission service reference)")
   (when clj
     (info "exposing local-identity services via clj-service..")
     (expose-functions clj
@@ -23,7 +23,7 @@
                                  'token.identity.local/login]
                        :permission nil
                        :fixed-args [this]}))
-  (info "local-token login service running..")
+  (info "local-identity service running..")
   this)
 
 (defn pwd-hash [pwd]
