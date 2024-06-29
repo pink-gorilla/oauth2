@@ -2,53 +2,45 @@
 
 
 ## core features
-- generate local-identity-token via user/password
-- run oauth2 workflow to get tokens from oauth2 providers (google, github, woo-commerce, xero, ...)
-- renew oauth2 tokens
-- tokens can be used to access rest/graphql apis
-- token store
 
-## gorilla dependencies
-- permission (define users and their permissions)
-- websocket (oauth via websocket and ring-handler)
-- modular (config, persistence)
+- oauth2 access-token engine
+  - allow users to authorize the app via web interface from oauth2 providers (google, github, xero, ..)
+  - get access-tokens for use with rest/graphql apis 
+  - transparently renews access-tokens
+  - token store (rudimentary but necessary)
+- identity engine (to allow users to "login")
+  - local-identity tokens via user/password
+  - oidc tokens (using oauth2 flow)
+
+
+# configuration
+
+- [creds-empty.edn](https://github.com/pink-gorilla/oauth2/blob/main/creds-empty.edn) has empty values you can set and a description how to get the credentials
+- before starting the demo you need to set the correct credentials.
+- edit demo/deps.edn in :run alias set the :config to a file that contains your credentials.
+
 
 # demo
 
-The demo uses the extension manager from goldly to add oauth2 to goldly.
-
 ```
 cd demo
-clj -X:demo:npm-install
-clj -X:demo:compile
-clj -X:demo
+clj -X:webly:npm-install
+clj -X:webly:compile
+clj -X:webly:run
 ```
 
-*local user/password login*
-Test local user/password login: user: "demo" password: "1234"
-
-*oauth2 login*
-- oauth2 need a configuration before they work
-- [creds-empty.edn](https://github.com/pink-gorilla/oauth2/blob/main/creds-empty.edn) has empty values you can set and a description how to get the credentials
-
-
-# demo - inspect received tokens
-```
-clj -X:run:token-info-google
+Open a webbrowser on port 8080
 
 ```
+
+## gorilla dependencies
+
+- permission (define users and their permissions)
+- clj-service (expose clj functions via websocket and ring-handler)
+- modular (edn persistence)
+
 
 # how to use tokens (for example in rest api):
 
 Have a look at [pink-gorilla/rest](https://github.com/pink-gorilla/rest) for rest-apis that use oauth2 tokens generated via this library.
-
-```
-(require '[modular.oauth2.token.refresh :as tr])
-(require '[modular.oauth2.token.info :refer [print-token-table]])
-
-(tr/access-token-needs-refresh? :google)
-(tr/refresh-access-token :google)
-
-(print-token-table [:xero :shiphero :google :github])
-```
 
