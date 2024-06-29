@@ -1,9 +1,10 @@
+# todo 
 
+https://github.com/jarden-digital/jwt-verify-jwks
 
 ## github
 
 - https://docs.github.com/en/rest/reference/users
-
 
 # links
 
@@ -46,11 +47,8 @@ https://github.com/ovotech/ring-jwt
 https://github.com/liquidz/clj-jwt/blob/master/src/clj_jwt/core.clj
 
 
-
 [kitchen-async.promise :as p]
 
-
-https://github.com/liquidz/clj-jwt
 https://github.com/liquidz/clj-jwt
 
 Certs from Google.
@@ -75,8 +73,6 @@ Ring-jwt rocks!
 
 
 https://github.com/cjohansen/auth0-ring/tree/master/src/auth0_ring
-
-
 
 
 
@@ -219,3 +215,13 @@ const getAccessToken = async refreshToken => {
     console.log(err);
   }
 };
+
+
+
+https://github.com/jarden-digital/jwt-verify-jwks
+
+https://funcool.github.io/buddy-sign/latest/01-jwt.html
+
+https://stackoverflow.com/questions/60497057/how-to-obtain-jwks-and-use-them-in-jwt-signing
+
+https://github.com/liquidz/clj-jwt

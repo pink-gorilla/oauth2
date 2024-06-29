@@ -1,0 +1,13 @@
+{ 
+; creds (set them in creds.edn resource)
+ :oauth2 {:token-path ".webly/tokenstore/"
+          :github {;https://docs.github.com/en/rest/reference/permissions-required-for-github-apps
+                   :token-prefix "token "}
+          :google {:token-prefix "Bearer "}
+          :xero {:token-prefix "Bearer "}
+          :woo {:app_name "goldly-crb"
+                :user_id "goldly-crb"}}
+
+}
+
+

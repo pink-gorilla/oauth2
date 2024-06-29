@@ -1,0 +1,43 @@
+{:modular (modular.system/modular-env)  ; {:profile "jetty"  :config ["demo.edn" "secrets.edn"]}
+ ;:secrets #include "secrets.edn" ;; externalised and usually "mounted" as a docker/kubernetes secret
+ :components
+ {:config {:start (modular.config/load-config! (:config #ref [:modular]))}
+
+  :timbre {:start (modular.log/timbre-config!
+                   (:timbre/clj (deref (clip/ref :config))))}
+  
+  :exts {:start (extension/discover)}
+
+  :permission {:start (modular.permission.core/start-permissions
+                       {:demo {:roles #{:logistic}
+                               :password "a231498f6c1f441aa98482ea0b224ffa" ; "1234"
+                               :email ["john@doe.com"]}
+                        :boss {:roles #{:logistic :supervisor :accounting}
+                               :password "a231498f6c1f441aa98482ea0b224ffa" ; "1234"
+                               :email ["boss@doe.com"]}
+
+                        :florian {:roles #{:logistic}
+                                  :password "a231498f6c1f441aa98482ea0b224ffa" ; 1234
+                                  :email ["hoertlehner@gmail.com"]}
+                        :john {:roles #{:logistic}
+                               :password "a231498f6c1f441aa98482ea0b224ffa" ; "1234"
+                               :email ["john@doe.com"]}})}
+  :token {:start (token.oauth2.store/create-store {:path ".webly/tokenstore"})}
+  
+
+  :demo {:start (demo.token-info/run (clip/ref :token))}
+
+  ;:clj-service {:start (clj-service.core/start-clj-services
+  ;                      (clip/ref :permission)
+  ;                      (clip/ref :exts))}
+
+  ;:webly {:start (webly.app.app/start-webly
+  ;                (clip/ref :exts)
+  ;                (deref (clip/ref :config))
+  ;                (:profile #ref [:modular]))
+  ;        :stop (webly.app.app/stop-webly this)}
+
+
+
+;
+  }}
