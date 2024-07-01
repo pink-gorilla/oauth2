@@ -2,8 +2,8 @@
          "resources"
          "target/webly"]
 
- :deps {org.clojure/clojure    {:mvn/version "1.11.1"}
-        org.pinkgorilla/webly {:mvn/version "0.6.692"}
+ :deps {org.clojure/clojure    {:mvn/version "1.11.3"}
+        org.pinkgorilla/webly {:mvn/version "0.7.693"}
         org.pinkgorilla/ui-tailwind {:mvn/version "0.1.8"}
         org.pinkgorilla/oauth2 {:local/root "../" :deps/manifest :deps}
         nrepl/nrepl {:mvn/version "1.2.0"}}

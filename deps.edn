@@ -26,8 +26,7 @@
   ; clj-oauth/clj-oauth {:mvn/version "1.5.2"}; copied over from REST
   ; pink-gorilla dependencies
   org.pinkgorilla/modular {:mvn/version "0.2.56"} ; for edn saving (with time formats encoding added)
-  org.pinkgorilla/clj-service {:mvn/version "0.3.18"} ; brings permission + websocket
-  org.pinkgorilla/permission {:mvn/version "0.2.19"} ; force higher version of permission (clj-service is outdated)
+  org.pinkgorilla/clj-service {:mvn/version "0.3.20"} ; brings permission + websocket
   }
 
  :aliases
