@@ -34,7 +34,6 @@
   :oauth2 {:start (token.oauth2.service/start-oauth2-service
                    {:clj (clip/ref :clj-service)
                     :providers (:oauth2 (:token (deref (clip/ref :config))))
-                    ;:providers {:google {:client-id "" :client-secret ""}}
                     :store-path ".webly/tokenstore"
                     :store-role nil ; #{}
                     })}

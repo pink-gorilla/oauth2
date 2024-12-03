@@ -12,8 +12,8 @@
   [token key]
   (let [encoded (get token key)]
     (when encoded
-      (try 
-         (str->jwt encoded)  
+      (try
+        (str->jwt encoded)
         (catch Exception _
           nil)))))
 

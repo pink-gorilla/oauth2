@@ -10,11 +10,9 @@
   (let [r (connect provider scope)]
     (-> r
         (p/then (fn [r]
-                  (show-notification :info [:span.bg-blue-300.inline (str "token aquired successfully for: " provider)] 3000)
-                  ))
+                  (show-notification :info [:span.bg-blue-300.inline (str "token aquired successfully for: " provider)] 3000)))
         (p/catch (fn [r]
-                  (show-notification :error [:span.bg-red-300.inline (str "token could not be aquired for: " provider)] 30000)))
-        )))
+                   (show-notification :error [:span.bg-red-300.inline (str "token could not be aquired for: " provider)] 30000))))))
 
 (defn provider-status [{:keys [provider scope available user expires-date]}]
   ;(info "provider: " provider " status: " status)
@@ -42,8 +40,7 @@
   (let [m (summary->map summary)]
     (info "provider-map:" m)
     (map (fn [{:keys [provider] :as table-row}]
-           (merge table-row (or (provider m) {}))
-           ) table)))
+           (merge table-row (or (provider m) {}))) table)))
 
 (defn provider-status-grid [provider-scopes]
   (let [provider-table (r/atom (map (fn [[provider scope]]
@@ -51,8 +48,7 @@
                                        :scope scope
                                        :available false
                                        :user "-"
-                                       :expires "-"
-                                       }) provider-scopes))
+                                       :expires "-"}) provider-scopes))
         providers (keys provider-scopes)
         summary-p (get-token-summary providers)]
     (-> summary-p

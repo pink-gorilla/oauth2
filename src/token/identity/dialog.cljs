@@ -30,28 +30,26 @@
   (let [scope (get-identity-scope provider)
         r-p (oauth2/get-auth-token {:provider provider
                                     :scope scope
-                                     ;:width
-                                     ;:height 
-                                    })]
+                                    :width 500
+                                    :height 800
+                                    :title (str "login via " provider)})]
     (-> r-p
         (p/then (fn [token]
                   (println "login oauth2 token success! token: " token)
                   (show-notification :info [:span.bg-blue-300.inline "logged in successfully"] 1000)
                   (let [user-p (oidc/login provider token)]
-                    (-> user-p 
-                       (p/then (fn [login-result]
-                                 (println "oauth2 login success: " login-result)))    
-                       (p/catch (fn [login-err]
-                                  (println "oauth2 login error: " login-err))))
-                       ;(user/set-user! usermap)
-                    )
-                  (dialog-close)))
+                    (-> user-p
+                        (p/then (fn [usermap]
+                                  (println "oauth2 login success: " usermap)
+                                  (user/set-user! usermap)
+                                  (dialog-close)))
+                        (p/catch (fn [login-err]
+                                   (println "oauth2 login error: " login-err)
+                                   (dialog-close)))))))
         (p/catch (fn [err]
                    (println "login local error: " err)
                    (show-notification :error [:span.bg-red-300.inline "login error!"] 1000)
                    (dialog-close))))))
-
-
 
 (defn- login-ui []
   (let [username (r/atom "")
@@ -96,10 +94,8 @@
 
 (defn show-login-dialog []
   (dialog-show
-   [:div [login-ui]]
+   [login-ui]
    :medium))
-
-
 
 #_(rf/reg-event-fx
    :oauth2/login-oauth-success

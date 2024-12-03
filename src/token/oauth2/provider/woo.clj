@@ -1,8 +1,8 @@
 (ns  token.oauth2.provider.woo
   (:require
-    [token.oauth2.provider :refer [oauth2-flow-opts 
-                                   oauth2-flow-response-parse
-                                   oauth2-auth-header-prefix ]]))
+   [token.oauth2.provider :refer [oauth2-flow-opts
+                                  oauth2-flow-response-parse
+                                  oauth2-auth-header-prefix]]))
 
 ; https://woocommerce.github.io/woocommerce-rest-api-docs/#rest-api-keys
 
@@ -31,14 +31,12 @@
                   }})
 
 (defmethod oauth2-auth-header-prefix :woo [_]
-    "Bearer")
-
+  "Bearer")
 
 (defmethod oauth2-flow-response-parse :woo [{:keys [query]}]
-   (let [{:keys [scope code prompt authuser]} query]
+  (let [{:keys [scope code prompt authuser]} query]
     {:scope scope
      :code code}))
-
 
 (def config
   {; access token

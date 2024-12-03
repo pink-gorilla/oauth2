@@ -19,15 +19,12 @@
 ; https://developers.google.com/identity/protocols/oauth2#5.-refresh-the-access-token,-if-necessary.
 ; https://developers.google.com/accounts/docs/OAuth2WebServer
 
-
-
-#?(:cljs 
+#?(:cljs
    (defn nonce []
-      (.toString (.random js/Math)))
+     (.toString (.random js/Math)))
    :clj
    (defn- nonce []
-      (str (rand-int Integer/MAX_VALUE))))
-
+     (str (rand-int Integer/MAX_VALUE))))
 
 (defmethod oauth2-flow-opts :google [_]
   {; authorize
@@ -37,7 +34,7 @@
                   :nonce (nonce)}})
 
 (defmethod oauth2-auth-header-prefix :google [_]
-    "Bearer")
+  "Bearer")
 
 (defmethod oauth2-flow-response-parse :google [{:keys [query]}]
   ;# :query {:scope "email+https://www.googleapis.com/auth/drive.metadata.readonly+https://www.googleapis.com/auth/drive.appdata+openid+https://www.googleapis.com/auth/drive.file+https://www.googleapis.com/auth/drive.metadata+https://www.googleapis.com/auth/drive+https://www.googleapis.com/auth/userinfo.email+https://www.googleapis.com/auth/drive.readonly+https://www.googleapis.com/auth/gmail.readonly+https://www.googleapis.com/auth/drive.photos.readonly+https://www.googleapis.com/auth/spreadsheets+https://www.googleapis.com/auth/cloud_search+https://www.googleapis.com/auth/spreadsheets.readonly+https://www.googleapis.com/auth/calendar+https://www.googleapis.com/auth/cloud-platform+https://www.googleapis.com/auth/docs", 
@@ -58,9 +55,6 @@
 (defmethod oauth2-jwks-uri :google [_]
   "https://www.googleapis.com/oauth2/v3/certs")
 
-
-
-
 ;(defn parse-authorize-token-response [{:keys [anchor]}]
     ; #access_token=ya29.a0ARrdaM9mY4gaGPSU_5pMhS7x3wsgrPhDWhGy0fQVIwlsz7soPBlLVnAAEYQWl9SudGnfmapQ_2dq1oa6jS-SlJlR59cniSm1TAFkrK2KEqmBnvJHNI-mux6GDFtuVh-st5eysR97Z3xHSfjkxhsf9QknOZLv
     ;  &token_type=Bearer
@@ -77,10 +71,7 @@
   {:uri "https://www.googleapis.com/oauth2/v2/userinfo"
    :parse-user-info-fn (fn [data]
                          {:user (:id data)
-                          :email (:email data)})
-  })
-
-
+                          :email (:email data)})})
 
 (def config
   {;"https://accounts.google.com/o/oauth2/v2/access_token"

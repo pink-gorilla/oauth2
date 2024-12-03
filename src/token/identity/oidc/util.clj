@@ -21,7 +21,6 @@
 ;The endpoint exists at:
 ; https://{yourDomain}/.well-known/openid-configuration.
 
-
 (defn token->id-jwt [token]
   (:id-token token))
 
@@ -43,7 +42,7 @@
 (defn determine-algo [decoded-jwt]
   (-> decoded-jwt
       :header
-      :alg)) 
+      :alg))
 
 ; download public key from .well-known endpoing
 
@@ -59,7 +58,6 @@
   (let [kid (extract-kid jwt-decoded)]
     (find-kid jwks kid)))
 
-
 (defn validate-jwt
   [jwt jwks alg]
   (try
@@ -71,17 +69,15 @@
       (info "public-key: " public-key)
       (when (keys/public-key? public-key)
         (jwt/unsign jwt public-key alg)))
-    (catch Exception e 
-       (error {:error (str "Error with public key: " (.getMessage e))})
-       )))
-
+    (catch Exception e
+      (error {:error (str "Error with public key: " (.getMessage e))}))))
 
 #_(defn token->pem [token jwks-url]
-  (let [;jwt (:id-token token)
+    (let [;jwt (:id-token token)
          ;decoded-jwt (decode-jwt jwt)
-        decoded-jwt (decode-id-token token)]
+          decoded-jwt (decode-id-token token)]
   ;(build-pem decoded-jwt jwks-url)
-    decoded-jwt))
+      decoded-jwt))
 
 (defn validate-token [token jwks-url]
   (let [jwt (:id-token token)

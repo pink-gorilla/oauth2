@@ -18,27 +18,26 @@
      :query (keywordize (:query url))}))
 
 (defn process-data [ev]
-      (let [json (. ev -data)
-            data (js->clj (.parse js/JSON json))
-            wurl (get data "url")
-            provider (get data "provider")
-            cbdata (merge  (url-data wurl) {:provider (keyword provider)})]
-        (info "oauth chan rcvd: json: " json  "data: " data)
-        (info "oauth cb data: " cbdata)
-        cbdata))
+  (let [json (. ev -data)
+        data (js->clj (.parse js/JSON json))
+        wurl (get data "url")
+        provider (get data "provider")
+        cbdata (merge  (url-data wurl) {:provider (keyword provider)})]
+    (info "oauth chan rcvd: json: " json  "data: " data)
+    (info "oauth cb data: " cbdata)
+    cbdata))
 
 (defn oauth2-broadcast-result []
   (info "waiting for oauth2 broadcast result..")
   (let [r (p/deferred)
-        bc (js/BroadcastChannel. "webly_oauth2_redirect_channel")] 
+        bc (js/BroadcastChannel. "webly_oauth2_redirect_channel")]
     (set! (.. bc -onmessage)
-        (fn [ev]
-          (info "broadcast data received.")
-          (let [data (process-data ev)]
-            (info "closing broadcast channel.")
-            (.close bc)
-            (info "sending received broadcast data..")
-            (p/resolve! r data))))
-    r
-    ))
+          (fn [ev]
+            (info "broadcast data received.")
+            (let [data (process-data ev)]
+              (info "closing broadcast channel.")
+              (.close bc)
+              (info "sending received broadcast data..")
+              (p/resolve! r data))))
+    r))
 

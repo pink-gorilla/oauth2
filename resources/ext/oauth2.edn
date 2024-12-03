@@ -3,8 +3,7 @@
  :lazy false
  :cljs-namespace [token.oauth2.store.ui
                   token.identity.user
-                  token.identity.ui
-                  ]
+                  token.identity.ui]
  :cljs-ns-bindings {; make sure the namespaces in sci and cljs are identical
                     token.oauth2.store.ui {'provider-status-grid token.oauth2.store.ui/provider-status-grid} 
                     token.identity.user {'get-user token.identity.user/get-user

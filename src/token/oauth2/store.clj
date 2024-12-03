@@ -2,9 +2,10 @@
   (:require
    [taoensso.timbre :as timbre :refer [info]]
    [clojure.java.io :as io]
+   [clj-service.core :refer [expose-functions]]
    [modular.persist.protocol :refer [save loadr]]
    [modular.persist.edn] ; side effects to be able to save edn files
-   [clj-service.core :refer [expose-functions]]))
+   [token.oauth2.token :refer [sanitize-token]]))
 
 (defn- ensure-directory [path]
   (when-not (.exists (io/file path))
@@ -32,8 +33,9 @@
 
 (defn save-token
   [{:keys [store-path] :as this} id data]
-  (let [filename (filename-token this id)]
-    (save :edn filename data)))
+  (let [filename (filename-token this id)
+        data-safe (sanitize-token data)]
+    (save :edn filename data-safe)))
 
 (defn load-token [this id]
   (let [filename (filename-token this id)]

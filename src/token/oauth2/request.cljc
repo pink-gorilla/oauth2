@@ -9,8 +9,7 @@
                      (ajax/json-request-format) ; {:keywords? true}
                      timeout 5000
                      response-format (ajax/json-response-format {:keywords? true})
-                     params {}
-                     }}]
+                     params {}}}]
   (let [r (p/deferred)]
     (ajax/GET uri {:headers headers
                    :params params
@@ -22,10 +21,10 @@
                               (p/resolve! r res))
                    :error-handler (fn [res]
                                     (error  "http-get error: " res
-                                            "url: " uri 
-                                            " params: " params 
+                                            "url: " uri
+                                            " params: " params
                                             " headers: " headers)
-                                    (p/reject! r (ex-info "http-get error!" res) ))})
+                                    (p/reject! r (ex-info "http-get error!" res)))})
 
     r))
 

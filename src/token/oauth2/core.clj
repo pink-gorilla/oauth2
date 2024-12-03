@@ -67,7 +67,6 @@
      :redirect-uri (str "/api/oauth2/redirect/" provider-name)
      :landing-uri  (str "/api/oauth2/landing/" provider-name)}))
 
-
 (defn- url-redirect [provider-kw current-url]
   (->> provider-kw
        provider-uri
@@ -137,7 +136,6 @@
                         (p/reject! r (ex-info "http-get error!" res)))})
     r))
 
-
 ;; exchange code to token - this is used in the oauth2 auth flow
 
 (defn exchange-code-to-token-request
@@ -172,7 +170,6 @@
 (defn- reject-refresh! [p provider message]
   (error "cannot get refresh token for provider: " provider "reason: " message)
   (reject! p provider message))
-
 
 (defn refresh-access-token [{:keys [store] :as this} provider]
   (let [r (p/deferred)

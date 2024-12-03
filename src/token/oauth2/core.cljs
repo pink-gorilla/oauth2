@@ -15,7 +15,6 @@
    ; side effects - make sure our default providers are compiled into the bundle.
    [token.oauth2.provider.default]))
 
-
 (defn process-authorize-response [w provider auth-result]
   #_{:provider :google
      :anchor {},
@@ -54,8 +53,7 @@
                                   (p/resolve! r-p token)))
                         (p/catch (fn [err]
                                    (close-window w)
-                                   (p/reject! r-p err)
-                                   )))))))
+                                   (p/reject! r-p err))))))))
     r-p))
 
 (defn get-auth-token
@@ -63,8 +61,7 @@
    returns a promise"
   [{:keys [provider scope
            title width height]
-    :or {
-         width 500
+    :or {width 500
          height 600} :as opts}]
   (let [r-p (p/deferred)
         url-p (url-authorize provider scope)]

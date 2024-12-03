@@ -23,12 +23,8 @@
 
 (defn user-details []
   (fn []
-    (let [{:keys [user token provider] :as edn} @user-a]
-      [block2 "user details:"
-       [:p "edn: " (pr-str edn)]
-       [:p "user: " user]
-       [:p "provider: " provider]
-       [:p "token: " token]])))
+      [block2 "user details (for debugging): "
+       [:p (pr-str @user-a)]]))
 
 (def provider-scopes 
   {:github [;https://docs.github.com/en/developers/apps/scopes-for-oauth-apps

@@ -1,11 +1,11 @@
 (ns token.oauth2.store
   (:require
-    [taoensso.timbre :refer-macros [info error]]
-    [promesa.core :as p]
-    [goldly.service.core :refer [clj]]))
+   [taoensso.timbre :refer-macros [info error]]
+   [promesa.core :as p]
+   [goldly.service.core :refer [clj]]))
 
-(defn  current-url []
-  (-> js/window .-location .-href))
+; (defn  current-url []
+; (-> js/window .-location .-href))
 
 (defn save-token
   "returns a promise with save result"
@@ -21,4 +21,4 @@
                    (info "save-token error: " err)
                    (p/reject! r-p err))))
     r-p))
- 
+

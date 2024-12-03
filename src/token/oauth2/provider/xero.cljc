@@ -1,9 +1,9 @@
 (ns token.oauth2.provider.xero
   (:require
-   [token.oauth2.provider :refer [oauth2-flow-opts 
+   [token.oauth2.provider :refer [oauth2-flow-opts
                                   oauth2-flow-response-parse
                                   oauth2-token-uri
-                                  oauth2-auth-header-prefix 
+                                  oauth2-auth-header-prefix
                                   oauth2-openid-uri
                                   user-info-map]]))
 
@@ -41,30 +41,23 @@
      :code (:code query)}))
 
 (defmethod oauth2-token-uri :xero [_]
- "https://identity.xero.com/connect/token")
-
+  "https://identity.xero.com/connect/token")
 
 (defmethod oauth2-auth-header-prefix :xero [_]
-   "Bearer")
+  "Bearer")
 
 (defmethod oauth2-openid-uri :xero [_]
   "https://identity.xero.com/.well-known/openid-configuration")
 
-
 (defmethod user-info-map :xero [{:keys [token]}]
   {:uri  "https://api.xero.com/api.xro/2.0/Organisation"
    :parse-user-info-fn (fn [data]
-                        {:user (get-in data [:Organisations :Name])
-                         :email "no email"})})
-
+                         {:user (get-in data [:Organisations :Name])
+                          :email "no email"})})
 
 (def config
   {; refresh token  
-   :accessTokenResponseKey "id_token"
-})
-
-
-
+   :accessTokenResponseKey "id_token"})
 
 (defn header-xero-tenant [tenant-id]
   {"Xero-Tenant-Id" tenant-id})

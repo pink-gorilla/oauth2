@@ -11,19 +11,19 @@
 ; wrapping not needed and fucks up the redirection
 
 #_(def handler-oauth2-start-wrapped
-  (-> handler-oauth2-start
-      wrap-api-handler))
+    (-> handler-oauth2-start
+        wrap-api-handler))
 
 (def handler-oauth2-redirect-wrapped
   (-> handler-oauth2-redirect
       wrap-ws))
 
 #_(def token-handler-wrapped
-  (-> token-handler
-      wrap-api-handler))
+    (-> token-handler
+        wrap-api-handler))
 
 #_(def handler-oauth2-save-wrapped
-  (-> handler-oauth2-save
-      wrap-api-handler))
+    (-> handler-oauth2-save
+        wrap-api-handler))
 
 

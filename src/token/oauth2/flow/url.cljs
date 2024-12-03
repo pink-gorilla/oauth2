@@ -7,7 +7,6 @@
 (defn  current-url []
   (-> js/window .-location .-href))
 
-
 (defn url-authorize
   "returns a promise with the token or an error"
   [provider scope]
@@ -25,4 +24,3 @@
                    (info "url-authorize error: " err)
                    (p/reject! r-p err))))
     r-p))
- 

@@ -1,8 +1,7 @@
 (ns token.identity.oidc
-  (:require 
-    [promesa.core :as p]
-    [goldly.service.core :refer [clj]]))
-
+  (:require
+   [promesa.core :as p]
+   [goldly.service.core :refer [clj]]))
 
 (defn login
   "input: the result of get-token (or the saved token in localstorage)"

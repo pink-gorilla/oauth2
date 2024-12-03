@@ -22,17 +22,14 @@
 (defmethod oauth2-token-uri :github [_]
   "https://github.com/login/oauth/access_token")
 
-
 (defmethod oauth2-openid-uri :github [_]
   "https://token.actions.githubusercontent.com/.well-known/openid-configuration")
 
 (defmethod oauth2-jwks-uri :github [_]
   "https://token.actions.githubusercontent.com/.well-known/jwks")
 
-
 (defmethod oauth2-auth-header-prefix :github [_]
-    "token")
-
+  "token")
 
 (defmethod user-info-map :github [{:keys [token]}]
    ; {:email "name@domain.com"
@@ -46,7 +43,6 @@
    :parse-user-info-fn (fn [data]
                          {:user (:login data)
                           :email (:email data)})})
-
 
 (def config
   {; token

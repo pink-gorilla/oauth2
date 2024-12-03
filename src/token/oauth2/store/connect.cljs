@@ -1,9 +1,9 @@
 (ns token.oauth2.store.connect
-   (:require
-    [taoensso.timbre :refer-macros [info error]]
-    [promesa.core :as p]
-    [goldly.service.core :refer [clj]]
-    [token.oauth2.core :as oauth2]))
+  (:require
+   [taoensso.timbre :refer-macros [info error]]
+   [promesa.core :as p]
+   [goldly.service.core :refer [clj]]
+   [token.oauth2.core :as oauth2]))
 
 (defn get-token-summary [providers]
   (clj 'token.oauth2.store/token-summary providers))
@@ -16,9 +16,9 @@
   (let [r-p (p/deferred)
         a-p (oauth2/get-auth-token {:provider provider
                                     :scope scope
-                                     ;:width
-                                     ;:height
-                                    })]
+                                    :width 500
+                                    :height 800
+                                    :title (str "authorize " provider)})]
     (-> a-p
         (p/then (fn [token]
                   (info "received token for: " provider)
