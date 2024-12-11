@@ -1,21 +1,21 @@
 (ns token.identity.user
   (:require
-   [taoensso.timbre :refer-macros [info error]]
+   [cljs.reader :refer [read-string]]
+   [taoensso.timbre :refer-macros [info warn error]]
    [reagent.core :as r]
-   [token.identity.local :as local]
-   [cljs.reader :refer [read-string]]))
+   [token.identity.local :as local]))
 
 ;; LocalStorage Helpers
 
-(defn ls-set! [k v]
+(defn- ls-set! [k v]
   (.setItem js/localStorage (pr-str k) (pr-str v)))
 
-(defn ls-get [k]
+(defn- ls-get [k]
   (when-let [s (.getItem js/localStorage (pr-str k))]
     (read-string s)))
 
-(defn ls-remove! [k]
-  (.removeItem js/localStorage k))
+(defn- ls-remove! [k]
+  (.removeItem js/localStorage (pr-str k)))
 
 (defonce user-key "oauth2-user")
 
@@ -43,3 +43,6 @@
   (when-let [usermap (ls-get user-key)]
     (info "user loaded from localstorage: " usermap)
     (reset! user-a usermap)))
+
+
+

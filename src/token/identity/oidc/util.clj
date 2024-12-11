@@ -64,9 +64,9 @@
     (let [decoded-jwt (decode-jwt jwt)
           pem (build-pem jwks decoded-jwt)
           public-key (keys/jwk->public-key pem)]
-      (info "decoded jwt: " decoded-jwt)
-      (info "pem: " pem)
-      (info "public-key: " public-key)
+      ;(info "decoded jwt: " decoded-jwt)
+      ;(info "pem: " pem)
+      ;(info "public-key: " public-key)
       (when (keys/public-key? public-key)
         (jwt/unsign jwt public-key alg)))
     (catch Exception e

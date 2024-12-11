@@ -14,24 +14,28 @@
    [token.oauth2.store :refer [load-token save-token]]
    [token.oauth2.token :refer [sanitize-token access-token-needs-refresh?]]))
 
-(defn assert-provider [[id p]]
-  (assert (keyword? id) "oauth2 provider key needs to be a keyword")
+(defn assert-provider [v]
+  (let [[id p] v]
+  (assert (keyword? id) (str "oauth2 provider key needs to be a keyword id: " id))
   (assert (map? p) "oauth2 provider needs to be a map")
   (assert (:client-id p) "oauth2 provider needs :client-id key")
   (assert (:client-secret p) "oauth2 provider needs :client-secret key")
-  (assert (:token-prefix p) "oauth2 provider needs :token-prefix key")
   (assert (string? (:client-id p)) "oauth2 provider needs :client-id with type string")
-  (assert (string? (:client-secret p)) "oauth2 provider needs :client-secret  with type string")
-  (assert (string? (:token-prefix p)) "oauth2 provider needs :token-prefix with type string"))
+  (assert (string? (:client-secret p)) "oauth2 provider needs :client-secret  with type string")))
 
 (defn assert-providers [ps]
   (assert (map? ps) "oauth2 providers needs to be a map")
-  ;(doall (map assert-provider ps))
-  )
+  (doall (map assert-provider ps)))                  
 
 (defn start-oauth2-providers [{:keys [clj _store providers] :as this}]
   (info "starting oauth2-provider service..")
-  (assert-providers providers)
+  (try
+    (assert-providers providers)
+    (catch AssertionError ex
+      (info "assert error: " ex )
+      (info "providers config: " providers)
+      (throw (ex-info "oauth2 provider-config error!" {:ex ex}))))
+
   (info "starting oauth2-provider service.. provider config ok.")
   (expose-functions clj
                     {:name "token-oauth2"
@@ -40,7 +44,7 @@
                      :permission nil
                      :fixed-args [this]})
   (info "oauth2-provider service running..")
-  this)
+  nil)
 
 (defn get-provider-client-id [{:keys [providers] :as this} p]
   (get-in providers [p :client-id]))

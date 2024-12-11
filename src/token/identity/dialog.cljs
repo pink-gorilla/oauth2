@@ -16,12 +16,12 @@
   (let [r-p (local/get-token username password)]
     (-> r-p
         (p/then (fn [{:keys [user token] :as usermap}]
-                  (println "login local token success! user: " user " token: " token)
+                  (info "login local token success! user: " user " token: " token)
                   (show-notification :info [:span.bg-blue-300.inline "logged in successfully"] 1000)
                   (user/set-user! usermap)
                   (dialog-close)))
         (p/catch (fn [err]
-                   (println "login local error: " err)
+                   (error "login local error: " err)
                    (show-notification :error [:span.bg-red-300.inline "login error!"] 1000)
                    (dialog-close))))))
 
@@ -35,19 +35,19 @@
                                     :title (str "login via " provider)})]
     (-> r-p
         (p/then (fn [token]
-                  (println "login oauth2 token success! token: " token)
+                  (info "login oauth2 token success! token: " token)
                   (show-notification :info [:span.bg-blue-300.inline "logged in successfully"] 1000)
                   (let [user-p (oidc/login provider token)]
                     (-> user-p
                         (p/then (fn [usermap]
-                                  (println "oauth2 login success: " usermap)
+                                  (info "oauth2 login success: " usermap)
                                   (user/set-user! usermap)
                                   (dialog-close)))
                         (p/catch (fn [login-err]
-                                   (println "oauth2 login error: " login-err)
+                                   (error "oauth2 login error: " login-err)
                                    (dialog-close)))))))
         (p/catch (fn [err]
-                   (println "login local error: " err)
+                   (error "login oidc error: " err)
                    (show-notification :error [:span.bg-red-300.inline "login error!"] 1000)
                    (dialog-close))))))
 

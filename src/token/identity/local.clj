@@ -30,6 +30,7 @@
       (codecs/bytes->hex)))
 
 (defn create-claim [{:keys [secret] :as this} claim]
+  (info "creating claim: " claim " secret: " secret)
   (let [token (jwt/sign claim secret)]
     (assoc claim :token token)))
 
@@ -37,7 +38,7 @@
   (let [user-kw (keyword user-name)
         password-hashed (pwd-hash user-password)
         user (get-user permission user-kw)]
-    (println "get-token user: " user-name " user-kw: " user-kw " user-details: "  user)
+    (info "get-token user: " user-name " user-kw: " user-kw " user-details: "  user)
     (cond
     ; user unknown
       (not user)
@@ -56,11 +57,12 @@
                           :email (:email user)}))))
 
 (defn verify-token [{:keys [secret] :as this} token]
-  (println "verifying token: " token)
+  (info "verifying token: " token " secret: " secret)
   (try
     (-> (jwt/unsign token secret)
         (update :user keyword))
-    (catch Exception _
+    (catch Exception ex
+      (error "verify-token exception: " ex)
       {:error :bad-token
        :error-message "Bad Token"})))
 
@@ -68,7 +70,9 @@
   [{:keys [permission secret] :as this} token]
   (info "login/local: token: " token " session: " *session*)
   (let [{:keys [user error] :as r} (verify-token this token)]
-    (info "login/local: result: " r)
+    (if error 
+      (taoensso.timbre/error "login/local error: " error " token: " token)
+      (info "login/local: result: " r))
     (when user
       (set-user! permission  *session* user))
     r))
@@ -97,7 +101,7 @@
  ; (clj-jwt/unsign
   ; "https://identity.xero.com/.well-known/openid-configuration/jwks"
    ;"eyJhbGciOiJSUzI1NiIsImtpZCI6IjFDQUY4RTY2NzcyRDZEQzAyOEQ2NzI2RkQwMjYxNTgxNTcwRUZDMTkiLCJ0eXAiOiJKV1QiLCJ4NXQiOiJISy1PWm5jdGJjQW8xbkp2MENZVmdWY09fQmsifQ.eyJuYmYiOjE2NDE1NjcwOTksImV4cCI6MTY0MTU2ODg5OSwiaXNzIjoiaHR0cHM6Ly9pZGVudGl0eS54ZXJvLmNvbSIsImF1ZCI6Imh0dHBzOi8vaWRlbnRpdHkueGVyby5jb20vcmVzb3VyY2VzIiwiY2xpZW50X2lkIjoiMUQ0RTUxQzMyNDA1NDUxQ0JCQTMyQzExMjkwOUE3QjgiLCJzdWIiOiJkODZhNTIyMThiODk1MDFiODE0ZmIyMDY1YjU5NzNlMSIsImF1dGhfdGltZSI6MTY0MTU2NjQ3OSwieGVyb191c2VyaWQiOiIzYzczNjBjMC02MTk1LTQ2MmQtYjkxMy03NmNlOWM2NmNiYjgiLCJnbG9iYWxfc2Vzc2lvbl9pZCI6IjZjYjZhZjRkNTQ4ZDQ3NDZhZTZjMTNjNWJjOThlOWFmIiwianRpIjoiZTM2Y2NkYzdlMjViOGVlMDFhM2U3YzBkNDAwZDk2OWIiLCJhdXRoZW50aWNhdGlvbl9ldmVudF9pZCI6IjA4ZTg2ZTdiLTZkMjctNDQxMS05MTFiLTY0YjJmMWQ1NzhjMCIsInNjb3BlIjpbImVtYWlsIiwicHJvZmlsZSIsIm9wZW5pZCIsImFjY291bnRpbmcucmVwb3J0cy5yZWFkIiwiYWNjb3VudGluZy5zZXR0aW5ncyIsImFjY291bnRpbmcuYXR0YWNobWVudHMiLCJhY2NvdW50aW5nLnRyYW5zYWN0aW9ucyIsImFjY291bnRpbmcuam91cm5hbHMucmVhZCIsImFjY291bnRpbmcudHJhbnNhY3Rpb25zLnJlYWQiLCJhY2NvdW50aW5nLmNvbnRhY3RzIiwib2ZmbGluZV9hY2Nlc3MiXX0.t9c33xsXXqAfxC8JOyTRPG8b-QrLzqkxIItenXyul3kaSulzue281jed1wFyIpBefDq_xNUfFt4SfrMMyplOxThjQMyYktweyftijfMfnHwa4ZlGJaArdNOFNNzm2XOhdlyjFsVpWrAsMdhb8U9LyZjtagePE90VWyF47N3733tsDj9IBMKOUTg0HVEzyHqR0b-yRXE7KraM9KB3A_-CmuKBjT9JfExfFD8K17vS5T94cHW36EAy1UwWS2NZcFai_nh838Yi4sT1x7HCC3rOJlH8-S-GdmgPXpY5enrJ3nvwhca9bSXQKrnxktubDZeKVV3M1Mfhp5Gr-44Jkzu5Ww")
-   
+
  ; 
   )
 

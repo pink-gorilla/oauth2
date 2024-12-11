@@ -8,24 +8,14 @@
         org.pinkgorilla/oauth2 {:local/root "../" :deps/manifest :deps}
         nrepl/nrepl {:mvn/version "1.2.0"}}
 
- :aliases {:webly {:exec-fn webly.app.app/webly-build
-                   :exec-args {:config [{}]
-                               :profile "npm-install"}}
-           
-           :npm-install {:exec-args {:profile "npm-install"}}
-           :compile {:exec-args {:profile "compile"}}
-           :release {:exec-args {:profile "release"}}
-           :release-adv {:exec-args {:profile "release-adv"}}
-           :static {:exec-args {:profile "static"}}
-           :ci {:exec-args {:profile "ci"}}
-                      
-           :run {:exec-fn modular.system/start!
-                 :exec-args {:profile "jetty"
+ :aliases {:npm-install {:exec-fn webly.app.app/webly-build
+                         :exec-args {:config [{}]
+                                     :profile "npm-install"}}
+           :demo {:exec-fn modular.system/start!
+                  :exec-args {:profile "watch"
                               :config ["/home/florian/repo/myLinux/myvault/goldly/oauth2-localhost.edn" ; oauth2 secrets
-                                      ]
-                             :services "demo-services.edn"}}
-  
-           }
+                                       "demo-config.edn"]
+                              :services "demo-services.edn"}}}
 
 ;
  }

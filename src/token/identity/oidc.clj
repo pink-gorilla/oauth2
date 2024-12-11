@@ -26,10 +26,10 @@
 
 (defn validate-token [jwt jwks alg]
   (try
-    (warn "validate token: " jwt " jwks: " jwks " alg: " alg)
+    ;(warn "validate token: " jwt " jwks: " jwks " alg: " alg)
     (util/validate-jwt jwt jwks alg)
     (catch Exception ex
-      (timbre/error "token validate exception: " ex)
+      (timbre/error "oidc token validate exception: " ex)
       false)))
 
 (defn login
@@ -37,11 +37,11 @@
   (info "login/oauth2-oidc: token: " token " session: " *session*)
   (let [;email (user-email token)
         jwks-url  (provider/oauth2-jwks-uri {:provider provider})
-        _ (info "getting jwks for provider: " provider " url: " jwks-url)
+        ;_ (info "getting jwks for provider: " provider " url: " jwks-url)
         jwks (util/get-jwks jwks-url)
         alg {:alg :rs256}
         jwt (util/token->id-jwt token)
-        _ (info "jwt token (access token): " jwt)
+        ;_ (info "jwt token (access token): " jwt)
         {:keys [error email] :as validation-response} (validate-token jwt jwks alg)]
     (info "login/oauth2-oidc:validation-response: " validation-response)
     (if email
