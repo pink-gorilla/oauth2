@@ -3,6 +3,7 @@
    [cljs.reader :refer [read-string]]
    [taoensso.timbre :refer-macros [info warn error]]
    [reagent.core :as r]
+   [re-frame.core :as rf]
    [token.identity.local :as local]))
 
 ;; LocalStorage Helpers
@@ -41,8 +42,16 @@
   [_config]
   (info "initializing user ..")
   (when-let [usermap (ls-get user-key)]
+    
     (info "user loaded from localstorage: " usermap)
     (reset! user-a usermap)))
 
 
-
+(rf/reg-event-db
+ :ws/connected
+ (fn [db _]
+   (when-let [usermap (get-user)]
+      (let [{:keys [token user]} usermap]
+         (warn "ws connected - auto login: " user)
+         (local/login token)))
+    db))

@@ -5,6 +5,7 @@
  :deps {org.clojure/clojure    {:mvn/version "1.11.3"}
         org.pinkgorilla/webly {:mvn/version "0.8.707"}
         org.pinkgorilla/ui-tailwind {:mvn/version "0.1.8"}
+        org.pinkgorilla/websocket {:mvn/version "0.0.23"} ; more up to date than in webly
         org.pinkgorilla/oauth2 {:local/root "../" :deps/manifest :deps}
         nrepl/nrepl {:mvn/version "1.2.0"}}
 
