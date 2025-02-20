@@ -21,7 +21,8 @@
         qp (:query-params req)]
     (debug "oauth2/authorize-response: params:" p)
     (debug "oauth2/authorize-response: query-params:" qp)
-    (let [provider (get-in req [:route-params :provider])
+    (let [;provider (get-in req [:route-params :provider]) ; bidi style
+          provider (get-in req [:path-params :provider]) ; reitit style
           res (response/content-type {:status 200
                                       :body (page-oauth2-redirect provider)}
                                      "text/html")]

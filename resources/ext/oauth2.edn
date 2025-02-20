@@ -12,19 +12,29 @@
                     token.identity.ui {'user-icon-with-login token.identity.ui/user-icon-with-login
                                        'show-login-dialog  token.identity.ui/show-login-dialog}}
  ; run 
- :api-routes {; oauth redirect is stateless,
+  
+ :web/routes [; oauth redirect is stateless,
               ; all other endpoints are implemented via clj-service which can be started at runtime 
               ; if the service gets started.
-              "oauth2/" {;["start/" :provider] {:get modular.oauth2.handler/handler-oauth2-start-wrapped}
+              ["/api/oauth2/"
+               ["redirect/:provider" {;Path Param: :provider will be extracted and passed to user-handler under :path-params.
+                                      :handler  token.oauth2.handler.redirect/handler-oauth2-redirect ;  either client OR server side
+                                      :middleware [; this was ws-wrap
+                                                   ;webserver.middleware.api/wrap-api-handler
+                                                   [ring.middleware.defaults/wrap-defaults ring.middleware.defaults/site-defaults] 
+                                                   ring.middleware.keyword-params/wrap-keyword-params
+                                                   ring.middleware.params/wrap-params] 
+                                      }]
+               ;["start/" :provider] {:get modular.oauth2.handler/handler-oauth2-start-wrapped}
                          ;"token"  {:get modular.oauth2.handler/token-handler-wrapped}
                              ;  ["redirect/" :provider] {:get :oauth2/redirect}
                          ;"save-token" {:post modular.oauth2.handler/handler-oauth2-save-wrapped}
-                         ["redirect/" :provider] token.oauth2.handler/handler-oauth2-redirect-wrapped  ;  either client OR server side
-                         }}
+               ]]
 
-:cljs-service {;:config-fn webly.spa.service/cljs-config-simple
-               :start-fn token.identity.user/init-user!
-               :default-config {}}
+
+ :cljs-service {;:config-fn webly.spa.service/cljs-config-simple
+                :start-fn token.identity.user/init-user!
+                :default-config {}}
 
 
  }

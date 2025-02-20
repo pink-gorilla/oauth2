@@ -1,19 +1,15 @@
 (ns token.oauth2.store
   (:require
    [taoensso.timbre :as timbre :refer [info]]
-   [clojure.java.io :as io]
+   [babashka.fs :as fs]
    [clj-service.core :refer [expose-functions]]
    [modular.persist.protocol :refer [save loadr]]
    [modular.persist.edn] ; side effects to be able to save edn files
    [token.oauth2.token :refer [sanitize-token]]))
 
-(defn- ensure-directory [path]
-  (when-not (.exists (io/file path))
-    (.mkdir (java.io.File. path))))
-
 (defn create-store [{:keys [store-path clj store-role] :as this}]
   ;(println "token store: " path)
-  (ensure-directory store-path)
+  (fs/create-dirs store-path)
   (when clj
     (info "exposing oauth2-store service permission: " store-role " .. ")
     (expose-functions clj

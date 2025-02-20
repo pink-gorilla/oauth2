@@ -1,10 +1,11 @@
 {:modular (modular.system/modular-env)  ; {:profile "jetty"  :config ["demo.edn" "secrets.edn"]}
  ;:secrets #include "secrets.edn" ;; externalised and usually "mounted" as a docker/kubernetes secret
  :components
- {:config {:start (modular.config/load-config! (:config #ref [:modular]))}
+ {:config1 {:start (modular.config/load-config! (:config #ref [:modular]))}
+  :config {:start (deref (clip/ref :config1))}
 
   :timbre {:start (modular.log/timbre-config!
-                   (:timbre/clj (deref (clip/ref :config))))}
+                   (:timbre/clj (clip/ref :config)))}
 
   :exts {:start (extension/discover)}
 
@@ -33,14 +34,14 @@
 
   :oauth2 {:start (token.oauth2.service/start-oauth2-service
                    {:clj (clip/ref :clj-service)
-                    :providers (:oauth2 (:token (deref (clip/ref :config))))
-                    :store-path ".webly/tokenstore"
+                    :providers (:oauth2 (:token (clip/ref :config)))
+                    :store-path ".gorilla/tokenstore"
                     :store-role nil ; #{}
                     })}
 
-  :webly {:start (webly.app.app/start-webly
-                  (clip/ref :exts)
-                  (deref (clip/ref :config))
+  :webly {:start (webly.spa/start-webly
+                  {:exts (clip/ref :exts)}
+                  (clip/ref :config)
                   (:profile #ref [:modular]))
           :stop (webly.app.app/stop-webly this)}
 

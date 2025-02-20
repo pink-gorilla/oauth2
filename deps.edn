@@ -8,8 +8,7 @@
   reagent/reagent {:mvn/version "1.1.1"} ; https://github.com/reagent-project/reagent
   com.cemerick/url {:mvn/version "0.1.1"}  ; url query-strings
   cljs-ajax/cljs-ajax {:mvn/version "0.8.4"} ; needed for re-frame/http-fx
-  ;simplevalue/letsencrypt {:git/url "https://github.com/SimpleValue/sv.letsencrypt.git"
-  ;                         :sha "8b1a85846acaaa37a58b054f2372d8fde0663b75"}
+  babashka/fs {:mvn/version "0.5.22"} ; create dir
   
   ;; JWT / auth deps
   buddy/buddy-core {:mvn/version "1.10.1"}
@@ -24,7 +23,7 @@
   ; clj-oauth/clj-oauth {:mvn/version "1.5.2"}; copied over from REST
   ; pink-gorilla dependencies
   org.pinkgorilla/modular {:mvn/version "0.2.61"} ; for edn saving (with time formats encoding added)
-  org.pinkgorilla/clj-service {:mvn/version "0.4.21"} ; brings permission + websocket
+  org.pinkgorilla/clj-service {:mvn/version "0.4.22"} ; brings permission + websocket
   }
 
  :aliases
