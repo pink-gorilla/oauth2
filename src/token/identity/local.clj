@@ -88,9 +88,11 @@
       (set-user! permission  *session* user))
     r))
 
-(defn login-handler [{:keys [ctx body-params query-params params] :as req}]
-  (info "login-handler body-params: " body-params)
-  (let [{:keys [user password]} body-params]
+(defn login-handler [{:keys [ctx body-params form-params query-params params] :as req}]
+  (info "login-handler body-params: " body-params " form-params: " form-params)
+  (let [params (or body-params form-params {})
+        user (or (:user params) (get params "user"))
+        password (or (:password params) (get params "password"))]
     (if (and user password)
       (let [{:keys [token error error-message user roles] :as tr} (get-token ctx user password)]
           ; success:  
@@ -99,7 +101,8 @@
           ; {:error :bad-password, :error-message "Bad password for  [florian]."}
         (warn "token-response: " tr)
         (if error
-          {:status 400 :body error-message}
+          {:status 303
+           :headers {"location" (str "/login?error=" (java.net.URLEncoder/encode (str error-message) "UTF-8"))}}
           {:status 200 :body token
            :cookies {"identity" {:value token
                                  :http-only true
@@ -107,17 +110,18 @@
                                  :same-site :lax
                                  :path "/"
                                  :max-age 3600}}}))
-      {:status 500 :body "must provide user and password as body params"})))
+      {:status 303
+       :headers {"location" (str "/login?error=" (java.net.URLEncoder/encode "must provide user and password" "UTF-8"))}})))
 
 
 (defn wrap-identity [handler identity]
   (fn [{:keys [cookies] :as req}]
     (cond
-      (when-not cookies)
+      (not cookies)
       (do (error "cannot wrap-identity: no :cookies in ctx)")
           (handler req))
 
-      (when-not identity)
+      (not identity)
       (do (error "cannot wrap-identity: no :identity in ctx)")
           (handler req))
 
@@ -156,18 +160,31 @@
 
 
 (defn wrap-signed-in [handler]
-  (fn [{:keys [session] :as ctx}]
-    (if (some? (:uid session))
-      (handler ctx)
+  (fn [{:keys [identity] :as req}]
+    (warn "wrap-signed in is checking identity: " identity)
+    (if (and identity (:user identity))
+      (handler req)
       {:status 303
-       :headers {"location" "/signin?error=not-signed-in"}})))
+       :headers {"location" "/login?error=not-signed-in"}})))
+
+(def signed-in-middleware
+  {:name ::signed-in
+   :compile
+   (fn [{:keys [services-ctx] :as route-data} _router-opts]
+     (fn [handler] (wrap-signed-in handler)))})
 
 
-
-(defn signout [{:keys [session]}]
+(defn logout-handler [req]
   {:status 303
    :headers {"location" "/"}
-   :session (dissoc session :uid)})
+   :cookies {"identity" {:value nil
+                         :http-only true
+                         :secure true
+                         :same-site :lax
+                         :path "/"
+                         :max-age 0}}})
+
+ 
 
 
 (comment

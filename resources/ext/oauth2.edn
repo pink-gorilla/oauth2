@@ -12,13 +12,21 @@
                     token.identity.ui {'user-icon-with-login token.identity.ui/user-icon-with-login
                                        'show-login-dialog  token.identity.ui/show-login-dialog}}
  ; run 
-
+ 
  :web/routes [; oauth redirect is stateless,
               ; all other endpoints are implemented via clj-service which can be started at runtime 
               ; if the service gets started.
+              ["/login" {:get token.identity.login/page-handler
+                         :middleware [ring.middleware.params/wrap-params]}]
+              
+              ["/logout" {:get token.identity.local/logout-handler
+                          :middleware [ring.middleware.cookies/wrap-cookies]
+                          }]
+
               ["/token"
                ["/login" {:post token.identity.local/login-handler
                           :middleware [ring.middleware.cookies/wrap-cookies
+                                       ring.middleware.params/wrap-params
                                        muuntaja.middleware/wrap-format
                                        webserver.middleware.ctx/ctx-middleware]
                           :services #{:permission :identity}}]

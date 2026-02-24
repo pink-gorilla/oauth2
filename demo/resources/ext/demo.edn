@@ -2,13 +2,16 @@
  ; build
  :lazy true
  :cljs-namespace [demo.page.oauth2
-                  demo.app
-                  ]
+                  demo.app]
  :cljs-ns-bindings {'demo.page.oauth2 {'page-oauth2 demo.page.oauth2/page-oauth2}
                     'demo.app {'routes demo.app/routes
-                               'wrap-page demo.app/wrap-page
-                               }}
+                               'wrap-page demo.app/wrap-page}}
  ; run
- 
+
  :cljs-routes-reitit demo.app/routes
- }
+
+ :web/routes [["/secret" {:get demo.page.secret/page-handler
+                          :middleware [ring.middleware.cookies/wrap-cookies
+                                       muuntaja.middleware/wrap-format
+                                       token.identity.local/identity-middleware
+                                       token.identity.local/signed-in-middleware]}]]}
