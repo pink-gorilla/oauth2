@@ -39,11 +39,16 @@
                     :store-role nil ; #{}
                     })}
 
+  :sente-websocket {:start (modular.ws.core/start-websocket-server :jetty)} 
   :webly {:start (webly.spa/start-webly
-                  {:exts (clip/ref :exts)}
+                  {:exts (clip/ref :exts)
+                   :ctx {:sente (clip/ref :sente-websocket)
+                                          ;:flowy nil
+                          }
+                   }
                   (clip/ref :config)
                   (:profile #ref [:modular]))
-          :stop (webly.app.app/stop-webly this)}
+          :stop (webly.spa/stop-webly this)}
 
 
   :nrepl {:start (nrepl.server/start-server :bind "0.0.0.0" :port 9100)

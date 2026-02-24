@@ -1,7 +1,14 @@
 {:name "demo"
  ; build
  :lazy true
- :cljs-namespace [demo.page.oauth2]
- :cljs-ns-bindings {'demo.page.oauth2 {'page-oauth2 demo.page.oauth2/page-oauth2}}
+ :cljs-namespace [demo.page.oauth2
+                  demo.app
+                  ]
+ :cljs-ns-bindings {'demo.page.oauth2 {'page-oauth2 demo.page.oauth2/page-oauth2}
+                    'demo.app {'routes demo.app/routes
+                               'wrap-page demo.app/wrap-page
+                               }}
  ; run
- :cljs-routes  {"" demo.page.oauth2/page-oauth2}}
+ 
+ :cljs-routes-reitit demo.app/routes
+ }

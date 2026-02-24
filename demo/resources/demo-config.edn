@@ -14,5 +14,17 @@
                           [#{"modular.persist.*"} :warn]
                           [#{"goldly.service.core"} :warn] ; goldly services - less logging
                           [#{"*"} :info]] ; default -> info
-              :appenders {:default {:type :console-color}}}}
+              :appenders {:default {:type :console-color}}}
+ 
+ ; :webly {:title "crb-clean admin"}
+ 
+ :spa {:title "demo-page"
+         ;:spinner "webly/loading.svg"
+         ;:icon "webly/icon/pinkgorilla32.png" ; "webly/icon/silver.ico"  ; gorilla is much smaller than silver
+         ;:loading-image-url "webly/loadimage/library.jpg" ; 
+       :mount-fn router.app/mount}
+ 
+ :reitit {:wrap demo.app/wrap-page}
+ 
+ }
  

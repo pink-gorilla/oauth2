@@ -1,7 +1,7 @@
 {:paths ["src"
          "resources"]
  :deps
- {org.clojure/clojure    {:mvn/version "1.11.1"}
+ {org.clojure/clojure    {:mvn/version "1.12.4"}
   funcool/promesa {:mvn/version "11.0.674"} ; needs to match version in ui-repl
   tick/tick {:mvn/version "0.6.2"}
   ;; web-ui deps
@@ -22,8 +22,8 @@
   ;ring-oauth2/ring-oauth2 {:mvn/version "0.1.5"}
   ; clj-oauth/clj-oauth {:mvn/version "1.5.2"}; copied over from REST
   ; pink-gorilla dependencies
-  org.pinkgorilla/modular {:mvn/version "0.2.61"} ; for edn saving (with time formats encoding added)
-  org.pinkgorilla/clj-service {:mvn/version "0.4.22"} ; brings permission + websocket
+  org.pinkgorilla/modular {:mvn/version "0.3.74"} ; for edn saving (with time formats encoding added)
+  org.pinkgorilla/clj-service {:mvn/version "0.4.25"} ; brings permission + websocket
   }
 
  :aliases
