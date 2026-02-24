@@ -9,7 +9,8 @@
   com.cemerick/url {:mvn/version "0.1.1"}  ; url query-strings
   cljs-ajax/cljs-ajax {:mvn/version "0.8.4"} ; needed for re-frame/http-fx
   babashka/fs {:mvn/version "0.5.22"} ; create dir
-  
+  hiccup/hiccup  {:mvn/version "2.0.0"}
+       
   ;; JWT / auth deps
   buddy/buddy-core {:mvn/version "1.10.1"}
   buddy/buddy-sign {:mvn/version "3.4.1"}

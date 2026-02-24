@@ -42,7 +42,9 @@
   :sente-websocket {:start (modular.ws.core/start-websocket-server :jetty)} 
   :webly {:start (webly.spa/start-webly
                   {:exts (clip/ref :exts)
-                   :ctx {:sente (clip/ref :sente-websocket)
+                   :ctx {:permission (clip/ref :permission)
+                         :identity (clip/ref :identity)
+                         :sente (clip/ref :sente-websocket)
                                           ;:flowy nil
                           }
                    }

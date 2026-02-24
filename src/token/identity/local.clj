@@ -29,10 +29,11 @@
   (-> (hash/blake2b-128 pwd)
       (codecs/bytes->hex)))
 
-(defn create-claim [{:keys [secret] :as this} claim]
-  (info "creating claim: " claim " secret: " secret)
-  (let [token (jwt/sign claim secret)]
-    (assoc claim :token token)))
+(defn create-claim [{:keys [identity] :as this} claim]
+  (let [secret (get-in identity [:local :secret])]
+    (info "creating claim: " claim " secret: " secret)
+    (let [token (jwt/sign claim secret)]
+      (assoc claim :token token))))
 
 (defn get-token [{:keys [permission] :as this} user-name user-password]
   (let [user-kw (keyword user-name)
@@ -59,8 +60,18 @@
 (defn verify-token [{:keys [secret] :as this} token]
   (info "verifying token: " token " secret: " secret)
   (try
-    (-> (jwt/unsign token secret)
-        (update :user keyword))
+    (cond
+      (nil? secret)
+      {:error :no-secret
+       :error-message "No Secret!"}
+
+      (nil? token)
+      {:error :no-token
+       :error-message "No Tokent!"}
+
+      :else
+      (-> (jwt/unsign token secret)
+          (update :user keyword)))
     (catch Exception ex
       (error "verify-token exception: " ex)
       {:error :bad-token
@@ -70,12 +81,94 @@
   [{:keys [permission secret] :as this} token]
   (info "login/local: token: " token " session: " *session*)
   (let [{:keys [user error] :as r} (verify-token this token)]
-    (if error 
+    (if error
       (taoensso.timbre/error "login/local error: " error " token: " token)
       (info "login/local: result: " r))
     (when user
       (set-user! permission  *session* user))
     r))
+
+(defn login-handler [{:keys [ctx body-params query-params params] :as req}]
+  (info "login-handler body-params: " body-params)
+  (let [{:keys [user password]} body-params]
+    (if (and user password)
+      (let [{:keys [token error error-message user roles] :as tr} (get-token ctx user password)]
+          ; success:  
+          ; {:type :local, :provider :local, :user :florian, :roles #{:logistic}, :email ["hoertlehner@gmail.com"], :token "eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoibG9jYWwiLCJwcm92aWRlciI6ImxvY2FsIiwidXNlciI6ImZsb3JpYW4iLCJyb2xlcyI6WyJsb2dpc3RpYyJdLCJlbWFpbCI6WyJob2VydGxlaG5lckBnbWFpbC5jb20iXX0.JEPHMQMPu44L-OSLBTi4YSmPaIU_Iq0KO_v2hXrIqJM"}
+          ; error:
+          ; {:error :bad-password, :error-message "Bad password for  [florian]."}
+        (warn "token-response: " tr)
+        (if error
+          {:status 400 :body error-message}
+          {:status 200 :body token
+           :cookies {"identity" {:value token
+                                 :http-only true
+                                 :secure true
+                                 :same-site :lax
+                                 :path "/"
+                                 :max-age 3600}}}))
+      {:status 500 :body "must provide user and password as body params"})))
+
+
+(defn wrap-identity [handler identity]
+  (fn [{:keys [cookies] :as req}]
+    (cond
+      (when-not cookies)
+      (do (error "cannot wrap-identity: no :cookies in ctx)")
+          (handler req))
+
+      (when-not identity)
+      (do (error "cannot wrap-identity: no :identity in ctx)")
+          (handler req))
+
+      :else
+      (let [_ (warn "identity keys: " (keys identity))
+            secret (get-in identity [:local :secret])
+            identity-cookie (get cookies "identity")
+            token (get identity-cookie :value)]
+        (if token
+          (let [r (verify-token {:secret secret} token)]
+            (warn "verify-token result: ") r
+            ;{:type "local", :provider "local", :user :florian, :roles ["logistic"], :email ["hoertlehner@gmail.com"]}
+            (if (:user r)
+              (handler (assoc req :identity (select-keys r [:user :roles :email])))
+              (do 
+                (error "no identity")
+                (handler req))))
+          (do
+            (warn "no token found in identity cookie.")
+            (warn "cookies: " cookies)
+            (warn "identity: " identity-cookie)
+            (handler req)))))))
+
+
+(def identity-middleware
+  {:name ::identity
+   :compile
+   (fn [{:keys [services-ctx] :as route-data} _router-opts]
+     (fn [handler] (wrap-identity handler (:identity services-ctx))))})
+
+
+(defn identity-handler [{:keys [identity] :as req}]
+  (if identity
+    {:status 200 :body identity}
+    {:status 200 :body {:user nil :permissions nil}}))
+
+
+(defn wrap-signed-in [handler]
+  (fn [{:keys [session] :as ctx}]
+    (if (some? (:uid session))
+      (handler ctx)
+      {:status 303
+       :headers {"location" "/signin?error=not-signed-in"}})))
+
+
+
+(defn signout [{:keys [session]}]
+  {:status 303
+   :headers {"location" "/"}
+   :session (dissoc session :uid)})
+
 
 (comment
 
