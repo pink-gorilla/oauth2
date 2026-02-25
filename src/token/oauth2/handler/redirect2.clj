@@ -37,7 +37,7 @@
     ;(warn "redirect this keys: " (keys this))
     (when code
       (info "exchanging code to token for " provider  " code: " code)
-      (info "ctx keys: " (keys ctx) "this keys: " (keys this))
+      ;(info "ctx keys: " (keys ctx) "this keys: " (keys this))
       (info "oauth2 providers: " (:providers this))
       (let [t (exchange-code-to-token this {:provider provider-kw
                                             :code code

@@ -22,7 +22,7 @@
   (info "oauth2/authorize-start: req keys:" (keys req))
   (let [this (:token ctx)
         {:keys [provider]} path-params
-        {:keys [scope state]} params
+        {:keys [scope save-as]} params
         provider-kw (keyword provider)
         redirect-url (redirect-url req provider)
         _ (info "redirect url: " redirect-url)
@@ -31,14 +31,14 @@
                       (and (string? scope) (str/blank? scope)))
                 (get-identity-scope provider-kw)
                 scope)
-        state (or state "identity")]
+        save-as (or save-as "identity")]
     (info "scope: " (pr-str scope))
-    (info "state: " state)
+    (info "save-as: " save-as)
     (-> (response/redirect (url-authorize this
                                           {:provider provider-kw
                                            :current-url redirect-url
                                            :scope scope
-                                           :save-as state})))))
+                                           :save-as save-as})))))
 
 #_{:response_type "code", :access_type "offline", :nonce "376250065",
    :redirect_uri "http://localhost:8000/api/oauth2/redirect/google",
