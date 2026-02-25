@@ -92,7 +92,9 @@
         (if error
           {:status 303
            :headers {"location" (str "/login?error=" (java.net.URLEncoder/encode (str error-message) "UTF-8"))}}
-          {:status 200 :body token
+          {:status 303 
+           ;:body token
+           :headers {"location" "/me"}
            :cookies {"identity" {:value token
                                  :http-only true
                                  :secure true
@@ -164,7 +166,7 @@
 
 (defn logout-handler [req]
   {:status 303
-   :headers {"location" "/"}
+   :headers {"location" "/me"}
    :cookies {"identity" {:value nil
                          :http-only true
                          :secure true

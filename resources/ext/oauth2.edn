@@ -16,10 +16,14 @@
  :web/routes [; oauth redirect is stateless,
               ; all other endpoints are implemented via clj-service which can be started at runtime 
               ; if the service gets started.
-              ["/login" {:get token.identity.login/page-handler
+              ["/login" {:get token.identity.page.login/login-page
                          :middleware [ring.middleware.params/wrap-params]}]
-              ["/logout" {:get token.identity.local/logout-handler
-                          :middleware [ring.middleware.cookies/wrap-cookies]}]
+              ["/me" {:get token.identity.page.me/me-page
+                      :middleware [webserver.middleware.ctx/ctx-middleware
+                                   ring.middleware.cookies/wrap-cookies
+                                   muuntaja.middleware/wrap-format
+                                   token.identity.local/identity-middleware]
+                      :services #{:token}}]
 
               ["/token"
                ["/login" {:post token.identity.local/login-handler
@@ -28,12 +32,9 @@
                                        muuntaja.middleware/wrap-format
                                        webserver.middleware.ctx/ctx-middleware]
                           :services #{:token}}]
-               ["/me" {:get token.identity.handler.me/me-handler
-                       :middleware [webserver.middleware.ctx/ctx-middleware
-                                    ring.middleware.cookies/wrap-cookies
-                                    muuntaja.middleware/wrap-format
-                                    token.identity.local/identity-middleware]
-                       :services #{:token}}]
+               ["/logout" {:get token.identity.local/logout-handler
+                           :middleware [ring.middleware.cookies/wrap-cookies]}]
+              
 
                ["/oauth2/start/:provider" {:get token.oauth2.handler.start/handler-oauth2-start
                                            :middleware [webserver.middleware.ctx/ctx-middleware
