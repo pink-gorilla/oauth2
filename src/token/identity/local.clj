@@ -17,7 +17,7 @@
     (assoc claim :token token)))
 
 (defn get-token [{:keys [users] :as this} user-name user-password]
-  (info "get-token this keys: " (keys this))
+  ;(info "get-token this keys: " (keys this))
   ; get-token this keys:  (:permission :secret :store :providers)
   (let [user-kw (keyword user-name)
         password-hashed (pwd-hash user-password)
@@ -113,7 +113,7 @@
           (handler req))
 
       :else
-      (let [_ (warn "this keys: " (keys this))
+      (let [;_ (warn "this keys: " (keys this))
             identity-cookie (get cookies "identity")
             token (get identity-cookie :value)]
         (if token

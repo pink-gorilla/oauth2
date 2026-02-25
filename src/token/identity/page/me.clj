@@ -43,7 +43,8 @@
 
 (defn me-page-logged-in [identity]
   (let [{:keys [user roles email provider]
-         :or {user nil roles [] email nil provider nil}} identity]
+         :or {user nil roles [] email nil provider nil}
+         :as userdata} identity]
     (page/html5
      {:mode :html}
      [:head
@@ -51,7 +52,7 @@
       [:title "Me"]
       [:script {:src "/r/oauth2/redirect.js"
                 :type "text/javascript"
-                :onload (str "sendcallback ('" provider "');")}]
+                :onload (str "sendcallback ('" userdata "');")}]
 
       me-styles]
      [:body

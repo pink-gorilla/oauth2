@@ -1,5 +1,6 @@
 (ns token.ui.broadcast
   (:require
+   [cljs.reader :as reader]
    [taoensso.timbre :refer-macros [info error]]
    [promesa.core :as p]
    [cemerick.url :as url]))
@@ -12,25 +13,25 @@
         (for [[k v] my-map]
           [(keyword k) v])))
 
-(defn url-data [wurl]
-  (let [url (url/url wurl)]
-    {:anchor (keywordize (url/query->map (:anchor url)))
-     :query (keywordize (:query url))}))
+
+
+
+;; => {:a 1 :b "hello"}
 
 (defn process-data [ev]
   (let [json (. ev -data)
         data (js->clj (.parse js/JSON json))
-        wurl (get data "url")
-        provider (get data "provider")
-        cbdata (merge  (url-data wurl) {:provider (keyword provider)})]
-    (info "oauth chan rcvd: json: " json  "data: " data)
-    (info "oauth cb data: " cbdata)
-    cbdata))
+        data-cljs (reader/read-string data)
+        ;data-cljs (keywordize data)
+        ]
+    (info "type of data: " (type data))
+    (info "chan rcvd: json: " json  "data: " data-cljs)
+    data-cljs))
 
-(defn oauth2-broadcast-result []
+(defn broadcast-result []
   (info "waiting for oauth2 broadcast result..")
   (let [r (p/deferred)
-        bc (js/BroadcastChannel. "webly_oauth2_redirect_channel")]
+        bc (js/BroadcastChannel. "token_user_channel")]
     (set! (.. bc -onmessage)
           (fn [ev]
             (info "broadcast data received.")
@@ -41,3 +42,12 @@
               (p/resolve! r data))))
     r))
 
+(defn broadcast-subscribe [cb]
+  (info "creating broadcast subscription..")
+  (let [bc (js/BroadcastChannel. "token_user_channel")]
+    (set! (.. bc -onmessage)
+          (fn [ev]
+            (let [data (process-data ev)]
+              (info "broadcast-subscription received data: " data)
+              (cb data))))
+    bc))

@@ -1,15 +1,15 @@
 
 
-var bc = new BroadcastChannel('webly_oauth2_redirect_channel');
+var bc = new BroadcastChannel('token_user_channel');
 
-var url = window.location.href;
+// var url = window.location.href;
+// console.log ("url: " + url);
 
-console.log ("url: " + url);
-
-function sendcallback (provider)
+function sendcallback (data)
 {
-  var msg = JSON.stringify({provider: provider, url: url});
-  console.log ("sending back: " + msg)
+  var msg = JSON.stringify(data);
+  console.log ("sending back: ");
+  console.log (msg);
   bc.postMessage(msg); 
 }
 

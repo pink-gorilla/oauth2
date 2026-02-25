@@ -5,39 +5,44 @@
    [reagent.core :as r]
    [re-frame.core :as rf]
    [token.ui.window :refer [open-window close-window]]
-   [token.ui.broadcast :refer [oauth2-broadcast-result]]
+   [token.ui.broadcast :refer [broadcast-result broadcast-subscribe]]
    ))
 
 (defonce user-a (r/atom nil))
 
 
-(defn set-user! [{:keys [token user] :as usermap}]
-  (info "setting user to: " user)
-  (reset! user-a usermap))
+(defn set-user! [u]
+  (info "setting user to: " u)
+  (reset! user-a u))
 
-(defn login []
-  (info "log in")
-  (let [w (open-window {:url "/login"
+(broadcast-subscribe
+ (fn [u]
+   (info "user refresher has received: " u)
+   (reset! user-a u)
+   (info "current username: " (:user u))
+   nil))
+
+
+(defn open-window-autoclose [url]
+  (let [w (open-window {:url url
                         :title ""
                         :height 500
                         :width 500})
-        broadcast-result (oauth2-broadcast-result)
-        ]
-    (-> broadcast-result
+        result (broadcast-result)]
+    (-> result
         (p/then (fn [r]
-                  (info "broadcast result: " r)
-                  (close-window w)
-                  )))
+                  (info "auto-closing after result: " r)
+                  (close-window w))))))
 
-    )
+
+(defn login []
+  (info "log in")
+  (open-window-autoclose "/login")
   )
 
 (defn logout []
   (info "log out")
-  (open-window {:url "/logout"
-                :title ""
-                :height 500
-                :width 500}))
+  (open-window-autoclose "/logout"))
 
 (defn me []
   (info "me")
