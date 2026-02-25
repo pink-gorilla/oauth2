@@ -55,7 +55,7 @@
       :else
       (let [verify-result (-> (jwt/unsign token secret)
                               (update :user keyword))]
-        (warn "token verify result:" verify-result)
+        ;(warn "token verify result:" verify-result)
         verify-result))
     (catch Exception ex
       (error "verify-token exception: " ex)
@@ -128,9 +128,10 @@
                 (error "no identity")
                 (handler req))))
           (do
-            (warn "no token found in identity cookie.")
-            (warn "cookies: " cookies)
-            (warn "identity: " identity-cookie)
+            (warn "no logged in user")
+            ;(warn "no token found in identity cookie.")
+            ;(warn "cookies: " cookies)
+            ;(warn "identity: " identity-cookie)
             (handler req)))))))
 
 (def identity-middleware
