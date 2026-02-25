@@ -28,7 +28,7 @@
                                        muuntaja.middleware/wrap-format
                                        webserver.middleware.ctx/ctx-middleware]
                           :services #{:token}}]
-               ["/me" {:get token.identity.local/identity-handler
+               ["/me" {:get token.identity.handler.me/me-handler
                        :middleware [webserver.middleware.ctx/ctx-middleware
                                     ring.middleware.cookies/wrap-cookies
                                     muuntaja.middleware/wrap-format

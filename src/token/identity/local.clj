@@ -53,11 +53,13 @@
 
       (nil? token)
       {:error :no-token
-       :error-message "No Tokent!"}
+       :error-message "No Token!"}
 
       :else
-      (-> (jwt/unsign token secret)
-          (update :user keyword)))
+      (let [verify-result (-> (jwt/unsign token secret)
+                              (update :user keyword))]
+        (warn "token verify result:" verify-result)
+        verify-result))
     (catch Exception ex
       (error "verify-token exception: " ex)
       {:error :bad-token
@@ -113,15 +115,17 @@
           (handler req))
 
       :else
-      (let [_ (warn "identity keys: " (keys identity)) 
+      (let [_ (warn "this keys: " (keys this)) 
             identity-cookie (get cookies "identity")
             token (get identity-cookie :value)]
         (if token
           (let [r (verify-token this token)]
-            (warn "verify-token result: ") r
-            ;{:type "local", :provider "local", :user :florian, :roles ["logistic"], :email ["hoertlehner@gmail.com"]}
+            (warn "verify-token result: " r) 
+            #_{:type "local", :provider "local", 
+               :user :florian, :roles ["logistic"], 
+               :email ["hoertlehner@gmail.com"]}
             (if (:user r)
-              (handler (assoc req :identity (select-keys r [:user :roles :email])))
+              (handler (assoc req :identity (select-keys r [:user :roles :email :provider])))
               (do 
                 (error "no identity")
                 (handler req))))
@@ -136,19 +140,17 @@
   {:name ::identity
    :compile
    (fn [{:keys [services-ctx] :as route-data} _router-opts]
-     (fn [handler] (wrap-identity handler (:token services-ctx))))})
+     (fn [handler] 
+       (wrap-identity handler (:token services-ctx))))})
 
 
-(defn identity-handler [{:keys [identity] :as req}]
-  (if identity
-    {:status 200 :body identity}
-    {:status 200 :body {:user nil :permissions nil}}))
+
 
 
 (defn wrap-signed-in [handler]
   (fn [{:keys [ctx] :as req}]
-    (warn "wrap-signed in is checking identity: " identity)
-    (if (and ctx (:token ctx))
+    (warn "wrap-signed in is checking identity: " (:identity ctx))
+    (if (and ctx (:identity ctx))
       (handler req)
       {:status 303
        :headers {"location" "/login?error=not-signed-in"}})))
