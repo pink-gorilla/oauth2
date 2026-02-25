@@ -3,7 +3,7 @@
    [promesa.core :as p]
    [reagent.core :as r]
    [goldly.service.core :refer [clj]]
-   [token.core :refer [user-a user-icon-with-login login me]]
+   [token.core :refer [user-a user-icon-with-login login me authorize]]
    [demo.helper.ui :refer [link-fn block2]]))
 
 (defn demo-oauth []
@@ -21,7 +21,17 @@
    [:a {:on-click #(me)}
     [:h1 "ME:"]]
    
-   ])
+   [:a {:on-click #(authorize {:provider :google
+                               :scope ["https://www.googleapis.com/auth/spreadsheets.readonly"
+                                       "https://www.googleapis.com/auth/drive.readonly"]
+                               :save-as "demo-gmail-drive"
+                               })}
+    [:h1 "authorize gmail creds"]]
+   
+   ]
+  
+  
+  )
 
 (defn user-details []
   (fn []

@@ -34,7 +34,7 @@
         provider-kw (keyword provider)
         {:keys [scope code state]} params
         url (redirect-url req provider-kw)]
-    (warn "redirect this keys: " (keys this))
+    ;(warn "redirect this keys: " (keys this))
     (when code
       (info "exchanging code to token for " provider  " code: " code)
       (info "ctx keys: " (keys ctx) "this keys: " (keys this))

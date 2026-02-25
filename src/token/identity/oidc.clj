@@ -19,7 +19,7 @@
 (defn login
   [{:keys [users] :as this} {:keys [provider id-token]}]
   (info "login/oauth2-oidc: id-token: " id-token " provider " provider)
-  (warn "oauth2->login ctx keys:" (keys this))
+  ;(warn "oauth2->login ctx keys:" (keys this))
   (let [;email (user-email token)
         jwks-url  (provider/oauth2-jwks-uri {:provider provider})
         ;_ (info "getting jwks for provider: " provider " url: " jwks-url)

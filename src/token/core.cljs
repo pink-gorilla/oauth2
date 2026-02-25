@@ -51,6 +51,20 @@
                 :height 500
                 :width 500}))
 
+(defn authorize [{:keys [provider scope save-as] :as q}]
+  (let [params (js/URLSearchParams.)] 
+    (doseq [s (or scope [])] 
+      (.append params "scope" s))
+    (.append params "save-as" save-as)
+    (let [provider (name provider)
+          query (.toString params)
+          url (str "/token/oauth2/start/" provider "?" query)]
+      (info "authorize" url)
+      (open-window {:url url
+                    :title ""
+                    :height 600
+                    :width 500}))))
+
 (defn init-user!
   "fn to start user (defined in extension)"
   [_config]

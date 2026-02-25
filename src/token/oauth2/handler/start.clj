@@ -27,7 +27,8 @@
         redirect-url (redirect-url req provider)
         _ (info "redirect url: " redirect-url)
         _  (info "oauth2 start for provider: " provider-kw "url: " redirect-url)
-        scope (if (or (nil? scope) (str/blank? scope))
+        scope (if (or (nil? scope) 
+                      (and (string? scope) (str/blank? scope)))
                 (get-identity-scope provider-kw)
                 scope)
         state (or state "identity")]
