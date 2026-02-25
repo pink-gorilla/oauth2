@@ -61,4 +61,4 @@
                                :secure true
                                :same-site :lax
                                :path "/"
-                               :max-age 3600}}}))))
+                               :max-age (get this :auth-expiry 3600)}}}))))

@@ -97,7 +97,7 @@
                                  :secure true
                                  :same-site :lax
                                  :path "/"
-                                 :max-age 3600}}}))
+                                 :max-age (get this :auth-expiry 3600)}}}))
       {:status 303
        :headers {"location" (str "/login?error=" (java.net.URLEncoder/encode "must provide user and password" "UTF-8"))}})))
 
