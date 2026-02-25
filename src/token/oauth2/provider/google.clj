@@ -25,8 +25,12 @@
 (defmethod oauth2-flow-opts :google [_]
   {; authorize
    :uri "https://accounts.google.com/o/oauth2/v2/auth"
-   :query-params {:response_type "code" ; "token" ; 
-                  :access_type "offline"; the client does not receive a refresh token unless a value of offline is specified. (online or offline
+   :query-params {:response_type "code"
+                  ; offline -> request refresh token. Without it Google only returns access token.
+                  :access_type "offline"
+                  ; consent -> always show consent screen so Google returns a refresh_token.
+                  ; Otherwise Google returns a refresh_token only on first authorization.
+                  :prompt "consent"
                   :nonce (nonce)}})
 
 (defmethod oauth2-auth-header-prefix :google [_]

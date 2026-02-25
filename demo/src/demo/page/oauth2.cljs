@@ -48,10 +48,29 @@
 (defn section-oauth2-authorize []
   [section "OAuth2 authorize requests"
    [link-fn #(authorize {:provider :google
-                         :scope ["https://www.googleapis.com/auth/spreadsheets.readonly"
+                         :scope [;"offline_access" ; refresh token
+                                 "https://www.googleapis.com/auth/spreadsheets.readonly"
                                  "https://www.googleapis.com/auth/drive.readonly"]
                          :save-as "demo-gmail-drive"})
-    "Authorize Gmail / Drive creds"]])
+    "Authorize Gmail / Drive creds"]
+   [link-fn #(authorize {:provider :xero
+                         :scope ["offline_access" ; refresh_token
+                                 ;"openid"
+                                 ;"profile"
+                                 ;"email"
+                                 "accounting.settings"
+                                 "accounting.reports.read"
+                                 "accounting.journals.read"
+                                 "accounting.contacts"
+                                 "accounting.attachments"
+                                 "accounting.transactions"
+                                 "accounting.transactions.read"]
+                         :save-as "demo-xero-accounting"})
+    "Authorize Xero / accounting"]
+   
+   
+   
+   ])
 
 (defonce result-a (r/atom "--- no request made yet ---"))
 
