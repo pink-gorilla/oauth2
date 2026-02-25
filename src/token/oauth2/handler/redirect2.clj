@@ -53,6 +53,7 @@
         (if (= state "identity")
           (login this {:provider provider-kw
                        :id-token (:id-token t)})
-          {:status 200
-           :body (str "token with scope " scope " stored to " state)})))))
+          (let [q (str "state=" (java.net.URLEncoder/encode (str state) "UTF-8")
+                      "&scope=" (java.net.URLEncoder/encode (str scope) "UTF-8"))]
+            (response/redirect (str "/token/authresult?" q))))))))
 

@@ -34,6 +34,8 @@
                                     muuntaja.middleware/wrap-format
                                     token.identity.local/identity-middleware]
                        :services #{:token}}]
+               ["/authresult" {:get token.oauth2.handler.authresult/page-authresult
+                               :middleware [ring.middleware.params/wrap-params]}]
                
                ["/oauth2/start/:provider" {:get token.oauth2.handler.start/handler-oauth2-start
                                            :middleware [webserver.middleware.ctx/ctx-middleware
@@ -52,7 +54,7 @@
                                                    ]
                                       :services #{:token}
                                       }]
-               
+              
                ]]
 
 
