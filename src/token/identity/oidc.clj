@@ -55,10 +55,10 @@
                                       :roles (:roles user)
                                       :email (:email user)})]
         (info "perfect! logging in user: " user)
-        (info "token: " claim)
-        {:status 200
-         :body (str "logged in via oidc: " email " user: " user)
-         :cookies {"identity" {:value claim
+        (info "claim: " claim)
+        {:status 303
+         :headers {"location" "/me"} 
+         :cookies {"identity" {:value (:token claim)
                                :http-only true
                                :secure true
                                :same-site :lax

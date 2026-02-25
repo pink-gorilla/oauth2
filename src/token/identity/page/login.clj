@@ -1,7 +1,8 @@
 (ns token.identity.page.login
   (:require
    [hiccup.page :as page]
-   [ring.util.response :as response]))
+   [ring.util.response :as response]
+   [token.oauth2.core :refer [url-start]]))
 
 (def login-styles
   [:style (str "
@@ -21,14 +22,24 @@
                    border: 1px solid #d4ccc4; border-radius: 6px; box-sizing: border-box; }
     .login-input:focus { outline: none; border-color: #3d3630; }
     .login-actions { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid #ebe6e1; }
+    .login-actions .btn { margin-right: 0.5rem; margin-bottom: 0.5rem; }
     .btn { display: inline-block; padding: 0.5rem 1.25rem; font-size: 0.9rem; font-weight: 500;
            background: #3d3630; color: #fff; text-decoration: none; border-radius: 6px;
            border: none; cursor: pointer; transition: background 0.15s ease; }
     .btn:hover { background: #2c2520; }
+    .btn-google { background: #4285f4; }
+    .btn-google:hover { background: #3367d6; }
   ")])
 
-(defn login-page [{:keys [query-params] :as _req}]
+(defn request-origin [{:keys [scheme server-name server-port]}]
+  (str (name scheme) "://" server-name ":" server-port))
+
+(defn login-page [{:keys [query-params] :as req}]
   (let [error (get query-params "error")
+        current-url (str (request-origin req) "/")
+        google-start-url (url-start {:provider :google
+                                     :current-url current-url
+                                     :save-as "identity"})
         body (page/html5
               {:mode :html}
               [:head
@@ -50,7 +61,8 @@
                    [:label.login-label {:for "password"} "Password"]
                    [:input#password.login-input {:type "password" :name "password" :required true}]]
                   [:div.login-actions
-                   [:button.btn {:type "submit"} "Login"]]]]]])]
+                   [:button.btn {:type "submit"} "Login"]
+                   [:a.btn.btn-google {:href google-start-url} "Login with Google"]]]]]])]
     (response/content-type
      {:status 200
       :body body}

@@ -46,6 +46,7 @@
               ["/api/oauth2/"
                ["redirect/:provider" {:handler token.oauth2.handler.redirect2/handler-oauth2-redirect
                                       :middleware [webserver.middleware.ctx/ctx-middleware ; needs to access oauth2 config
+                                                   ring.middleware.cookies/wrap-cookies ; oauth2 redirect needs to set cookies
                                                    ring.middleware.params/wrap-params
                                                    ring.middleware.keyword-params/wrap-keyword-params
                                                    muuntaja.middleware/wrap-format
