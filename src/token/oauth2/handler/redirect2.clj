@@ -22,12 +22,10 @@
            :authuser "0",
            :code "4/0ATx3LY4lnqT4ouMOPf7JIkIjFcXjnxu6Y6aL47n1J6ZcIF950eCI4WXmnI_rFXafYNuzAw"}}
 
-
 #_{:iss "https://accounts.google.com",
    :code "4/0AfrIepDi5QXx2JRGoVAOtPtk7Ht5xXFo3wMZM6pM6qB7qqZaO1rLexL7C2CvBG7t5g3tng",
    :scope "email profile https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid",
    :authuser "0", :prompt "none"}
-
 
 (defn handler-oauth2-redirect [{:keys [ctx params path-params] :as req}]
   (warn "oauth2/authorize-response: params: " params " path-params: " path-params)
@@ -49,7 +47,6 @@
             t (sanitize-token t)
             _ (info "sanitized token: " t)]
         (info "state:" state)
-
 
         (save-token this provider-kw t)
 

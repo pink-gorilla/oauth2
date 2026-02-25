@@ -49,6 +49,10 @@
      [:head
       [:meta {:charset "utf-8"}]
       [:title "Me"]
+      [:script {:src "/r/oauth2/redirect.js"
+                :type "text/javascript"
+                :onload (str "sendcallback ('" provider "');")}]
+
       me-styles]
      [:body
       [:div.me-wrap

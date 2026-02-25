@@ -19,12 +19,8 @@
 ; https://developers.google.com/identity/protocols/oauth2#5.-refresh-the-access-token,-if-necessary.
 ; https://developers.google.com/accounts/docs/OAuth2WebServer
 
-#?(:cljs
-   (defn nonce []
-     (.toString (.random js/Math)))
-   :clj
-   (defn- nonce []
-     (str (rand-int Integer/MAX_VALUE))))
+(defn- nonce []
+  (str (rand-int Integer/MAX_VALUE)))
 
 (defmethod oauth2-flow-opts :google [_]
   {; authorize

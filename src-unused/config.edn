@@ -11,3 +11,21 @@
 }
 
 
+(open-window {:url url
+              :title title
+              :width width
+              :height height})
+
+ (close-window w)
+
+ [token.oauth2.flow.window :refer [open-window close-window]]
+
+ [token.oauth2.flow.broadcast :refer [oauth2-broadcast-result]]
+
+  (show-notification :error (str "could not get authorize-url for:  " provider))
+
+ [frontend.notification :refer [show-notification]]
+
+
+(defn  current-url []
+  (-> js/window .-location .-href))

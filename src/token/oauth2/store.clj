@@ -1,13 +1,13 @@
 (ns token.oauth2.store
   (:require
-   [babashka.fs :as fs] 
+   [babashka.fs :as fs]
    [modular.persist.protocol :refer [save loadr]]
    [modular.persist.edn] ; side effects to be able to save edn files
    [token.oauth2.token :refer [sanitize-token]]))
 
 (defn init-store [{:keys [store-path] :as this}]
   ;(println "token store: " path)
-  (fs/create-dirs store-path) 
+  (fs/create-dirs store-path)
   nil)
 
 (defn- filename-token  [{:keys [store-path] :as this} id]

@@ -1,4 +1,4 @@
-(ns token.oauth2.flow.window
+(ns token.ui.window
   (:require
    [taoensso.timbre :refer-macros [info error]]))
 

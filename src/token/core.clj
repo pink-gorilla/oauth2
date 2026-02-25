@@ -2,7 +2,7 @@
   (:require
    [taoensso.timbre :refer [debug info warn error]]
    [modular.permission.core :refer [start-permissions]]
-   [token.oauth2.store :refer [init-store]] 
+   [token.oauth2.store :refer [init-store]]
    [token.oauth2.core :refer [assert-providers]]
    [token.oauth2.provider.default] ; side effects (add default oauth2 providers)
    ))

@@ -79,9 +79,6 @@
                :path (str "/token/oauth2/start/" (name provider)))
         str)))
 
-
-
-
 (defn url-authorize [this {:keys [provider current-url scope save-as]}]
   (let [query {:redirect_uri  (url-redirect provider current-url)
                :client_id (get-provider-client-id this provider)

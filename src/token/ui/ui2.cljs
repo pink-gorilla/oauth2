@@ -1,10 +1,10 @@
-(ns token.oauth2.store.ui
+(ns token.ui.ui2
   (:require
    [taoensso.timbre :refer-macros [info error]]
    [reagent.core :as r]
    [promesa.core :as p]
    [frontend.notification :refer [show-notification]]
-   [token.oauth2.store.connect :refer [connect get-token-summary]]))
+   [token.ui.connect :refer [connect get-token-summary]]))
 
 (defn connect-notify [provider scope]
   (let [r (connect provider scope)]

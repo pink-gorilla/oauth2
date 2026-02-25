@@ -1,4 +1,4 @@
-(ns token.oauth2.flow.broadcast
+(ns token.ui.broadcast
   (:require
    [taoensso.timbre :refer-macros [info error]]
    [promesa.core :as p]

@@ -1,11 +1,11 @@
-(ns token.identity.dialog
+(ns token.ui.dialog
   (:require
    [taoensso.timbre :refer-macros [info error]]
    [promesa.core :as p]
    [reagent.core :as r]
    [frontend.notification :refer [show-notification]]
    [frontend.dialog :refer [dialog-show dialog-close]]
-   [token.identity.user :as user]
+   [token.ui.user :as user]
    [token.identity.local :as local]
    [token.identity.oidc :as oidc]
    [token.oauth2.core :as oauth2]

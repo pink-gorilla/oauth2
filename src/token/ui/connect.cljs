@@ -1,4 +1,4 @@
-(ns token.oauth2.store.connect
+(ns token.ui.connect
   (:require
    [taoensso.timbre :refer-macros [info error]]
    [promesa.core :as p]

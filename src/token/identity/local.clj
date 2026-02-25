@@ -5,16 +5,13 @@
    [buddy.core.hash :as hash]
    [buddy.sign.jwt :as jwt]
    ;[no.nsd.clj-jwt :as clj-jwt]
-   [modular.permission.user :refer [get-user]] 
-   ))
-
-
+   [modular.permission.user :refer [get-user]]))
 
 (defn pwd-hash [pwd]
   (-> (hash/blake2b-128 pwd)
       (codecs/bytes->hex)))
 
-(defn create-claim [{:keys [secret] :as this} claim] 
+(defn create-claim [{:keys [secret] :as this} claim]
   (info "creating claim: " claim " secret: " secret)
   (let [token (jwt/sign claim secret)]
     (assoc claim :token token)))
@@ -73,7 +70,7 @@
       (taoensso.timbre/error "login/local error: " error " token: " token)
       (info "login/local: result: " r))
     ;(when user (set-user! permission  *session* user))
-    
+
     r))
 
 (defn login-handler [{:keys [ctx body-params form-params query-params params] :as req}]
@@ -92,7 +89,7 @@
         (if error
           {:status 303
            :headers {"location" (str "/login?error=" (java.net.URLEncoder/encode (str error-message) "UTF-8"))}}
-          {:status 303 
+          {:status 303
            ;:body token
            :headers {"location" "/me"}
            :cookies {"identity" {:value token
@@ -103,7 +100,6 @@
                                  :max-age 3600}}}))
       {:status 303
        :headers {"location" (str "/login?error=" (java.net.URLEncoder/encode "must provide user and password" "UTF-8"))}})))
-
 
 (defn wrap-identity [handler this]
   (fn [{:keys [cookies] :as req}]
@@ -117,18 +113,18 @@
           (handler req))
 
       :else
-      (let [_ (warn "this keys: " (keys this)) 
+      (let [_ (warn "this keys: " (keys this))
             identity-cookie (get cookies "identity")
             token (get identity-cookie :value)]
         (if token
           (let [r (verify-token this token)]
-            (warn "verify-token result: " r) 
-            #_{:type "local", :provider "local", 
-               :user :florian, :roles ["logistic"], 
+            (warn "verify-token result: " r)
+            #_{:type "local", :provider "local",
+               :user :florian, :roles ["logistic"],
                :email ["hoertlehner@gmail.com"]}
             (if (:user r)
               (handler (assoc req :identity (select-keys r [:user :roles :email :provider])))
-              (do 
+              (do
                 (error "no identity")
                 (handler req))))
           (do
@@ -137,17 +133,12 @@
             (warn "identity: " identity-cookie)
             (handler req)))))))
 
-
 (def identity-middleware
   {:name ::identity
    :compile
    (fn [{:keys [services-ctx] :as route-data} _router-opts]
-     (fn [handler] 
+     (fn [handler]
        (wrap-identity handler (:token services-ctx))))})
-
-
-
-
 
 (defn wrap-signed-in [handler]
   (fn [{:keys [ctx] :as req}]
@@ -163,7 +154,6 @@
    (fn [{:keys [services-ctx] :as route-data} _router-opts]
      (fn [handler] (wrap-signed-in handler)))})
 
-
 (defn logout-handler [req]
   {:status 303
    :headers {"location" "/me"}
@@ -173,9 +163,6 @@
                          :same-site :lax
                          :path "/"
                          :max-age 0}}})
-
- 
-
 
 (comment
 

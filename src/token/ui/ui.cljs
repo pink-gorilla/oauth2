@@ -1,7 +1,7 @@
-(ns token.identity.ui
+(ns token.ui.ui
   (:require
-   [token.identity.user :refer [user-a logout]]
-   [token.identity.dialog :as dialog]))
+   [token.ui.user :refer [user-a logout]]
+   [token.ui.dialog :as dialog]))
 
 (defn user-icon-with-login []
   (if @user-a
