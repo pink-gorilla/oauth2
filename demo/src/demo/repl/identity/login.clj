@@ -4,7 +4,7 @@
    [token.identity.local :refer [get-token verify-token]]))
 
 
-(def this (modular.system/system :oauth2))
+(def this (modular.system/system :token))
 
 (get-token this "bongo" "11111")
 (get-token this "demo" "11111")

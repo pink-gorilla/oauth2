@@ -12,16 +12,14 @@
                     token.identity.ui {'user-icon-with-login token.identity.ui/user-icon-with-login
                                        'show-login-dialog  token.identity.ui/show-login-dialog}}
  ; run 
- 
+
  :web/routes [; oauth redirect is stateless,
               ; all other endpoints are implemented via clj-service which can be started at runtime 
               ; if the service gets started.
               ["/login" {:get token.identity.login/page-handler
                          :middleware [ring.middleware.params/wrap-params]}]
-              
               ["/logout" {:get token.identity.local/logout-handler
-                          :middleware [ring.middleware.cookies/wrap-cookies]
-                          }]
+                          :middleware [ring.middleware.cookies/wrap-cookies]}]
 
               ["/token"
                ["/login" {:post token.identity.local/login-handler
@@ -29,25 +27,30 @@
                                        ring.middleware.params/wrap-params
                                        muuntaja.middleware/wrap-format
                                        webserver.middleware.ctx/ctx-middleware]
-                          :services #{:permission :identity}}]
+                          :services #{:token}}]
                ["/me" {:get token.identity.local/identity-handler
                        :middleware [webserver.middleware.ctx/ctx-middleware
                                     ring.middleware.cookies/wrap-cookies
                                     muuntaja.middleware/wrap-format
                                     token.identity.local/identity-middleware]
-                       :services #{:permission :identity}}]
-               
-               
-               ]
+                       :services #{:token}}]
+
+               ["/oauth2/start/:provider" {:get token.oauth2.handler.start/handler-oauth2-start
+                                           :middleware [webserver.middleware.ctx/ctx-middleware
+                                                        muuntaja.middleware/wrap-format
+                                                        ring.middleware.params/wrap-params
+                                                        ring.middleware.keyword-params/wrap-keyword-params]
+                                           :services #{:token}}]] 
 
               ["/api/oauth2/"
-               ["redirect/:provider" {;Path Param: :provider will be extracted and passed to user-handler under :path-params.
-                                      :handler  token.oauth2.handler.redirect/handler-oauth2-redirect ;  either client OR server side
-                                      :middleware [; this was ws-wrap
-                                                   ;webserver.middleware.api/wrap-api-handler
-                                                   [ring.middleware.defaults/wrap-defaults ring.middleware.defaults/site-defaults]
+               ["redirect/:provider" {:handler token.oauth2.handler.redirect2/handler-oauth2-redirect
+                                      :middleware [webserver.middleware.ctx/ctx-middleware ; needs to access oauth2 config
+                                                   ring.middleware.params/wrap-params
                                                    ring.middleware.keyword-params/wrap-keyword-params
-                                                   ring.middleware.params/wrap-params]}]
+                                                   muuntaja.middleware/wrap-format
+                                                   ]
+                                      :services #{:token}
+                                      }]
                ;["start/" :provider] {:get modular.oauth2.handler/handler-oauth2-start-wrapped}
                          ;"token"  {:get modular.oauth2.handler/token-handler-wrapped}
                              ;  ["redirect/" :provider] {:get :oauth2/redirect}

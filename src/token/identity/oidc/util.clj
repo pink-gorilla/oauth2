@@ -48,6 +48,7 @@
 
 (defn get-jwks
   [url]
+  (info "get-jwks with url: " url)
   @(GET url {}))
 
 (defn find-kid [jwks kid]

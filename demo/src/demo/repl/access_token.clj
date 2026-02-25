@@ -6,7 +6,7 @@
                                get-auth-header
                                ]]))
   
- (def te (modular.system/system :oauth2))
+ (def te (modular.system/system :token))
  
 ;; refreshing access token is transparent.
 ;; but here we test refreshing the access tokens.

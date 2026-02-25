@@ -4,7 +4,7 @@
    [token.oauth2.request :refer [GET]]
    [token.oauth2.core :refer [get-auth-header]]))
 
-(def t (modular.system/system :oauth2))
+(def t (modular.system/system :token))
 
 @(get-auth-header t :github)
 

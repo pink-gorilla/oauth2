@@ -5,40 +5,26 @@
    [buddy.core.hash :as hash]
    [buddy.sign.jwt :as jwt]
    ;[no.nsd.clj-jwt :as clj-jwt]
-   [modular.permission.user :refer [get-user]]
-   [modular.permission.session :refer [set-user!]]
-   [clj-service.executor :refer [*user* *session*]]
-   [clj-service.core :refer [expose-functions]]))
+   [modular.permission.user :refer [get-user]] 
+   ))
 
-(defn start-local-identity [{:keys [permission clj secret] :as this}]
-  (info "starting local-identity service..")
-  (assert (and secret (string? secret)) "local-identity  service needs :secret (a string)")
-  (assert permission "local-identity  service needs :permission (permission service reference)")
-  (when clj
-    (info "exposing local-identity services via clj-service..")
-    (expose-functions clj
-                      {:name "token-local"
-                       :symbols ['token.identity.local/get-token
-                                 'token.identity.local/login]
-                       :permission nil
-                       :fixed-args [this]}))
-  (info "local-identity service running..")
-  this)
+
 
 (defn pwd-hash [pwd]
   (-> (hash/blake2b-128 pwd)
       (codecs/bytes->hex)))
 
-(defn create-claim [{:keys [identity] :as this} claim]
-  (let [secret (get-in identity [:local :secret])]
-    (info "creating claim: " claim " secret: " secret)
-    (let [token (jwt/sign claim secret)]
-      (assoc claim :token token))))
+(defn create-claim [{:keys [secret] :as this} claim] 
+  (info "creating claim: " claim " secret: " secret)
+  (let [token (jwt/sign claim secret)]
+    (assoc claim :token token)))
 
-(defn get-token [{:keys [permission] :as this} user-name user-password]
+(defn get-token [{:keys [users] :as this} user-name user-password]
+  (info "get-token this keys: " (keys this))
+  ; get-token this keys:  (:permission :secret :store :providers)
   (let [user-kw (keyword user-name)
         password-hashed (pwd-hash user-password)
-        user (get-user permission user-kw)]
+        user (get-user users user-kw)]
     (info "get-token user: " user-name " user-kw: " user-kw " user-details: "  user)
     (cond
     ; user unknown
@@ -78,23 +64,24 @@
        :error-message "Bad Token"})))
 
 (defn login
-  [{:keys [permission secret] :as this} token]
-  (info "login/local: token: " token " session: " *session*)
+  [this token]
+  (info "login/local: token: " token)
   (let [{:keys [user error] :as r} (verify-token this token)]
     (if error
       (taoensso.timbre/error "login/local error: " error " token: " token)
       (info "login/local: result: " r))
-    (when user
-      (set-user! permission  *session* user))
+    ;(when user (set-user! permission  *session* user))
+    
     r))
 
 (defn login-handler [{:keys [ctx body-params form-params query-params params] :as req}]
   (info "login-handler body-params: " body-params " form-params: " form-params)
-  (let [params (or body-params form-params {})
+  (let [this (:token ctx)
+        params (or body-params form-params {})
         user (or (:user params) (get params "user"))
         password (or (:password params) (get params "password"))]
     (if (and user password)
-      (let [{:keys [token error error-message user roles] :as tr} (get-token ctx user password)]
+      (let [{:keys [token error error-message user roles] :as tr} (get-token this user password)]
           ; success:  
           ; {:type :local, :provider :local, :user :florian, :roles #{:logistic}, :email ["hoertlehner@gmail.com"], :token "eyJhbGciOiJIUzI1NiJ9.eyJ0eXBlIjoibG9jYWwiLCJwcm92aWRlciI6ImxvY2FsIiwidXNlciI6ImZsb3JpYW4iLCJyb2xlcyI6WyJsb2dpc3RpYyJdLCJlbWFpbCI6WyJob2VydGxlaG5lckBnbWFpbC5jb20iXX0.JEPHMQMPu44L-OSLBTi4YSmPaIU_Iq0KO_v2hXrIqJM"}
           ; error:
@@ -114,24 +101,23 @@
        :headers {"location" (str "/login?error=" (java.net.URLEncoder/encode "must provide user and password" "UTF-8"))}})))
 
 
-(defn wrap-identity [handler identity]
+(defn wrap-identity [handler this]
   (fn [{:keys [cookies] :as req}]
     (cond
       (not cookies)
       (do (error "cannot wrap-identity: no :cookies in ctx)")
           (handler req))
 
-      (not identity)
-      (do (error "cannot wrap-identity: no :identity in ctx)")
+      (not this)
+      (do (error "cannot wrap-identity: no :token in ctx)")
           (handler req))
 
       :else
-      (let [_ (warn "identity keys: " (keys identity))
-            secret (get-in identity [:local :secret])
+      (let [_ (warn "identity keys: " (keys identity)) 
             identity-cookie (get cookies "identity")
             token (get identity-cookie :value)]
         (if token
-          (let [r (verify-token {:secret secret} token)]
+          (let [r (verify-token this token)]
             (warn "verify-token result: ") r
             ;{:type "local", :provider "local", :user :florian, :roles ["logistic"], :email ["hoertlehner@gmail.com"]}
             (if (:user r)
@@ -150,7 +136,7 @@
   {:name ::identity
    :compile
    (fn [{:keys [services-ctx] :as route-data} _router-opts]
-     (fn [handler] (wrap-identity handler (:identity services-ctx))))})
+     (fn [handler] (wrap-identity handler (:token services-ctx))))})
 
 
 (defn identity-handler [{:keys [identity] :as req}]
@@ -160,9 +146,9 @@
 
 
 (defn wrap-signed-in [handler]
-  (fn [{:keys [identity] :as req}]
+  (fn [{:keys [ctx] :as req}]
     (warn "wrap-signed in is checking identity: " identity)
-    (if (and identity (:user identity))
+    (if (and ctx (:token ctx))
       (handler req)
       {:status 303
        :headers {"location" "/login?error=not-signed-in"}})))

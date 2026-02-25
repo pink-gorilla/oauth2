@@ -6,7 +6,6 @@
    [cemerick.url :refer [url url-encode]]
    [ajax.core :as ajax]
    [promesa.core :as p]
-   [clj-service.core :refer [expose-functions]]
    [token.util.base64 :refer [base64-encode]]
     ; [clojure.data.codec.base64 :as b64] ; perhaps alternative to modular.base-64
    [token.oauth2.provider :refer [oauth2-flow-opts oauth2-token-uri oauth2-auth-header-prefix]]
@@ -16,35 +15,16 @@
 
 (defn assert-provider [v]
   (let [[id p] v]
-  (assert (keyword? id) (str "oauth2 provider key needs to be a keyword id: " id))
-  (assert (map? p) "oauth2 provider needs to be a map")
-  (assert (:client-id p) "oauth2 provider needs :client-id key")
-  (assert (:client-secret p) "oauth2 provider needs :client-secret key")
-  (assert (string? (:client-id p)) "oauth2 provider needs :client-id with type string")
-  (assert (string? (:client-secret p)) "oauth2 provider needs :client-secret  with type string")))
+    (assert (keyword? id) (str "oauth2 provider key needs to be a keyword id: " id))
+    (assert (map? p) "oauth2 provider needs to be a map")
+    (assert (:client-id p) "oauth2 provider needs :client-id key")
+    (assert (:client-secret p) "oauth2 provider needs :client-secret key")
+    (assert (string? (:client-id p)) "oauth2 provider needs :client-id with type string")
+    (assert (string? (:client-secret p)) "oauth2 provider needs :client-secret  with type string")))
 
-(defn assert-providers [ps]
-  (assert (map? ps) "oauth2 providers needs to be a map")
-  (doall (map assert-provider ps)))                  
-
-(defn start-oauth2-providers [{:keys [clj _store providers] :as this}]
-  (info "starting oauth2-provider service..")
-  (try
-    (assert-providers providers)
-    (catch AssertionError ex
-      (info "assert error: " ex )
-      (info "providers config: " providers)
-      (throw (ex-info "oauth2 provider-config error!" {:ex ex}))))
-
-  (info "starting oauth2-provider service.. provider config ok.")
-  (expose-functions clj
-                    {:name "token-oauth2"
-                     :symbols ['token.oauth2.core/url-authorize
-                               'token.oauth2.core/exchange-code-to-token]
-                     :permission nil
-                     :fixed-args [this]})
-  (info "oauth2-provider service running..")
-  nil)
+(defn assert-providers [providers]
+  (assert (map? providers) "oauth2 providers needs to be a map")
+  (doall (map assert-provider providers)))
 
 (defn get-provider-client-id [{:keys [providers] :as this} p]
   (get-in providers [p :client-id]))
@@ -71,7 +51,7 @@
      :redirect-uri (str "/api/oauth2/redirect/" provider-name)
      :landing-uri  (str "/api/oauth2/landing/" provider-name)}))
 
-(defn- url-redirect [provider-kw current-url]
+(defn url-redirect [provider-kw current-url]
   (->> provider-kw
        provider-uri
        :redirect-uri
@@ -80,15 +60,33 @@
 
 (defn- scope->string [scope]
   (let [scope (if (nil? scope) "" scope)
+
         scope (if (string? scope)
                 scope
                 (clojure.string/join " " scope))]
     scope))
 
-(defn url-authorize [this provider current-url scope]
+(defn url-start [{:keys [provider current-url scope save-as]}]
+  (let [query (if scope {:state save-as
+                         :scope (if (vector? scope)
+                                  (clojure.string/join " " scope)
+                                  scope)}
+                  {:state save-as
+                   :scope ""})]
+    (-> current-url url
+        (assoc :query query
+               :anchor nil
+               :path (str "/token/oauth2/start/" (name provider)))
+        str)))
+
+
+
+
+(defn url-authorize [this {:keys [provider current-url scope save-as]}]
   (let [query {:redirect_uri  (url-redirect provider current-url)
                :client_id (get-provider-client-id this provider)
-               :scope (scope->string scope)}
+               :scope (scope->string scope)
+               :state save-as}
         {:keys [uri
                 query-params
                 authorize-redirect-uri-name]} (oauth2-flow-opts {:provider provider})
@@ -145,11 +143,11 @@
 (defn exchange-code-to-token-request
   "makes a request to convert code to token. 
    returns promesa promise with the token."
-  [this {:keys [provider code current-url]}]
+  [this {:keys [provider code current-url state]}]
   (let [params {:code code
                 :grant_type "authorization_code" ; xero
                 :redirect_uri (url-redirect provider current-url) ; The same redirect URI that was used when requesting the code
-                }]
+                :state state}]
     (info "getting token for provider " provider " code :" code)
     (secure-post this provider params)))
 
@@ -256,8 +254,4 @@
         (p/catch (fn [_err]
                    (reject-header! r provider "missing access token, cannot create auth-header"))))
     r))
-
-
-
-
 

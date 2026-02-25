@@ -1,27 +1,14 @@
 (ns token.oauth2.store
   (:require
-   [taoensso.timbre :as timbre :refer [info]]
-   [babashka.fs :as fs]
-   [clj-service.core :refer [expose-functions]]
+   [babashka.fs :as fs] 
    [modular.persist.protocol :refer [save loadr]]
    [modular.persist.edn] ; side effects to be able to save edn files
    [token.oauth2.token :refer [sanitize-token]]))
 
-(defn create-store [{:keys [store-path clj store-role] :as this}]
+(defn init-store [{:keys [store-path] :as this}]
   ;(println "token store: " path)
-  (fs/create-dirs store-path)
-  (when clj
-    (info "exposing oauth2-store service permission: " store-role " .. ")
-    (expose-functions clj
-                      {:name "token-oauth2"
-                       :symbols ['token.oauth2.store/save-token
-                                 'token.oauth2.store/token-summary
-                                 ;'token.oauth2.core/load-token
-                                 ]
-                       :permission store-role
-                       :fixed-args [this]}))
-
-  this)
+  (fs/create-dirs store-path) 
+  nil)
 
 (defn- filename-token  [{:keys [store-path] :as this} id]
   ;(println "token store path: " store-path)

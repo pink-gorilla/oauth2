@@ -8,46 +8,26 @@
                    (:timbre/clj (clip/ref :config)))}
 
   :exts {:start (extension/discover)}
+  
+  :token {:start (token.core/start-token-service
+                  {:users (:users (clip/ref :config))
+                   :secret "AbHzj834ri9"
+                   :store-path ".gorilla/tokenstore"
+                   :providers (:oauth2 (:token (clip/ref :config)))})}
 
-  :permission {:start (modular.permission.core/start-permissions
-                       {:demo {:roles #{:logistic}
-                               :password "a231498f6c1f441aa98482ea0b224ffa" ; "1234"
-                               :email ["john@doe.com"]}
-                        :boss {:roles #{:logistic :supervisor :accounting}
-                               :password "a231498f6c1f441aa98482ea0b224ffa" ; "1234"
-                               :email ["boss@doe.com"]}
-                        :florian {:roles #{:logistic}
-                                  :password "a231498f6c1f441aa98482ea0b224ffa" ; 1234
-                                  :email ["hoertlehner@gmail.com"]}
-                        :john {:roles #{:logistic}
-                               :password "a231498f6c1f441aa98482ea0b224ffa" ; "1234"
-                               :email ["john@doe.com"]}})}
+;  :clj-service   {:start (clj-service.core/start-clj-services
+;                        (clip/ref :permission)
+;                        (clip/ref :exts) )}
+  
 
-  :clj-service {:start (clj-service.core/start-clj-services
-                        (clip/ref :permission)
-                        (clip/ref :exts))}
 
-  :identity {:start (token.identity.service/start-identity-service
-                     {:permission (clip/ref :permission)
-                      :clj (clip/ref :clj-service)
-                      :secret "AbHzj834ri9"})}
-
-  :oauth2 {:start (token.oauth2.service/start-oauth2-service
-                   {:clj (clip/ref :clj-service)
-                    :providers (:oauth2 (:token (clip/ref :config)))
-                    :store-path ".gorilla/tokenstore"
-                    :store-role nil ; #{}
-                    })}
-
-  :sente-websocket {:start (modular.ws.core/start-websocket-server :jetty)} 
+  ;:sente-websocket {:start (modular.ws.core/start-websocket-server :jetty)}
   :webly {:start (webly.spa/start-webly
                   {:exts (clip/ref :exts)
-                   :ctx {:permission (clip/ref :permission)
-                         :identity (clip/ref :identity)
-                         :sente (clip/ref :sente-websocket)
+                   :ctx {:token (clip/ref :token)
+                         ;:sente (clip/ref :sente-websocket)
                                           ;:flowy nil
-                          }
-                   }
+                         }}
                   (clip/ref :config)
                   (:profile #ref [:modular]))
           :stop (webly.spa/stop-webly this)}
