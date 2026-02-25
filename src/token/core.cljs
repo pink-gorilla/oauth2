@@ -12,14 +12,14 @@
 
 
 (defn set-user! [u]
-  (info "setting user to: " u)
+  (warn "user changed to: " u)
+  (info "current username: " (:user u))
   (reset! user-a u))
 
 (broadcast-subscribe
  (fn [u]
    (info "user refresher has received: " u)
-   (reset! user-a u)
-   (info "current username: " (:user u))
+   (set-user! u) 
    nil))
 
 
@@ -54,7 +54,15 @@
 (defn init-user!
   "fn to start user (defined in extension)"
   [_config]
-  (info "initializing user .."))
+  (info "initializing user ..")
+  (-> (js/fetch "/token/me")
+      (.then (fn [response] (.json response)))
+      (.then (fn [data]
+               (let [clj-data (js->clj data :keywordize-keys true)]
+                 (info "token/me result:" clj-data)
+                 (set-user! clj-data)
+                 )))
+      (.catch (fn [err] (error "token/me error:" err)))))
 
 (defn get-user []
   @user-a)
@@ -84,7 +92,7 @@
        [:style user-link-css]
        (if @user-a
          ;; logged in
-         [:a (merge link-attrs {:on-click #(logout)})
+         [:a (merge link-attrs {:on-click #(me)})
           [:i (merge icon-style {:class "fas fa-user"})
            (:user @user-a)]]
          ;; logged out

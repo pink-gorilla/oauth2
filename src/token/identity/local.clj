@@ -164,6 +164,14 @@
                          :path "/"
                          :max-age 0}}})
 
+(defn me-handler [{:keys [identity] :as _req}]
+  (if (and identity (some? (:user identity)))
+    {:status 200
+     :body identity}   
+    {:status 200
+     :body {:user nil}}))
+
+
 (comment
 
   (pwd-hash "1234")
