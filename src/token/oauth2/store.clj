@@ -10,12 +10,12 @@
   (fs/create-dirs store-path)
   nil)
 
-(defn- filename-token  [{:keys [store-path] :as this} id]
+(defn- filename-token  [{:keys [store-path] :as _this} id]
   ;(println "token store path: " store-path)
   (str store-path "/" id ".edn"))
 
 (defn save-token
-  [{:keys [store-path] :as this} id data]
+  [{:keys [_store-path] :as this} id data]
   (let [filename (filename-token this id)
         data-safe (sanitize-token data)]
     (save :edn filename data-safe)))

@@ -3,7 +3,7 @@
    [clojure.string]
    [clojure.set :refer [rename-keys]]
    [taoensso.timbre :as timbre :refer [debug info infof error]]
-   [cemerick.url :refer [url url-encode]]
+   [cemerick.url :refer [url]]
    [ajax.core :as ajax]
    [promesa.core :as p]
    [token.util.base64 :refer [base64-encode]]

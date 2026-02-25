@@ -1,6 +1,6 @@
 (ns token.ui.window
   (:require
-   [taoensso.timbre :refer-macros [info error]]))
+   [taoensso.timbre :refer-macros [info]]))
 
 ; features options:
 ; fullscreen=yes|no|1|0	Whether or not to display the browser in full-screen mode. Default is no. A window in full-screen mode must also be in theater mode. IE only

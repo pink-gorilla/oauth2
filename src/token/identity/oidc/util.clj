@@ -2,11 +2,9 @@
   (:require
    [taoensso.timbre :refer [debug info warn error]]
    [buddy.core.keys :as keys]
-   [buddy.sign.jwt :as jwt]
-   [token.info :as token-info]
-   [token.oauth2.request :refer [GET]]
-   [clojure.string :as str]
-   [clj-jwt.core :refer [str->jwt]]))
+   [buddy.sign.jwt :as jwt] 
+   [clj-jwt.core :refer [str->jwt]]
+   [token.oauth2.request :refer [GET]]))
 
 ; To verify the signature you should:
 ; Retrieve the public key by using the x5t or kid parameter.

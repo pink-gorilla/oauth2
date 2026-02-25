@@ -1,6 +1,6 @@
 (ns token.core
   (:require
-   [taoensso.timbre :refer [debug info warn error]]
+   [taoensso.timbre :refer [info warn]]
    [modular.permission.core :refer [start-permissions]]
    [token.oauth2.store :refer [init-store]]
    [token.oauth2.core :refer [assert-providers]]

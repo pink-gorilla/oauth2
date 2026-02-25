@@ -6,7 +6,7 @@
   :provider)
 
 (defmulti oauth2-flow-response-parse
-  ""
+  "how to parse the flow response from teh provider"
   :provider)
 
 (defmulti oauth2-token-uri
@@ -32,5 +32,5 @@
   :provider)
 
 (defmulti user-info-map
-  ""
+  "how to map the user info from the provider to a clojure map"
   :provider)

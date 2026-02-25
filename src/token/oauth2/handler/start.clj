@@ -1,12 +1,12 @@
 (ns token.oauth2.handler.start
   (:require
-   [taoensso.timbre :as timbre :refer [debug info warn error]]
+   [taoensso.timbre :as timbre :refer [info warn]]
    [clojure.string :as str]
    [ring.util.response :as response]
    [token.oauth2.core :refer [url-authorize]]
    [token.identity.oidc.scope :refer [get-identity-scope]]))
 
-(defn redirect-url [{:keys [scheme server-name server-port uri] :as req} provider]
+(defn redirect-url [{:keys [scheme server-name server-port _uri] :as req} provider]
    ; {:scheme :http :server-name "localhost" :server-port 8080
    ;  :uri "/api/oauth2/start/github" :protocol "HTTP/1.1"}
    ; :headers {"host" "localhost:8080"}, 
