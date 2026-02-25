@@ -18,7 +18,7 @@
    [:p "main page."]
    [:a {:href (rfe/href :about)}
     [:p  "about"]]
-   [:a {:href "/demo/secure"}
+   [:a {:href "/secret"}
     [:p  "secure static page"]]
    [:a {:href (rfe/href 'demo.page.oauth2/page-oauth2)}
     [:p "oauth demo"]]])

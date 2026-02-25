@@ -15,17 +15,18 @@
                    :store-path ".gorilla/tokenstore"
                    :providers (:oauth2 (:token (clip/ref :config)))})}
 
-;  :clj-service   {:start (clj-service.core/start-clj-services
-;                        (clip/ref :permission)
-;                        (clip/ref :exts) )}
   
 
+  :clj-service   {:start (clj-service.core/start-clj-services
+                        (:users (clip/ref :token))
+                        (clip/ref :exts) )}
+  
 
-  ;:sente-websocket {:start (modular.ws.core/start-websocket-server :jetty)}
+  :sente {:start (modular.ws.core/start-websocket-server :jetty)}
   :webly {:start (webly.spa/start-webly
                   {:exts (clip/ref :exts)
                    :ctx {:token (clip/ref :token)
-                         ;:sente (clip/ref :sente-websocket)
+                         :sente (clip/ref :sente)
                                           ;:flowy nil
                          }}
                   (clip/ref :config)

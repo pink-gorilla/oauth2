@@ -1,18 +1,14 @@
 {:name "oauth2"
  ; build
  :lazy false
- :cljs-namespace [token.oauth2.store.ui
-                  token.identity.user
-                  token.identity.ui]
- :cljs-ns-bindings {; make sure the namespaces in sci and cljs are identical
-                    token.oauth2.store.ui {'provider-status-grid token.oauth2.store.ui/provider-status-grid}
-                    token.identity.user {'get-user token.identity.user/get-user
-                                         'set-user! token.identity.user/set-user!
-                                         'init-user! token.identity.user/init-user!}
-                    token.identity.ui {'user-icon-with-login token.identity.ui/user-icon-with-login
-                                       'show-login-dialog  token.identity.ui/show-login-dialog}}
+ :cljs-namespace [token.core]
+ :cljs-ns-bindings {; make sure the namespaces in sci and cljs are identical 
+                    token.core {'init-user! token.core/init-user!
+                                'user-icon-with-login token.core/user-icon-with-login
+                                }
+                    }
  ; run 
-
+ 
  :web/routes [; oauth redirect is stateless,
               ; all other endpoints are implemented via clj-service which can be started at runtime 
               ; if the service gets started.
@@ -34,7 +30,7 @@
                           :services #{:token}}]
                ["/logout" {:get token.identity.local/logout-handler
                            :middleware [ring.middleware.cookies/wrap-cookies]}]
-              
+               
 
                ["/oauth2/start/:provider" {:get token.oauth2.handler.start/handler-oauth2-start
                                            :middleware [webserver.middleware.ctx/ctx-middleware
@@ -61,6 +57,6 @@
 
 
  :cljs-service {;:config-fn webly.spa.service/cljs-config-simple
-                :start-fn token.identity.user/init-user!
+                :start-fn token.core/init-user!
                 :default-config {}}}
 
