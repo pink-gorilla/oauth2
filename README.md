@@ -39,7 +39,6 @@ Open a webbrowser on port 8080
 ## gorilla dependencies
 
 - permission (define users and their permissions)
-- clj-service (expose clj functions via websocket and ring-handler)
 - modular (edn persistence)
 
 

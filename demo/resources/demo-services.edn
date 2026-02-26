@@ -16,8 +16,6 @@
                    :providers (:oauth2 (:token (clip/ref :config)))
                    :auth-expiry 604800})}
 
-  
-
   :clj-service   {:start (clj-service.core/start-clj-services
                         (:users (clip/ref :token))
                         (clip/ref :exts) )}

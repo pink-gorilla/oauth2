@@ -41,7 +41,7 @@
                           :email (:email user)}))))
 
 (defn verify-token [{:keys [secret] :as this} token]
-  (info "verifying token: " token " secret: " secret)
+  ;(info "verifying token: " token " secret: " secret)
   (try
     (cond
       (nil? secret)

@@ -6,9 +6,13 @@
         org.pinkgorilla/webly {:mvn/version "0.9.726"} 
         org.pinkgorilla/css-theme {:mvn/version "0.1.8"} ; webly spa builder uses them. 
         org.pinkgorilla/ui-dialog-keybindings {:mvn/version "0.1.12"} 
-        ;org.pinkgorilla/ui-tailwind {:mvn/version "0.1.8"}
         org.pinkgorilla/ui-router {:mvn/version "0.2.43"} 
-        org.pinkgorilla/clj-service {:mvn/version "0.4.25"} ; brings permission + websocket
+        ;org.pinkgorilla/clj-service {:mvn/version "0.4.25"} ; brings permission + websocket
+        org.pinkgorilla/clj-service {:local/root "../../clj-service"
+                                   :deps/manifest :deps}
+        org.pinkgorilla/websocket {:local/root "../../websocket"
+                                   :deps/manifest :deps
+                                   }
         org.pinkgorilla/oauth2 {:local/root "../" :deps/manifest :deps}
         nrepl/nrepl {:mvn/version "1.2.0"}}
 
