@@ -170,9 +170,9 @@
   (error "cannot get refresh token for provider: " provider "reason: " message)
   (reject! p provider message))
 
-(defn refresh-access-token [{:keys [store] :as this} provider]
+(defn refresh-access-token [this provider]
   (let [r (p/deferred)
-        token (load-token store provider)]
+        token (load-token this provider)]
     (if-let [refresh-token (:refresh-token token)]
       (let [res (refresh-access-token-request this provider refresh-token)]
         #_{:access_token "ya29.a0AJTbYD4bTx2DEgQ0173"
@@ -190,7 +190,7 @@
                       (let [token-new (sanitize-token token-new)
                             token-new (merge token token-new)]
                         (info "new access-token: " (:access-token token-new))
-                        (save-token store provider token-new)
+                        (save-token this provider token-new)
                         (p/resolve! r token-new))))
             (p/catch (fn [err]
                        (error "refresh token for provider: " provider " exception: " err)
@@ -208,10 +208,10 @@
   "returns an access token for a provider.
    if access token is expired, it will be refreshed.
    returns a promesa promise"
-  [{:keys [store] :as this} provider]
+  [this provider]
   (info "getting access token for provider: " provider)
   (let [r (p/deferred)
-        {:keys [access-token] :as token} (load-token store provider)]
+        {:keys [access-token] :as token} (load-token this provider)]
     (cond
       (nil? token)
       (reject-access-token! r provider "no token in store for provider")
