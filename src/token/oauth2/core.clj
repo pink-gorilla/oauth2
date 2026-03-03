@@ -123,6 +123,7 @@
     (info "secure-post provider: " provider " uri: " uri " params: " params)
     (ajax/POST uri
       {:headers (auth-header-oauth-token client-id client-secret)
+       :with-credentials false ; no cookies on requests.
        :params params
        :format (ajax/url-request-format)
        :timeout 5000
