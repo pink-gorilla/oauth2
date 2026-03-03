@@ -11,7 +11,7 @@
         ;org.pinkgorilla/clj-service {:mvn/version "0.4.25"} ; brings permission + websocket
         ;org.pinkgorilla/clj-service {:local/root "../../clj-service" :deps/manifest :deps}
         ;org.pinkgorilla/websocket {:local/root "../../websocket" :deps/manifest :deps}
-        org.pinkgorilla/oauth2 {:local/root "../" :deps/manifest :deps}
+        org.pinkgorilla/token {:local/root "../" :deps/manifest :deps}
         nrepl/nrepl {:mvn/version "1.2.0"}}
 
  :aliases {:npm-install {:exec-fn webly.spa/webly-build

@@ -1,4 +1,4 @@
-# oauth2 [![GitHub Actions status |pink-gorilla/oauth2](https://github.com/pink-gorilla/oauth2/workflows/CI/badge.svg)](https://github.com/pink-gorilla/oauth2/actions?workflow=CI)[![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/oauth2.svg)](https://clojars.org/org.pinkgorilla/oauth2)
+# oauth2 [![GitHub Actions status |pink-gorilla/token](https://github.com/pink-gorilla/token/workflows/CI/badge.svg)](https://github.com/pink-gorilla/token/actions?workflow=CI)[![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/token.svg)](https://clojars.org/org.pinkgorilla/token)
 
 
 ## core features
