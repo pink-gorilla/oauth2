@@ -5,8 +5,7 @@
  :cljs-ns-bindings {; make sure the namespaces in sci and cljs are identical 
                     token.core {'init-user! token.core/init-user!
                                 'user-icon-with-login token.core/user-icon-with-login
-                                }
-                    }
+                                }}
  ; run 
  
  :web/routes [; html pages
@@ -54,9 +53,8 @@
                                                    ]
                                       :services #{:token}
                                       }]
-              
+               
                ]]
-
 
  :cljs-service {;:config-fn webly.spa.service/cljs-config-simple
                 :start-fn token.core/init-user!

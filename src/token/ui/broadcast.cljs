@@ -7,9 +7,6 @@
 ; https://stackoverflow.com/questions/28230845/communication-between-tabs-or-windows
 ; https://developer.mozilla.org/en-US/docs/Web/API/Broadcast_Channel_API
 
-
-
-
 (defn process-data [ev]
   (let [json (. ev -data)
         data (js->clj (.parse js/JSON json))

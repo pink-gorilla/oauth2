@@ -3,25 +3,25 @@
    [taoensso.timbre :refer-macros [info warn error]]
    [promesa.core :as p]
    [reagent.core :as r]
-   [re-frame.core :as rf]
    [token.ui.window :refer [open-window close-window]]
-   [token.ui.broadcast :refer [broadcast-result broadcast-subscribe]]
-   ))
+   [token.ui.broadcast :refer [broadcast-result broadcast-subscribe]]))
 
 (defonce user-a (r/atom nil))
 
+(defn get-user []
+  @user-a)
 
 (defn set-user! [u]
   (warn "user changed to: " u)
   (info "current username: " (:user u))
-  (reset! user-a u))
+  (when-not (= u @user-a)
+    (reset! user-a u)))
 
 (broadcast-subscribe
  (fn [u]
    (info "user refresher has received: " u)
-   (set-user! u) 
+   (set-user! u)
    nil))
-
 
 (defn open-window-autoclose [url]
   (let [w (open-window {:url url
@@ -37,8 +37,7 @@
 
 (defn login []
   (info "log in")
-  (open-window-autoclose "/login")
-  )
+  (open-window-autoclose "/login"))
 
 (defn logout []
   (info "log out")
@@ -52,8 +51,8 @@
                 :width 500}))
 
 (defn authorize [{:keys [provider scope save-as] :as q}]
-  (let [params (js/URLSearchParams.)] 
-    (doseq [s (or scope [])] 
+  (let [params (js/URLSearchParams.)]
+    (doseq [s (or scope [])]
       (.append params "scope" s))
     (.append params "save-as" save-as)
     (let [provider (name provider)
@@ -74,23 +73,8 @@
       (.then (fn [data]
                (let [clj-data (js->clj data :keywordize-keys true)]
                  (info "token/me result:" clj-data)
-                 (set-user! clj-data)
-                 )))
+                 (set-user! clj-data))))
       (.catch (fn [err] (error "token/me error:" err)))))
-
-(defn get-user []
-  @user-a)
-
-(rf/reg-event-db
- :ws/connected
- (fn [db _]
-   (when-let [usermap (get-user)]
-     (let [{:keys [token user]} usermap]
-       (warn "ws connected - auto login: " user)
-       ;(local/login token)
-       ))
-   db))
-
 
 (def ^:private user-link-css
   ".token-user-link { cursor: pointer; color: inherit; text-decoration: none; transition: color 0.15s ease; }
