@@ -5,8 +5,8 @@
 ))
 
 
-(def lib 'org.pinkgorilla/oauth2)
-(def version (format "0.3.%s" (b/git-count-revs nil)))
+(def lib 'org.pinkgorilla/token)
+(def version (format "0.4.%s" (b/git-count-revs nil)))
 
 (defn jar "build the JAR" [opts]
   (println "Building the JAR")
