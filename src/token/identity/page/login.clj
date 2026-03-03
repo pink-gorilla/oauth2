@@ -56,10 +56,14 @@
                          :method "post"}
                   [:div.login-field
                    [:label.login-label {:for "user"} "Username"]
-                   [:input#user.login-input {:type "text" :name "user" :required true}]]
+                   [:input#user.login-input 
+                    {:type "text" :name "user" :required true
+                     :autocomplete "email"}]]
                   [:div.login-field
                    [:label.login-label {:for "password"} "Password"]
-                   [:input#password.login-input {:type "password" :name "password" :required true}]]
+                   [:input#password.login-input 
+                    {:type "password" :name "password" :required true
+                     :autocomplete "current-password"}]]
                   [:div.login-actions
                    [:button.btn {:type "submit"} "Login"]
                    [:a.btn.btn-google {:href google-start-url} "Login with Google"]]]]]])]

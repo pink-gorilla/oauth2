@@ -1,4 +1,4 @@
-{:name "oauth2"
+{:name "token"
  ; build
  :lazy false
  :cljs-namespace [token.core]

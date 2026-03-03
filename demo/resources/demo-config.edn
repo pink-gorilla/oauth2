@@ -25,15 +25,7 @@
  :reitit {:wrap demo.app/wrap-page}
 
  :web-server {:http {:port 8080
-                     :ip "0.0.0.0"}
-              #_:https #_{; by default https is disabled
-                      :port 443
-                      :certificate "../crb-data/keystore.p12"
-                      :password "crb2025secret"}
-              :letsencrypt {:domain "admin.crbclean.com"
-                            :email "webmaster@crbclean.com"
-                            :force-renewal false ; to test renewal
-                            :path "../crb-data/letsencrypt"}}
+                     :ip "0.0.0.0"}}
  
  :users {:demo {:roles #{:logistic}
                 :password "a231498f6c1f441aa98482ea0b224ffa" ; "1234"

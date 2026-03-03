@@ -16,20 +16,19 @@
                    :providers (:oauth2 (:token (clip/ref :config)))
                    :auth-expiry 604800})}
 
-  :clj-service   {:start (clj-service.core/start-clj-services
-                        (:users (clip/ref :token))
-                        (clip/ref :exts) )}
+   #_:clj-service #_{:start (clj-service.core/start-clj-services
+                       {:exts (clip/ref :exts)
+                        :env {}
+                        :permission-service (:users (clip/ref :token))})}
   
-
-  :sente {:start (modular.ws.core/start-websocket-server :jetty)}
+  ;:sente {:start (modular.ws.core/start-websocket-server :jetty)}
   :webly {:start (webly.spa/start-webly
                   {:exts (clip/ref :exts)
-                   :ctx {:token (clip/ref :token)
-                         :sente (clip/ref :sente)
-                                          ;:flowy nil
-                         }}
+                   :ctx {;:sente (clip/ref :sente)
+                         :token (clip/ref :token)}}
                   (clip/ref :config)
-                  (:profile #ref [:modular]))
+                  (:profile #ref [:modular])
+                  (:version #ref [:modular]))
           :stop (webly.spa/stop-webly this)}
 
 

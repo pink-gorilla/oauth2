@@ -142,9 +142,10 @@
        (wrap-identity handler (:token services-ctx))))})
 
 (defn wrap-signed-in [handler]
-  (fn [{:keys [ctx] :as req}]
-    (warn "wrap-signed in is checking identity: " (:identity ctx))
-    (if (and ctx (:identity ctx))
+  (fn [{:keys [identity] :as req}]
+    (warn "wrap-signed in is checking identity: " identity)
+    ;(warn "wrap-signed req keys: " (keys req))
+    (if (and identity (:user identity))
       (handler req)
       {:status 303
        :headers {"location" "/login?error=not-signed-in"}})))

@@ -16,11 +16,6 @@
 ; config that we would use. This is helpful to see if we have client-ids and secrets and
 ; to se that routes are configured correctly.
 
-(defn print-oauth2-config []
-  (let [config (entire-config)
-        c (ring-oauth2-config config)]
-     ;(debug "oauth config: " c)
-    (write-status "oauth2" c)))
 
 (defn wrap-oauth [handler]
   (let [config (entire-config)
