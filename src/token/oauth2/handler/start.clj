@@ -8,10 +8,10 @@
 
 (defn redirect-url [{:keys [scheme server-name server-port _uri] :as req} provider]
    ; {:scheme :http :server-name "localhost" :server-port 8080
-   ;  :uri "/api/oauth2/start/github" :protocol "HTTP/1.1"}
+   ;  :uri "/token/oauth2/start/github" :protocol "HTTP/1.1"}
    ; :headers {"host" "localhost:8080"}, 
   (info "req->url: " (select-keys req [:scheme :server-name :server-port :uri]))
-  (str (name scheme) "://" server-name ":" server-port "/api/oauth2/redirect/" provider))
+  (str (name scheme) "://" server-name ":" server-port "/token/oauth2/redirect/" provider))
 
 (defn handler-oauth2-start
   "this handler is opened in a browser-popup window.

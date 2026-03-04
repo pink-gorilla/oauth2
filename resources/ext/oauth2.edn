@@ -4,10 +4,9 @@
  :cljs-namespace [token.core]
  :cljs-ns-bindings {; make sure the namespaces in sci and cljs are identical 
                     token.core {'init-user! token.core/init-user!
-                                'user-icon-with-login token.core/user-icon-with-login
-                                }}
+                                'user-icon-with-login token.core/user-icon-with-login}}
  ; run 
- 
+
  :web/routes [; html pages
               ["/login" {:get token.identity.page.login/login-page
                          :middleware [ring.middleware.params/wrap-params]}]
@@ -19,6 +18,7 @@
                       :services #{:token}}]
               ; api endpoints 
               ["/token"
+               ; identity endpoints
                ["/login" {:post token.identity.local/login-handler
                           :middleware [ring.middleware.cookies/wrap-cookies
                                        ring.middleware.params/wrap-params
@@ -33,28 +33,23 @@
                                     muuntaja.middleware/wrap-format
                                     token.identity.local/identity-middleware]
                        :services #{:token}}]
-               ["/authresult" {:get token.oauth2.handler.authresult/page-authresult
-                               :middleware [ring.middleware.params/wrap-params]}]
-               
-               ["/oauth2/start/:provider" {:get token.oauth2.handler.start/handler-oauth2-start
-                                           :middleware [webserver.middleware.ctx/ctx-middleware
-                                                        muuntaja.middleware/wrap-format
-                                                        ring.middleware.params/wrap-params
-                                                        ring.middleware.keyword-params/wrap-keyword-params]
-                                           :services #{:token}}]] 
-
-              ["/api/oauth2/"
-               ["redirect/:provider" {:handler token.oauth2.handler.redirect2/handler-oauth2-redirect
-                                      :middleware [webserver.middleware.ctx/ctx-middleware ; needs to access oauth2 config
-                                                   ring.middleware.cookies/wrap-cookies ; oauth2 redirect needs to set cookies
-                                                   ring.middleware.params/wrap-params
-                                                   ring.middleware.keyword-params/wrap-keyword-params
-                                                   muuntaja.middleware/wrap-format
-                                                   ]
-                                      :services #{:token}
-                                      }]
-               
-               ]]
+               ["/oauth2"
+                 ; oauth2 flow
+                ["/start/:provider" {:get token.oauth2.handler.start/handler-oauth2-start
+                                     :middleware [webserver.middleware.ctx/ctx-middleware
+                                                  muuntaja.middleware/wrap-format
+                                                  ring.middleware.params/wrap-params
+                                                  ring.middleware.keyword-params/wrap-keyword-params]
+                                     :services #{:token}}]
+                ["/redirect/:provider" {:handler token.oauth2.handler.redirect2/handler-oauth2-redirect
+                                        :middleware [webserver.middleware.ctx/ctx-middleware ; needs to access oauth2 config
+                                                     ring.middleware.cookies/wrap-cookies ; oauth2 redirect needs to set cookies
+                                                     ring.middleware.params/wrap-params
+                                                     ring.middleware.keyword-params/wrap-keyword-params
+                                                     muuntaja.middleware/wrap-format]
+                                        :services #{:token}}]
+                ["/authresult" {:get token.oauth2.handler.authresult/page-authresult
+                                :middleware [ring.middleware.params/wrap-params]}]]]]
 
  :cljs-service {;:config-fn webly.spa.service/cljs-config-simple
                 :start-fn token.core/init-user!

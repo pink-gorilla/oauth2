@@ -10,10 +10,10 @@
 
 (defn redirect-url [{:keys [scheme server-name server-port _uri] :as req} provider]
    ; {:scheme :http :server-name "localhost" :server-port 8080
-   ;  :uri "/api/oauth2/start/github" :protocol "HTTP/1.1"}
+   ;  :uri "/token/oauth2/start/github" :protocol "HTTP/1.1"}
    ; :headers {"host" "localhost:8080"}, 
   (info "req->url: " (select-keys req [:scheme :server-name :server-port :uri]))
-  (str (name scheme) "://" server-name ":" server-port "/api/oauth2/redirect/" provider))
+  (str (name scheme) "://" server-name ":" server-port "/token/oauth2/redirect/" provider))
 
 #_{:provider :google
    :anchor {},
@@ -55,5 +55,5 @@
                        :id-token (:id-token t)})
           (let [q (str "state=" (java.net.URLEncoder/encode (str state) "UTF-8")
                       "&scope=" (java.net.URLEncoder/encode (str scope) "UTF-8"))]
-            (response/redirect (str "/token/authresult?" q))))))))
+            (response/redirect (str "/token/oauth2/authresult?" q))))))))
 
