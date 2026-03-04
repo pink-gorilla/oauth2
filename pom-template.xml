@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <name>oauth2</name>
-  <description>websocket library</description>
-  <url>https://github.com/pink-gorilla/oauth2</url>
+  <name>token</name>
+  <description>token library</description>
+  <url>https://github.com/pink-gorilla/token</url>
   <licenses>
     <license>
       <name>Eclipse Public License</name>
@@ -16,7 +16,7 @@
     </developer>
   </developers>
   <scm>
-    <url>https://github.com/pink-gorilla/oauth2</url>
+    <url>https://github.com/pink-gorilla/token</url>
     <connection>scm:git:git://github.com/seancorfield/next-jdbc.git</connection>
     <developerConnection>scm:git:ssh://git@github.com/seancorfield/next-jdbc.git</developerConnection>
   </scm>
