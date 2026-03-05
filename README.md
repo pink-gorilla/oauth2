@@ -1,4 +1,4 @@
-# oauth2 [![GitHub Actions status |pink-gorilla/token](https://github.com/pink-gorilla/token/workflows/CI/badge.svg)](https://github.com/pink-gorilla/token/actions?workflow=CI)[![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/token.svg)](https://clojars.org/org.pinkgorilla/token)
+# token [![GitHub Actions status |pink-gorilla/token](https://github.com/pink-gorilla/token/workflows/CI/badge.svg)](https://github.com/pink-gorilla/token/actions?workflow=CI)[![Clojars Project](https://img.shields.io/clojars/v/org.pinkgorilla/token.svg)](https://clojars.org/org.pinkgorilla/token)
 
 
 ## core features
@@ -15,31 +15,22 @@
   - oidc tokens (using oauth2 flow)
 
 
+# demo
 
-# configuration
-
-- [creds-empty.edn](https://github.com/pink-gorilla/oauth2/blob/main/creds-empty.edn) has empty values you can set and a description how to get the credentials
+- [creds-empty.edn](https://github.com/pink-gorilla/token/blob/main/creds-empty.edn) has empty values you can set and a description how to get the credentials
 - before starting the demo you need to set the correct credentials.
 - edit demo/deps.edn in :run alias set the :config to a file that contains your credentials.
 
-
-# demo
-
 ```
 cd demo
-clj -X:webly:npm-install
-clj -X:webly:compile
-clj -X:webly:run
+clj -X:npm-install
+clj -X:demo
 ```
 
 Open a webbrowser on port 8080
 
 ```
 
-## gorilla dependencies
-
-- permission (define users and their permissions)
-- modular (edn persistence)
 
 
 # how to use tokens (for example in rest api):
