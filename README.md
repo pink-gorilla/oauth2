@@ -3,16 +3,23 @@
 
 ## core features
 
-- oauth2 access-token engine
-  - allow users to authorize the app via web interface from oauth2 providers (google, github, xero, ..)
-  - get access-tokens for use with rest/graphql apis 
-  - transparently renews access-tokens
-  - token store (rudimentary but necessary)
-  - its primary use is to let your application use oauth2 protected services.
-- identity engine (to allow users to "login")
-  - the idea is that you can expose clj services that are only accessible to certain users.
-  - local-identity tokens via user/password
-  - oidc tokens (using oauth2 flow)
+*identity engine* 
+- the identity of the user gets verified via a token that gets decrypted/verified on the clj-server
+- in the browser the token is stored as a cookie (best practice)
+- middleware to enforce signed-in for static webpages
+- cljs reagent helper functions to keep track of the user in the frontend
+- clj-service uses token to manage access based on user roles
+- local-identity tokens via user/password
+- oidc2 identity tokens (using oauth2 flow)
+
+
+*oauth2* access-token engine
+- allow users to authorize the app via web interface from oauth2 providers (google, github, xero, ..)
+- get access-tokens for use with rest/graphql apis 
+- transparently renews access-tokens
+- token store (rudimentary but necessary)
+- its primary use is to let your application use oauth2 protected services.
+
 
 
 # demo
