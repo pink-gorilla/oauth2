@@ -1,25 +1,14 @@
 {:timbre/clj {:min-level [[#{"org.apache.http.*"
                              "org.eclipse.aether.*"
-                             "org.eclipse.jetty.*"
-                             "modular.oauth2.*"
-                             "modular.oauth2.token.refresh.*"
-                             "modular.ws.*"
-                             "webly.web.*"
-                             "goldly.ws-connect.*"
-                             "goldly.cljs.discover.*"
-                             "goldly.run.cljs-load.*"
-                             "goldly.run.cljs-load"
-                             "goldly.run.ws-connect"} :warn] ; webserver stuff - warn only
+                             "org.eclipse.jetty.*"} :warn] ; webserver stuff - warn only
                           ; [#{"modular.ws.*"} :debug]
-                          [#{"modular.persist.*"} :warn]
-                          [#{"goldly.service.core"} :warn] ; goldly services - less logging
                           [#{"*"} :info]] ; default -> info
               :appenders {:default {:type :console-color}}}
  
- :spa {:title "demo-page"
-         ;:spinner "webly/loading.svg"
-         ;:icon "webly/icon/pinkgorilla32.png" ; "webly/icon/silver.ico"  ; gorilla is much smaller than silver
-         ;:loading-image-url "webly/loadimage/library.jpg" ; 
+ :spa {:title "token-demo"
+       ;:spinner "webly/loading.svg"
+       ;:icon "webly/icon/pinkgorilla32.png" ; "webly/icon/silver.ico"  ; gorilla is much smaller than silver
+       ;:loading-image-url "webly/loadimage/library.jpg" ; 
        :mount-fn router.app/mount}
  
  :reitit {:wrap demo.app/wrap-page}

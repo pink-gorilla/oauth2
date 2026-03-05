@@ -15,17 +15,19 @@
                    :store-path ".gorilla/tokenstore"
                    :providers (:oauth2 (:token (clip/ref :config)))
                    :auth-expiry 604800})}
-
-   #_:clj-service #_{:start (clj-service.core/start-clj-services
-                       {:exts (clip/ref :exts)
-                        :env {}
-                        :permission-service (:users (clip/ref :token))})}
-  
-  ;:sente {:start (modular.ws.core/start-websocket-server :jetty)}
+  :clj {:start (clj-service.core/start-clj-services
+                {:exts (clip/ref :exts)
+                 :env {}})}
+  :sente {:start (modular.ws.core/start-websocket-server :jetty)}
+  :clj-sente {:start (clj-service.sente/create-websocket-responder
+                      {:token (clip/ref :token)
+                       :clj (clip/ref :clj)})} 
   :webly {:start (webly.spa/start-webly
                   {:exts (clip/ref :exts)
-                   :ctx {;:sente (clip/ref :sente)
-                         :token (clip/ref :token)}}
+                   :ctx {:token (clip/ref :token)
+                         :clj (clip/ref :clj)
+                         :sente (clip/ref :sente)
+                         }}
                   (clip/ref :config)
                   (:profile #ref [:modular])
                   (:version #ref [:modular]))

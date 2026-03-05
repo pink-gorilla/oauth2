@@ -7,11 +7,18 @@
                     'demo.app {'routes demo.app/routes
                                'wrap-page demo.app/wrap-page}}
  ; run
-
+ 
  :cljs-routes-reitit demo.app/routes
 
  :web/routes [["/secret" {:get demo.page.secret/page-handler
                           :middleware [ring.middleware.cookies/wrap-cookies
                                        muuntaja.middleware/wrap-format
                                        token.identity.local/identity-middleware
-                                       token.identity.local/signed-in-middleware]}]]}
+                                       token.identity.local/signed-in-middleware]}]]
+ 
+ :clj-service [{:fun demo.time/time-public :permission nil}
+               {:fun demo.time/time-debug :permission nil}
+               {:fun demo.time/time-user :permission  #{}}
+               {:fun demo.time/time-supervisor :permission #{:supervisor}}]
+ 
+ }

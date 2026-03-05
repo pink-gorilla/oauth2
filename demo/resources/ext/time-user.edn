@@ -1,3 +1,0 @@
-{:clj-services {:name "time-user"
-                :permission  #{}
-                :symbols [demo.time/time-user]}}

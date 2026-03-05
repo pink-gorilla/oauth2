@@ -3,13 +3,16 @@
          "target/webly"]
 
  :deps {org.clojure/clojure    {:mvn/version "1.12.4"}
-        org.pinkgorilla/webly {:mvn/version "0.10.730"}
+        ;org.pinkgorilla/webly {:mvn/version "0.10.730"}
+        org.pinkgorilla/webly {:local/root "../../webly/webly" :deps/manifest :deps}
         org.pinkgorilla/css-theme {:mvn/version "0.1.8"} ; webly spa builder uses them. 
         org.pinkgorilla/ui-dialog-keybindings {:mvn/version "0.1.12"} 
         org.pinkgorilla/ui-router {:mvn/version "0.2.43"} 
-        ;org.pinkgorilla/clj-service {:mvn/version "0.6.28"}
-        ;org.pinkgorilla/clj-service {:local/root "../../clj-service" :deps/manifest :deps}
+        org.pinkgorilla/clj-service-sente {:mvn/version "0.7.31"}
+        ;org.pinkgorilla/clj-service-sente {:mvn/version "0.6.30"}
+        ;org.pinkgorilla/clj-service-sente {:local/root "../../clj-service-sente" :deps/manifest :deps}
         ;org.pinkgorilla/websocket {:local/root "../../websocket" :deps/manifest :deps}
+        ;org.pinkgorilla/webserver {:local/root "../../webserver" :deps/manifest :deps}
         org.pinkgorilla/token {:local/root "../" :deps/manifest :deps}
         nrepl/nrepl {:mvn/version "1.2.0"}}
 
