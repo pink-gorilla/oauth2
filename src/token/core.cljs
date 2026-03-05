@@ -32,6 +32,7 @@
     (-> result
         (p/then (fn [r]
                   (info "auto-closing after result: " r)
+                  ;  {:user :florianh, :roles ["logistic" "dev"], :email ["hoertlehner@gmail.com"], :provider "google"}
                   (close-window w))))))
 
 

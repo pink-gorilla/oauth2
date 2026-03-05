@@ -27,19 +27,27 @@
   ")])
 
 (defn me-page-logged-out []
-  (page/html5
-   {:mode :html}
-   [:head
-    [:meta {:charset "utf-8"}]
-    [:title "Me"]
-    me-styles]
-   [:body
-    [:div.me-wrap
-     [:div.me-card
-      [:h1.me-title "Me"]
-      [:p.me-subtitle "You are not logged in."]
-      [:div.me-actions
-       [:a.btn {:href "/login"} "Login"]]]]]))
+  (let [userdata {:user nil 
+                  :roles nil 
+                  :email []
+                  :provider "anonymous"}]
+    (page/html5
+     {:mode :html}
+     [:head
+      [:meta {:charset "utf-8"}]
+      [:title "Me"]
+      me-styles]
+     [:body
+      [:div.me-wrap
+       [:div.me-card
+        [:h1.me-title "Me"]
+        [:p.me-subtitle "You are not logged in."]
+        [:div.me-actions
+         [:a.btn {:href "/login"} "Login"]]
+        [:script {:src "/r/oauth2/redirect.js"
+                  :type "text/javascript"
+                  :onload (str "sendcallback ('" userdata "');")}]
+        ]]])))
 
 (defn me-page-logged-in [identity]
   (let [{:keys [user roles email provider]
