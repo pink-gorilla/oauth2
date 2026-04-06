@@ -1,9 +1,16 @@
 (ns token.oauth2.store
   (:require
    [babashka.fs :as fs]
-   [modular.persist.protocol :refer [save loadr]]
-   [modular.persist.edn] ; side effects to be able to save edn files
+   [ednx.fipp :refer [spit-fipp]]
+   [ednx.edn :refer [slurp-edn]]
+   [ednx.tick.edn :refer [add-tick-edn-handlers!]]
+   [ednx.tick.fipp :refer [add-tick-fipp-printers!]]
    [token.oauth2.token :refer [sanitize-token]]))
+
+
+(add-tick-edn-handlers!)
+(add-tick-fipp-printers!)
+
 
 (defn init-store [{:keys [store-path] :as this}]
   ;(println "token store: " path)
@@ -18,12 +25,12 @@
   [{:keys [_store-path] :as this} id data]
   (let [filename (filename-token this id)
         data-safe (sanitize-token data)]
-    (save :edn filename data-safe)))
+    (spit-fipp filename data-safe)))
 
 (defn load-token [this id]
   (let [filename (filename-token this id)]
     ;(println "loading token: " filename)
-    (loadr :edn filename)))
+    (slurp-edn filename)))
 
 ; token summary
 
