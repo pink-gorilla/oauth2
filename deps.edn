@@ -23,10 +23,9 @@
   ;ring-oauth2/ring-oauth2 {:mvn/version "0.1.5"}
   ; clj-oauth/clj-oauth {:mvn/version "1.5.2"}; copied over from REST
   ; pink-gorilla dependencies
-  org.pinkgorilla/permission {:mvn/version "0.2.20"}
-  org.pinkgorilla/edn-x {:mvn/version "0.1.2"}
- 
-  }
+  org.pinkgorilla/permission {:mvn/version "0.2.21"}
+  org.pinkgorilla/edn-x {:mvn/version "0.1.4"}
+   }
 
  :aliases
  {:test {:extra-paths ["test"]
